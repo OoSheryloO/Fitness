@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.CartMapper">
+	<!-- 返回的map -->
+	<resultMap id="cart" type="com.kjyl.pojo.Cart">
+		<result property="Id" column="Cart_Id" />
+		<result property="UseId" column="Cart_UseId" />
+		<result property="TouchId" column="Cart_TouchId" />
+		<result property="Memo" column="Cart_Memo" />
+		<result property="Status" column="Cart_Status" />
+		<result property="Delete" column="Cart_Delete" />
+		<result property="CreateTime" column="Cart_CreateTime" />
+		<result property="ModifyTime" column="Cart_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Cart_Id, Cart_UseId, Cart_TouchId, Cart_Memo, Cart_Status, Cart_Delete, Cart_CreateTime, Cart_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Cart_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Cart_UseId = #{UseId}
+		</if>
+		<if test="TouchId!= null">
+				 AND Cart_TouchId = #{TouchId}
+		</if>
+		<if test="Memo!= null">
+				 AND Cart_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Cart_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Cart_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Cart_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Cart_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="cart" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_cart
+		<where>
+			Cart_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="cart" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_cart
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_cart
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Cart"  useGeneratedKeys="true">
+		INSERT INTO fit_cart( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TouchId},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Cart">
+		UPDATE fit_cart SET Cart_UseId = #{UseId}, Cart_TouchId = #{TouchId}, Cart_Memo = #{Memo}, Cart_Status = #{Status}, Cart_Delete = #{Delete}, Cart_ModifyTime = now()
+		<where>
+			Cart_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Cart">
+		UPDATE fit_cart SET Cart_Status = 88 WHERE Cart_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Cart">
+		UPDATE fit_cart SET Cart_Status=  1 WHERE Cart_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Cart">
+		UPDATE fit_cart SET Cart_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Cart">
+		UPDATE fit_cart SET Cart_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

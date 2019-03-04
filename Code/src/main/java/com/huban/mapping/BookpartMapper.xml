@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.BookpartMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Bookpart" >
+    <id column="bookpart_Id" property="bookpartId" jdbcType="BIGINT" />
+    <result column="bookpart_userId" property="bookpartUserid" jdbcType="BIGINT" />
+    <result column="bookpart_bookId" property="bookpartBookid" jdbcType="BIGINT" />
+    <result column="bookpart_CreatTime" property="bookpartCreattime" jdbcType="TIMESTAMP" />
+    <result column="bookpart_ModifyTime" property="bookpartModifytime" jdbcType="DATE" />
+    <result column="bookpart_Status" property="bookpartStatus" jdbcType="INTEGER" />
+    <result column="bookpart_comment" property="bookpartComment" jdbcType="VARCHAR" />
+    <result column="bookpart_Imgurl" property="bookpartImgurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bookpart_Id, bookpart_userId, bookpart_bookId, bookpart_CreatTime, bookpart_ModifyTime, 
+    bookpart_Status, bookpart_comment,bookpart_Imgurl
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_bookpart
+    where bookpart_Id = #{bookpartId,jdbcType=BIGINT}
+  </select>
+  <select id="queryList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_bookpart
+    where bookpart_userId=#{userId}
+    ORDER BY bookpart_comment ASC
+    limit #{start},#{size}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_bookpart
+    where bookpart_Id = #{bookpartId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Bookpart" >
+    insert into rb_bookpart (bookpart_Id, bookpart_userId, bookpart_bookId, 
+      bookpart_CreatTime, bookpart_ModifyTime, bookpart_Status, 
+      bookpart_comment)
+    values (#{bookpartId,jdbcType=BIGINT}, #{bookpartUserid,jdbcType=BIGINT}, #{bookpartBookid,jdbcType=BIGINT}, 
+      #{bookpartCreattime,jdbcType=TIMESTAMP}, #{bookpartModifytime,jdbcType=DATE}, #{bookpartStatus,jdbcType=INTEGER}, 
+      #{bookpartComment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Bookpart" >
+    insert into rb_bookpart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookpartId != null" >
+        bookpart_Id,
+      </if>
+      <if test="bookpartUserid != null" >
+        bookpart_userId,
+      </if>
+      <if test="bookpartBookid != null" >
+        bookpart_bookId,
+      </if>
+      <if test="bookpartCreattime != null" >
+        bookpart_CreatTime,
+      </if>
+      <if test="bookpartModifytime != null" >
+        bookpart_ModifyTime,
+      </if>
+      <if test="bookpartStatus != null" >
+        bookpart_Status,
+      </if>
+      <if test="bookpartComment != null" >
+        bookpart_comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookpartId != null" >
+        #{bookpartId,jdbcType=BIGINT},
+      </if>
+      <if test="bookpartUserid != null" >
+        #{bookpartUserid,jdbcType=BIGINT},
+      </if>
+      <if test="bookpartBookid != null" >
+        #{bookpartBookid,jdbcType=BIGINT},
+      </if>
+      <if test="bookpartCreattime != null" >
+        #{bookpartCreattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookpartModifytime != null" >
+        #{bookpartModifytime,jdbcType=DATE},
+      </if>
+      <if test="bookpartStatus != null" >
+        #{bookpartStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bookpartComment != null" >
+        #{bookpartComment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Bookpart" >
+    update rb_bookpart
+    <set >
+      <if test="bookpartUserid != null" >
+        bookpart_userId = #{bookpartUserid,jdbcType=BIGINT},
+      </if>
+      <if test="bookpartBookid != null" >
+        bookpart_bookId = #{bookpartBookid,jdbcType=BIGINT},
+      </if>
+      <if test="bookpartCreattime != null" >
+        bookpart_CreatTime = #{bookpartCreattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookpartModifytime != null" >
+        bookpart_ModifyTime = #{bookpartModifytime,jdbcType=DATE},
+      </if>
+      <if test="bookpartStatus != null" >
+        bookpart_Status = #{bookpartStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bookpartComment != null" >
+        bookpart_comment = #{bookpartComment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bookpart_Id = #{bookpartId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Bookpart" >
+    update rb_bookpart
+    set bookpart_userId = #{bookpartUserid,jdbcType=BIGINT},
+      bookpart_bookId = #{bookpartBookid,jdbcType=BIGINT},
+      bookpart_CreatTime = #{bookpartCreattime,jdbcType=TIMESTAMP},
+      bookpart_ModifyTime = #{bookpartModifytime,jdbcType=DATE},
+      bookpart_Status = #{bookpartStatus,jdbcType=INTEGER},
+      bookpart_comment = #{bookpartComment,jdbcType=VARCHAR}
+    where bookpart_Id = #{bookpartId,jdbcType=BIGINT}
+  </update>
+</mapper>

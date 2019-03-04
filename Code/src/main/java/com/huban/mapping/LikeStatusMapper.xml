@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.LikeStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.LikeStatus" >
+    <id column="Colu_Id" property="coluId" jdbcType="BIGINT" />
+    <result column="From_UserId" property="fromUserid" jdbcType="BIGINT" />
+    <result column="Like_Status" property="likeStatus" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="Like_Delete" property="likeDelete" jdbcType="INTEGER" />
+    <result column="Like_Type" property="likeType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Colu_Id, From_UserId, Like_Status, CreateTime, ModifyTime, Like_Delete, Like_Type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_likestatus
+    where From_UserId = #{userId,jdbcType=BIGINT}
+  </select>
+  <!-- 自定义sql -->
+   <select id="queryexist" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    SELECT 
+    COUNT(*) 
+    FROM rb_likestatus 
+    WHERE Colu_Id =#{coluId,jdbcType = BIGINT} AND 
+
+   <!-- AND Like_Type = 1
+    <include refid="Base_Column_List" />
+    from rb_likestatus
+    where From_UserId = #{userId,jdbcType=BIGINT}-->
+  </select> 
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_likestatus
+    where Colu_Id = #{coluId,jdbcType=BIGINT}
+  </delete>
+  <!-- 视频插入 -->
+  <insert id="insert" parameterType="com.huban.pojo.LikeStatus" >
+    insert into rb_likestatus (Colu_Id, From_UserId, Like_Status, 
+      CreateTime, ModifyTime, Like_Delete, Like_Type
+      )
+    values (#{coluId,jdbcType=BIGINT}, #{fromUserid,jdbcType=BIGINT},0, 
+      now(), now(), 0, #{likeType}
+      )
+  </insert>
+  <!-- 论坛 -->
+  <insert id="addforumlike" parameterType="com.huban.pojo.LikeStatus" >
+    insert into rb_likestatus (Colu_Id, From_UserId, Like_Status, 
+      CreateTime, ModifyTime, Like_Delete, Like_Type
+      )
+    values (#{coluId,jdbcType=BIGINT}, #{fromUserid,jdbcType=BIGINT},0, 
+      now(), now(), 0, 1
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.LikeStatus" >
+    insert into rb_likestatus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coluId != null" >
+        Colu_Id,
+      </if>
+      <if test="fromUserid != null" >
+        From_UserId,
+      </if>
+      <if test="likeStatus != null" >
+        Like_Status,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime,
+      </if>
+      <if test="likeDelete != null" >
+        Like_Delete,
+      </if>
+      <if test="likeType != null">
+      	Like_Type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coluId != null" >
+        #{coluId,jdbcType=BIGINT},
+      </if>
+      <if test="fromUserid != null" >
+        #{fromUserid,jdbcType=BIGINT},
+      </if>
+      <if test="likeStatus != null" >
+        #{likeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likeDelete != null" >
+        #{likeDelete,jdbcType=INTEGER},
+      </if>
+      <if test="likeType != null">
+      	#{likeType, jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.LikeStatus" >
+    update rb_likestatus
+    <set >
+      <if test="fromUserid != null" >
+        From_UserId = #{fromUserid,jdbcType=BIGINT},
+      </if>
+      <if test="likeStatus != null" >
+        Like_Status = #{likeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null" >
+        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likeDelete != null" >
+        Like_Delete = #{likeDelete,jdbcType=INTEGER},
+      </if>
+      <if test="likeType != null">
+      	Like_Type = #{likeType,jdbcType= INTEGER},
+      </if>
+    </set>
+    where Colu_Id = #{coluId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.LikeStatus" >
+    update rb_likestatus
+    set From_UserId = #{fromUserid,jdbcType=BIGINT},
+      Like_Status = #{likeStatus,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+      Like_Delete = #{likeDelete,jdbcType=INTEGER},
+      Like_Type = #{likeType,jdbcType= INTEGER}
+    where Colu_Id = #{coluId,jdbcType=BIGINT}
+  </update>
+  <select id="findlike" parameterType="com.huban.pojo.LikeStatus" resultType="java.lang.Integer">
+      select count(1) from rb_likestatus where From_UserId = #{fromUserid,jdbcType=BIGINT} 
+      and Colu_Id = #{coluId,jdbcType=BIGINT}
+  AND Like_Type = #{likeType}
+  limit 1
+  </select>
+  <select id="selectLike" parameterType="com.huban.pojo.LikeStatus"  resultMap="BaseResultMap">
+      select * from rb_likestatus where From_UserId = #{fromUserid,jdbcType=BIGINT} 
+      and Colu_Id = #{coluId,jdbcType=BIGINT}
+  AND Like_Type = #{likeType}
+  limit 1
+  </select>
+  <update id="updatelikeStatus" parameterType="com.huban.pojo.LikeStatus" >
+    update rb_likestatus
+    set 
+      Like_Status = #{likeStatus,jdbcType=INTEGER}
+    where Colu_Id = #{coluId,jdbcType=BIGINT} 
+    AND From_UserId = #{fromUserid,jdbcType=BIGINT} 
+    AND Like_Type = #{likeType}
+  </update>
+  <!-- 上为视频下为帖子的状态 -->
+  <select id="findlikenote" parameterType="com.huban.pojo.LikeStatus" resultType="java.lang.Integer">
+      select count(1) from rb_likestatus where From_UserId = #{fromUserid,jdbcType=BIGINT} 
+      and Colu_Id = #{coluId,jdbcType=BIGINT}
+  	AND Like_Type = #{likeType}
+  limit 1
+  </select>
+  <select id="selectLikenote" parameterType="com.huban.pojo.LikeStatus"  resultMap="BaseResultMap">
+      select * from rb_likestatus where From_UserId = #{fromUserid,jdbcType=BIGINT} 
+      and Colu_Id = #{coluId,jdbcType=BIGINT}
+  AND Like_Type = #{likeType}
+  limit 1
+  </select>
+  <update id="updatelikeStatusnote" parameterType="com.huban.pojo.LikeStatus" >
+    update rb_likestatus
+    set 
+      Like_Status = #{likeStatus,jdbcType=INTEGER}
+    where Colu_Id = #{coluId,jdbcType=BIGINT} 
+    and From_UserId = #{fromUserid,jdbcType=BIGINT} 
+    AND Like_Type = 1
+  </update>
+  
+</mapper>

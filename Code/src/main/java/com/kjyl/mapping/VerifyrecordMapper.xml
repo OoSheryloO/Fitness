@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.VerifyrecordMapper">
+	<!-- 返回的map -->
+	<resultMap id="verifyrecord" type="com.kjyl.pojo.Verifyrecord">
+		<result property="Id" column="VerifyRecord_Id" />
+		<result property="UseId" column="VerifyRecord_UseId" />
+		<result property="Phone" column="VerifyRecord_Phone" />
+		<result property="CheckNumber" column="VerifyRecord_CheckNumber" />
+		<result property="DisableTime" column="VerifyRecord_DisableTime" />
+		<result property="EnableTime" column="VerifyRecord_EnableTime" />
+		<result property="Version" column="VerifyRecord_Version" />
+		<result property="Status" column="VerifyRecord_Status" />
+		<result property="Delete" column="VerifyRecord_Delete" />
+		<result property="CreateTime" column="VerifyRecord_CreateTime" />
+		<result property="ModifyTime" column="VerifyRecord_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		VerifyRecord_Id, VerifyRecord_UseId, VerifyRecord_Phone, VerifyRecord_CheckNumber, VerifyRecord_DisableTime, VerifyRecord_EnableTime, VerifyRecord_Version, VerifyRecord_Status, VerifyRecord_Delete, VerifyRecord_CreateTime, VerifyRecord_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND VerifyRecord_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND VerifyRecord_UseId = #{UseId}
+		</if>
+		<if test="Phone!= null">
+				 AND VerifyRecord_Phone = #{Phone}
+		</if>
+		<if test="CheckNumber!= null">
+				 AND VerifyRecord_CheckNumber = #{CheckNumber}
+		</if>
+		<if test="DisableTime!= null">
+				 AND VerifyRecord_DisableTime = #{DisableTime}
+		</if>
+		<if test="EnableTime!= null">
+				 AND VerifyRecord_EnableTime = #{EnableTime}
+		</if>
+		<if test="Version!= null">
+				 AND VerifyRecord_Version = #{Version}
+		</if>
+		<if test="Status!= null">
+				 AND VerifyRecord_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND VerifyRecord_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND VerifyRecord_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND VerifyRecord_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="verifyrecord" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_verifyrecord
+		<where>
+			VerifyRecord_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="verifyrecord" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_verifyrecord
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_verifyrecord
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Verifyrecord"  useGeneratedKeys="true">
+		INSERT INTO fit_verifyrecord( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Phone},
+				#{CheckNumber},
+				#{DisableTime},
+				#{EnableTime},
+				#{Version},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Verifyrecord">
+		UPDATE fit_verifyrecord SET VerifyRecord_UseId = #{UseId}, VerifyRecord_Phone = #{Phone}, VerifyRecord_CheckNumber = #{CheckNumber}, VerifyRecord_DisableTime = #{DisableTime}, VerifyRecord_EnableTime = #{EnableTime}, VerifyRecord_Version = #{Version}, VerifyRecord_Status = #{Status}, VerifyRecord_Delete = #{Delete}, VerifyRecord_ModifyTime = now()
+		<where>
+			VerifyRecord_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Verifyrecord">
+		UPDATE fit_verifyrecord SET VerifyRecord_Status = 88 WHERE VerifyRecord_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Verifyrecord">
+		UPDATE fit_verifyrecord SET VerifyRecord_Status=  1 WHERE VerifyRecord_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Verifyrecord">
+		UPDATE fit_verifyrecord SET VerifyRecord_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Verifyrecord">
+		UPDATE fit_verifyrecord SET VerifyRecord_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

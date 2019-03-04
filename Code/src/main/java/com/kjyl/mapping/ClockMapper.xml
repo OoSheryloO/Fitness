@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.ClockMapper">
+	<!-- 返回的map -->
+	<resultMap id="clock" type="com.kjyl.pojo.Clock">
+		<result property="Id" column="Clock_Id" />
+		<result property="UseId" column="Clock_UseId" />
+		<result property="Status" column="Clock_Status" />
+		<result property="Delete" column="Clock_Delete" />
+		<result property="CreateTime" column="Clock_CreateTime" />
+		<result property="ModifyTime" column="Clock_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Clock_Id, Clock_UseId, Clock_Status, Clock_Delete, Clock_CreateTime, Clock_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Clock_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Clock_UseId = #{UseId}
+		</if>
+		<if test="Status!= null">
+				 AND Clock_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Clock_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Clock_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Clock_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="clock" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_clock
+		<where>
+			Clock_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="clock" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_clock
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_clock
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Clock"  useGeneratedKeys="true">
+		INSERT INTO fit_clock( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Clock">
+		UPDATE fit_clock SET Clock_UseId = #{UseId}, Clock_Status = #{Status}, Clock_Delete = #{Delete}, Clock_ModifyTime = now()
+		<where>
+			Clock_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Clock">
+		UPDATE fit_clock SET Clock_Status = 88 WHERE Clock_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Clock">
+		UPDATE fit_clock SET Clock_Status=  1 WHERE Clock_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Clock">
+		UPDATE fit_clock SET Clock_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Clock">
+		UPDATE fit_clock SET Clock_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

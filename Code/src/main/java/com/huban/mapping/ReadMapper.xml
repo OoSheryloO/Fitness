@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.ReadMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Read" >
+    <id column="Read_Id" property="readId" jdbcType="BIGINT" />
+    <result column="Read_BookId" property="readBookid" jdbcType="BIGINT" />
+    <result column="Read_UserId" property="readUserid" jdbcType="BIGINT" />
+    <result column="Read_Speed" property="readSpeed" jdbcType="BIGINT" />
+    <result column="Read_Status" property="readStatus" jdbcType="INTEGER" />
+    <result column="Read_Time" property="readTime" jdbcType="BIGINT" />
+    <result column="Read_CreateTime" property="readCreatetime" jdbcType="DATE" />
+    <result column="Read_ModifyTime" property="readModifytime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Read_Id, Read_BookId, Read_UserId, Read_Speed, Read_Status, Read_Time, Read_CreateTime, 
+    Read_ModifyTime
+  </sql>
+  <!-- 自定义sql -->
+  <select id="selectByPriy" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_read
+    where Read_Id = #{readId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_read
+    where Read_Id = #{readId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_read
+    where Read_Id = #{readId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Read" >
+    insert into rb_read (Read_Id, Read_BookId, Read_UserId, 
+      Read_Speed, Read_Status, Read_Time, 
+      Read_CreateTime, Read_ModifyTime)
+    values (#{readId,jdbcType=BIGINT}, #{readBookid,jdbcType=BIGINT}, #{readUserid,jdbcType=BIGINT}, 
+      #{readSpeed,jdbcType=BIGINT}, #{readStatus,jdbcType=INTEGER}, #{readTime,jdbcType=BIGINT}, 
+      #{readCreatetime,jdbcType=DATE}, #{readModifytime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Read" >
+    insert into rb_read
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="readId != null" >
+        Read_Id,
+      </if>
+      <if test="readBookid != null" >
+        Read_BookId,
+      </if>
+      <if test="readUserid != null" >
+        Read_UserId,
+      </if>
+      <if test="readSpeed != null" >
+        Read_Speed,
+      </if>
+      <if test="readStatus != null" >
+        Read_Status,
+      </if>
+      <if test="readTime != null" >
+        Read_Time,
+      </if>
+      <if test="readCreatetime != null" >
+        Read_CreateTime,
+      </if>
+      <if test="readModifytime != null" >
+        Read_ModifyTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="readId != null" >
+        #{readId,jdbcType=BIGINT},
+      </if>
+      <if test="readBookid != null" >
+        #{readBookid,jdbcType=BIGINT},
+      </if>
+      <if test="readUserid != null" >
+        #{readUserid,jdbcType=BIGINT},
+      </if>
+      <if test="readSpeed != null" >
+        #{readSpeed,jdbcType=BIGINT},
+      </if>
+      <if test="readStatus != null" >
+        #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="readTime != null" >
+        #{readTime,jdbcType=BIGINT},
+      </if>
+      <if test="readCreatetime != null" >
+        #{readCreatetime,jdbcType=DATE},
+      </if>
+      <if test="readModifytime != null" >
+        #{readModifytime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Read" >
+    update rb_read
+    <set >
+      <if test="readBookid != null" >
+        Read_BookId = #{readBookid,jdbcType=BIGINT},
+      </if>
+      <if test="readUserid != null" >
+        Read_UserId = #{readUserid,jdbcType=BIGINT},
+      </if>
+      <if test="readSpeed != null" >
+        Read_Speed = #{readSpeed,jdbcType=BIGINT},
+      </if>
+      <if test="readStatus != null" >
+        Read_Status = #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="readTime != null" >
+        Read_Time = #{readTime,jdbcType=BIGINT},
+      </if>
+      <if test="readCreatetime != null" >
+        Read_CreateTime = #{readCreatetime,jdbcType=DATE},
+      </if>
+      <if test="readModifytime != null" >
+        Read_ModifyTime = #{readModifytime,jdbcType=DATE},
+      </if>
+    </set>
+    where Read_Id = #{readId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Read" >
+    update rb_read
+    set Read_BookId = #{readBookid,jdbcType=BIGINT},
+      Read_UserId = #{readUserid,jdbcType=BIGINT},
+      Read_Speed = #{readSpeed,jdbcType=BIGINT},
+      Read_Status = #{readStatus,jdbcType=INTEGER},
+      Read_Time = #{readTime,jdbcType=BIGINT},
+      Read_CreateTime = #{readCreatetime,jdbcType=DATE},
+      Read_ModifyTime = #{readModifytime,jdbcType=DATE}
+    where Read_Id = #{readId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.ApplyMapper">
+	<!-- 返回的map -->
+	<resultMap id="apply" type="com.kjyl.pojo.Apply">
+		<result property="Id" column="Apply_Id" />
+		<result property="UseId" column="Apply_UseId" />
+		<result property="TouchId" column="Apply_TouchId" />
+		<result property="Memo" column="Apply_Memo" />
+		<result property="Status" column="Apply_Status" />
+		<result property="Delete" column="Apply_Delete" />
+		<result property="CreateTime" column="Apply_CreateTime" />
+		<result property="ModifyTime" column="Apply_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Apply_Id, Apply_UseId, Apply_TouchId, Apply_Memo, Apply_Status, Apply_Delete, Apply_CreateTime, Apply_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Apply_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Apply_UseId = #{UseId}
+		</if>
+		<if test="TouchId!= null">
+				 AND Apply_TouchId = #{TouchId}
+		</if>
+		<if test="Memo!= null">
+				 AND Apply_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Apply_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Apply_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Apply_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Apply_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="apply" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_apply
+		<where>
+			Apply_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="apply" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_apply
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_apply
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Apply"  useGeneratedKeys="true">
+		INSERT INTO fit_apply( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TouchId},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Apply">
+		UPDATE fit_apply SET Apply_UseId = #{UseId}, Apply_TouchId = #{TouchId}, Apply_Memo = #{Memo}, Apply_Status = #{Status}, Apply_Delete = #{Delete}, Apply_ModifyTime = now()
+		<where>
+			Apply_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Apply">
+		UPDATE fit_apply SET Apply_Status = 88 WHERE Apply_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Apply">
+		UPDATE fit_apply SET Apply_Status=  1 WHERE Apply_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Apply">
+		UPDATE fit_apply SET Apply_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Apply">
+		UPDATE fit_apply SET Apply_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

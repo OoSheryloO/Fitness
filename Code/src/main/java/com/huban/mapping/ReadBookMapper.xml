@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.ReadBookMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.ReadBook" >
+    <id column="book_id" property="bookId" jdbcType="BIGINT" />
+    <result column="douban_id" property="doubanId" jdbcType="BIGINT" />
+    <result column="publisher" property="publisher" jdbcType="VARCHAR" />
+    <result column="rating_average" property="ratingAverage" jdbcType="REAL" />
+    <result column="rating_numRaters" property="ratingNumraters" jdbcType="BIGINT" />
+    <result column="pubdate" property="pubdate" jdbcType="VARCHAR" />
+    <result column="images_s" property="imagesS" jdbcType="VARCHAR" />
+    <result column="images_l" property="imagesL" jdbcType="VARCHAR" />
+    <result column="images_m" property="imagesM" jdbcType="VARCHAR" />
+    <result column="alt" property="alt" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="isbn10" property="isbn10" jdbcType="VARCHAR" />
+    <result column="isbn13" property="isbn13" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="binding" property="binding" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.ReadBook" extends="BaseResultMap" >
+    <result column="title" property="title" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="subtitle" property="subtitle" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="author" property="author" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="translator" property="translator" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="author_intro" property="authorIntro" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="summary" property="summary" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="catalog" property="catalog" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="pay_bill" property="paybill"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    book_id, douban_id, publisher, rating_average, rating_numRaters, pubdate, images_s, 
+    images_l, images_m, alt, price, isbn10, isbn13, tags, binding, type, is_delete
+  </sql>
+  <sql id="Blob_Column_List" >
+    title, subtitle, author, translator, author_intro, summary, catalog
+  </sql>
+	
+		<!-- V2 SQL -->
+	<sql id="WhereSql">
+		WHERE
+		1 = 1
+		<if test="KeyWord != null">
+			AND title LIKE #{KeyWord}
+		</if>
+		<if test="Type != null">
+			AND type = #{Type}
+		</if>
+		<if test="Screen != null">
+			AND tags LIKE CONCAT('%', #{Screen, jdbcType=VARCHAR},'%')
+		</if>
+		<if test="Rand != null">
+			AND #{Rand} = #{Rand}
+		</if>
+	</sql>
+	<sql id="FiltrateSql">
+		AND is_delete = 0
+	</sql>
+	<sql id="SpecialSql">
+		<if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+	</sql>
+
+ <select id="SearchLstByCondition" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    <if test="UID != null">
+			 , (SELECT COUNT(*) FROM rb_payrecords WHERE PayRecord_BelongId = book_id AND PayRecord_BelongId = #{UID} AND PayRecord_TypeId = 9 AND PayRecord_Status = 0 AND PayRecord_Deleted = 0 ) AS pay_bill 
+		</if>
+		FROM rb_read_book
+    <include refid="WhereSql" />
+	<include refid="FiltrateSql" />
+	<include refid="SpecialSql" />
+  </select>
+
+	
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_read_book
+    where book_id = #{bookId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_read_book
+    where book_id = #{bookId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.ReadBook" >
+    insert into rb_read_book (book_id, douban_id, publisher, 
+      rating_average, rating_numRaters, pubdate, 
+      images_s, images_l, images_m, 
+      alt, price, isbn10, 
+      isbn13, tags, binding, 
+      type, is_delete, title, 
+      subtitle, author, translator, 
+      author_intro, summary, catalog
+      )
+    values (#{bookId,jdbcType=BIGINT}, #{doubanId,jdbcType=BIGINT}, #{publisher,jdbcType=VARCHAR}, 
+      #{ratingAverage,jdbcType=REAL}, #{ratingNumraters,jdbcType=BIGINT}, #{pubdate,jdbcType=VARCHAR}, 
+      #{imagesS,jdbcType=VARCHAR}, #{imagesL,jdbcType=VARCHAR}, #{imagesM,jdbcType=VARCHAR}, 
+      #{alt,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, #{isbn10,jdbcType=VARCHAR}, 
+      #{isbn13,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{binding,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{subtitle,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{translator,jdbcType=VARCHAR}, 
+      #{authorIntro,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{catalog,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.ReadBook" >
+    insert into rb_read_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        book_id,
+      </if>
+      <if test="doubanId != null" >
+        douban_id,
+      </if>
+      <if test="publisher != null" >
+        publisher,
+      </if>
+      <if test="ratingAverage != null" >
+        rating_average,
+      </if>
+      <if test="ratingNumraters != null" >
+        rating_numRaters,
+      </if>
+      <if test="pubdate != null" >
+        pubdate,
+      </if>
+      <if test="imagesS != null" >
+        images_s,
+      </if>
+      <if test="imagesL != null" >
+        images_l,
+      </if>
+      <if test="imagesM != null" >
+        images_m,
+      </if>
+      <if test="alt != null" >
+        alt,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="isbn10 != null" >
+        isbn10,
+      </if>
+      <if test="isbn13 != null" >
+        isbn13,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="binding != null" >
+        binding,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="subtitle != null" >
+        subtitle,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="translator != null" >
+        translator,
+      </if>
+      <if test="authorIntro != null" >
+        author_intro,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="catalog != null" >
+        catalog,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        #{bookId,jdbcType=BIGINT},
+      </if>
+      <if test="doubanId != null" >
+        #{doubanId,jdbcType=BIGINT},
+      </if>
+      <if test="publisher != null" >
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingAverage != null" >
+        #{ratingAverage,jdbcType=REAL},
+      </if>
+      <if test="ratingNumraters != null" >
+        #{ratingNumraters,jdbcType=BIGINT},
+      </if>
+      <if test="pubdate != null" >
+        #{pubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesS != null" >
+        #{imagesS,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesL != null" >
+        #{imagesL,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesM != null" >
+        #{imagesM,jdbcType=VARCHAR},
+      </if>
+      <if test="alt != null" >
+        #{alt,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn10 != null" >
+        #{isbn10,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn13 != null" >
+        #{isbn13,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="binding != null" >
+        #{binding,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="translator != null" >
+        #{translator,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIntro != null" >
+        #{authorIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="catalog != null" >
+        #{catalog,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.ReadBook" >
+    update rb_read_book
+    <set >
+      <if test="doubanId != null" >
+        douban_id = #{doubanId,jdbcType=BIGINT},
+      </if>
+      <if test="publisher != null" >
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingAverage != null" >
+        rating_average = #{ratingAverage,jdbcType=REAL},
+      </if>
+      <if test="ratingNumraters != null" >
+        rating_numRaters = #{ratingNumraters,jdbcType=BIGINT},
+      </if>
+      <if test="pubdate != null" >
+        pubdate = #{pubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesS != null" >
+        images_s = #{imagesS,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesL != null" >
+        images_l = #{imagesL,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesM != null" >
+        images_m = #{imagesM,jdbcType=VARCHAR},
+      </if>
+      <if test="alt != null" >
+        alt = #{alt,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn10 != null" >
+        isbn10 = #{isbn10,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn13 != null" >
+        isbn13 = #{isbn13,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="binding != null" >
+        binding = #{binding,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        subtitle = #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="translator != null" >
+        translator = #{translator,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIntro != null" >
+        author_intro = #{authorIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="catalog != null" >
+        catalog = #{catalog,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where book_id = #{bookId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.ReadBook" >
+    update rb_read_book
+    set douban_id = #{doubanId,jdbcType=BIGINT},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      rating_average = #{ratingAverage,jdbcType=REAL},
+      rating_numRaters = #{ratingNumraters,jdbcType=BIGINT},
+      pubdate = #{pubdate,jdbcType=VARCHAR},
+      images_s = #{imagesS,jdbcType=VARCHAR},
+      images_l = #{imagesL,jdbcType=VARCHAR},
+      images_m = #{imagesM,jdbcType=VARCHAR},
+      alt = #{alt,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      isbn10 = #{isbn10,jdbcType=VARCHAR},
+      isbn13 = #{isbn13,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      binding = #{binding,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      subtitle = #{subtitle,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      translator = #{translator,jdbcType=VARCHAR},
+      author_intro = #{authorIntro,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      catalog = #{catalog,jdbcType=VARCHAR}
+    where book_id = #{bookId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.ReadBook" >
+    update rb_read_book
+    set douban_id = #{doubanId,jdbcType=BIGINT},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      rating_average = #{ratingAverage,jdbcType=REAL},
+      rating_numRaters = #{ratingNumraters,jdbcType=BIGINT},
+      pubdate = #{pubdate,jdbcType=VARCHAR},
+      images_s = #{imagesS,jdbcType=VARCHAR},
+      images_l = #{imagesL,jdbcType=VARCHAR},
+      images_m = #{imagesM,jdbcType=VARCHAR},
+      alt = #{alt,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      isbn10 = #{isbn10,jdbcType=VARCHAR},
+      isbn13 = #{isbn13,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      binding = #{binding,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where book_id = #{bookId,jdbcType=BIGINT}
+  </update>
+</mapper>

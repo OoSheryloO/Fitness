@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.GoodsMapper">
+	<!-- 返回的map -->
+	<resultMap id="goods" type="com.kjyl.pojo.Goods">
+		<result property="Id" column="Goods_Id" />
+		<result property="UseId" column="Goods_UseId" />
+		<result property="Title" column="Goods_Title" />
+		<result property="Intro" column="Goods_Intro" />
+		<result property="Price" column="Goods_Price" />
+		<result property="HeadIcon" column="Goods_HeadIcon" />
+		<result property="Type" column="Goods_Type" />
+		<result property="Memo" column="Goods_Memo" />
+		<result property="Status" column="Goods_Status" />
+		<result property="Delete" column="Goods_Delete" />
+		<result property="CreateTime" column="Goods_CreateTime" />
+		<result property="ModifyTime" column="Goods_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Goods_Id, Goods_UseId, Goods_Title, Goods_Intro, Goods_Price, Goods_HeadIcon, Goods_Type, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Goods_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Goods_UseId = #{UseId}
+		</if>
+		<if test="Title!= null">
+				 AND Goods_Title = #{Title}
+		</if>
+		<if test="Intro!= null">
+				 AND Goods_Intro = #{Intro}
+		</if>
+		<if test="Price!= null">
+				 AND Goods_Price = #{Price}
+		</if>
+		<if test="HeadIcon!= null">
+				 AND Goods_HeadIcon = #{HeadIcon}
+		</if>
+		<if test="Type!= null">
+				 AND Goods_Type = #{Type}
+		</if>
+		<if test="Memo!= null">
+				 AND Goods_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Goods_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Goods_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Goods_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Goods_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="goods" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_goods
+		<where>
+			Goods_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="goods" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_goods
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_goods
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Goods"  useGeneratedKeys="true">
+		INSERT INTO fit_goods( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Title},
+				#{Intro},
+				#{Price},
+				#{HeadIcon},
+				#{Type},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Goods">
+		UPDATE fit_goods SET Goods_UseId = #{UseId}, Goods_Title = #{Title}, Goods_Intro = #{Intro}, Goods_Price = #{Price}, Goods_HeadIcon = #{HeadIcon}, Goods_Type = #{Type}, Goods_Memo = #{Memo}, Goods_Status = #{Status}, Goods_Delete = #{Delete}, Goods_ModifyTime = now()
+		<where>
+			Goods_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Goods">
+		UPDATE fit_goods SET Goods_Status = 88 WHERE Goods_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Goods">
+		UPDATE fit_goods SET Goods_Status=  1 WHERE Goods_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Goods">
+		UPDATE fit_goods SET Goods_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Goods">
+		UPDATE fit_goods SET Goods_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

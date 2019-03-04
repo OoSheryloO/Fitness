@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.CityMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.City" >
+    <id column="id" property="id" jdbcType="SMALLINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="SMALLINT" />
+    <result column="level" property="level" jdbcType="SMALLINT" />
+    <result column="first" property="first" jdbcType="VARCHAR" />
+    <result column="ismunicipality" property="ismunicipality" jdbcType="INTEGER" />
+    <result column="hasschool" property="hasschool" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, parentid, level, first, ismunicipality, hasschool
+  </sql>
+  
+   <resultMap id="QuerySomeMessageResultMap" type="com.huban.construct.areapart" >
+    <result column="id" property="regionsId" jdbcType="INTEGER" />
+    <result column="parentid" property="regionsParentId" jdbcType="INTEGER" />
+    <result column="name" property="regions" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="wheresql" >
+    where 1=1
+    	<if test="pid != null and pid != 0" >
+        	AND parentid = #{pid,jdbcType=SMALLINT}
+        </if>
+        <if test="level != null and level != 0" >
+        	AND level = #{level,jdbcType=SMALLINT}
+        </if>
+  </sql>
+  <select id="QuerySomeMessage" resultMap="QuerySomeMessageResultMap" parameterType="map">
+    select 
+   		id, name, parentid
+   		<if test="level != null and level == 3 " >
+        		, (SELECT name FROM rb_city WHERE level = 2 AND id = #{pid,jdbcType=SMALLINT} LIMIT 1) AS Pname,
+   		(SELECT code FROM rb_area WHERE LEVEL = 2 AND merger_name LIKE CONCAT('%', Pname, '%') LIMIT 1) AS code
+        </if>
+    from rb_city
+    <include refid="wheresql" />
+    ORDER BY <!-- first ASC, name ASC --> id ASC
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_city
+    where id = #{id,jdbcType=SMALLINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short" >
+    delete from rb_city
+    where id = #{id,jdbcType=SMALLINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.City" >
+    insert into rb_city (id, name, parentid, 
+      level, first, ismunicipality, 
+      hasschool)
+    values (#{id,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR}, #{parentid,jdbcType=SMALLINT}, 
+      #{level,jdbcType=SMALLINT}, #{first,jdbcType=VARCHAR}, #{ismunicipality,jdbcType=INTEGER}, 
+      #{hasschool,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.City" >
+    insert into rb_city
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="first != null" >
+        first,
+      </if>
+      <if test="ismunicipality != null" >
+        ismunicipality,
+      </if>
+      <if test="hasschool != null" >
+        hasschool,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=SMALLINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=SMALLINT},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=SMALLINT},
+      </if>
+      <if test="first != null" >
+        #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="ismunicipality != null" >
+        #{ismunicipality,jdbcType=INTEGER},
+      </if>
+      <if test="hasschool != null" >
+        #{hasschool,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.City" >
+    update rb_city
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=SMALLINT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=SMALLINT},
+      </if>
+      <if test="first != null" >
+        first = #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="ismunicipality != null" >
+        ismunicipality = #{ismunicipality,jdbcType=INTEGER},
+      </if>
+      <if test="hasschool != null" >
+        hasschool = #{hasschool,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.City" >
+    update rb_city
+    set name = #{name,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=SMALLINT},
+      level = #{level,jdbcType=SMALLINT},
+      first = #{first,jdbcType=VARCHAR},
+      ismunicipality = #{ismunicipality,jdbcType=INTEGER},
+      hasschool = #{hasschool,jdbcType=INTEGER}
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+</mapper>

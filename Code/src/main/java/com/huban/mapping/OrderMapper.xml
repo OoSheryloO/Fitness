@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Order" >
+    <id column="Order_Id" property="orderId" jdbcType="BIGINT" />
+    <result column="Order_GoodsId" property="orderGoodsid" jdbcType="VARCHAR" />
+    <result column="Order_UserId" property="orderUserid" jdbcType="BIGINT" />
+    <result column="Order_AddressId" property="orderAddressid" jdbcType="BIGINT" />
+    <result column="Order_CreateTime" property="orderCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Order_ModifyTime" property="orderModifytime" jdbcType="TIMESTAMP" />
+    <result column="Order_Status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="Order_Delete" property="orderDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Order_Id, Order_GoodsId, Order_UserId, Order_AddressId, Order_CreateTime, Order_ModifyTime, 
+    Order_Status, Order_Delete
+  </sql>
+   <!-- 自定义sql --> 
+  <select id="queryorderList" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rb_order
+    where Order_UserId = #{userId,jdbcType=BIGINT}
+    <if test="status == 0">
+    	AND Order_Status = 0
+    </if>
+    <if test="status == 1">
+    	AND Order_Status = 1
+    </if>
+    <if test="status == 2">
+    	AND Order_Status = 2
+    </if>
+    AND Order_Delete = 0
+    ORDER BY Order_ModifyTime DESC
+    LIMIT #{start},#{size}
+  </select>
+  <update id="deleteOrder" parameterType="java.lang.Long" >
+    update rb_order
+    <set >
+        Order_Delete = 1
+    </set>
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+    </update>
+  <select id="orderStatus" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select 
+    Order_Status
+    from rb_order
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+  </select>
+   <insert id="addorder" parameterType="com.huban.pojo.Order" >
+    insert into rb_order (Order_Id, Order_GoodsId, Order_UserId, 
+      Order_AddressId, Order_CreateTime, Order_ModifyTime, 
+      Order_Status, Order_Delete)
+    values (#{orderId,jdbcType=BIGINT}, #{orderGoodsid,jdbcType=VARCHAR}, #{orderUserid,jdbcType=BIGINT}, 
+      #{orderAddressid,jdbcType=BIGINT}, now(), now(), 
+      #{orderStatus,jdbcType=INTEGER}, 0)
+  </insert>
+  <update id="updateStatus" parameterType="java.lang.Long" >
+    update rb_order
+    set 
+      Order_Status = 2<!-- 确认支付，状态改为待收货 -->
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+    AND Order_Status = 1
+  </update>
+  <update id="updateStatu" parameterType="java.lang.Long" >
+    update rb_order
+    set 
+      Order_Status = 0<!-- 确认收获，状态改为已完成 -->
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+    AND Order_Status = 2
+  </update>
+  <!-- orderId查goods -->
+  <select id="selectgoods" resultType="java.lang.String" parameterType="java.lang.Long" >
+    select 
+    Order_GoodsId
+    from rb_order
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+    AND Order_Status = 1
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_order
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_order
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Order" >
+    insert into rb_order (Order_Id, Order_GoodsId, Order_UserId, 
+      Order_AddressId, Order_CreateTime, Order_ModifyTime, 
+      Order_Status, Order_Delete)
+    values (#{orderId,jdbcType=BIGINT}, #{orderGoodsid,jdbcType=VARCHAR}, #{orderUserid,jdbcType=BIGINT}, 
+      #{orderAddressid,jdbcType=BIGINT}, #{orderCreatetime,jdbcType=TIMESTAMP}, #{orderModifytime,jdbcType=TIMESTAMP}, 
+      #{orderStatus,jdbcType=INTEGER}, #{orderDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Order" >
+    insert into rb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        Order_Id,
+      </if>
+      <if test="orderGoodsid != null" >
+        Order_GoodsId,
+      </if>
+      <if test="orderUserid != null" >
+        Order_UserId,
+      </if>
+      <if test="orderAddressid != null" >
+        Order_AddressId,
+      </if>
+      <if test="orderCreatetime != null" >
+        Order_CreateTime,
+      </if>
+      <if test="orderModifytime != null" >
+        Order_ModifyTime,
+      </if>
+      <if test="orderStatus != null" >
+        Order_Status,
+      </if>
+      <if test="orderDelete != null" >
+        Order_Delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderGoodsid != null" >
+        #{orderGoodsid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderUserid != null" >
+        #{orderUserid,jdbcType=BIGINT},
+      </if>
+      <if test="orderAddressid != null" >
+        #{orderAddressid,jdbcType=BIGINT},
+      </if>
+      <if test="orderCreatetime != null" >
+        #{orderCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderModifytime != null" >
+        #{orderModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderDelete != null" >
+        #{orderDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Order" >
+    update rb_order
+    <set >
+      <if test="orderGoodsid != null" >
+        Order_GoodsId = #{orderGoodsid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderUserid != null" >
+        Order_UserId = #{orderUserid,jdbcType=BIGINT},
+      </if>
+      <if test="orderAddressid != null" >
+        Order_AddressId = #{orderAddressid,jdbcType=BIGINT},
+      </if>
+      <if test="orderCreatetime != null" >
+        Order_CreateTime = #{orderCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderModifytime != null" >
+        Order_ModifyTime = #{orderModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null" >
+        Order_Status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderDelete != null" >
+        Order_Delete = #{orderDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Order" >
+    update rb_order
+    set Order_GoodsId = #{orderGoodsid,jdbcType=VARCHAR},
+      Order_UserId = #{orderUserid,jdbcType=BIGINT},
+      Order_AddressId = #{orderAddressid,jdbcType=BIGINT},
+      Order_CreateTime = #{orderCreatetime,jdbcType=TIMESTAMP},
+      Order_ModifyTime = #{orderModifytime,jdbcType=TIMESTAMP},
+      Order_Status = #{orderStatus,jdbcType=INTEGER},
+      Order_Delete = #{orderDelete,jdbcType=INTEGER}
+    where Order_Id = #{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>

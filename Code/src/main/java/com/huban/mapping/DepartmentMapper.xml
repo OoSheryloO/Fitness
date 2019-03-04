@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Department" >
+    <id column="department_id" property="departmentId" jdbcType="BIGINT" />
+    <result column="department_number" property="departmentNumber" jdbcType="VARCHAR" />
+    <result column="department_logourl" property="departmentLogourl" jdbcType="VARCHAR" />
+    <result column="department_amount" property="departmentAmount" jdbcType="DECIMAL" />
+    <result column="department_level" property="departmentLevel" jdbcType="REAL" />
+    <result column="department_regionid" property="departmentRegionid" jdbcType="BIGINT" />
+    <result column="department_region" property="departmentRegion" jdbcType="VARCHAR" />
+    <result column="department_branchid" property="departmentBranchid" jdbcType="BIGINT" />
+    <result column="department_redundancy" property="departmentRedundancy" jdbcType="VARCHAR" />
+    <result column="department_founder" property="departmentFounder" jdbcType="BIGINT" />
+    <result column="department_status" property="departmentStatus" jdbcType="INTEGER" />
+    <result column="department_delete" property="departmentDelete" jdbcType="INTEGER" />
+    <result column="department_createtime" property="departmentCreatetime" jdbcType="TIMESTAMP" />
+    <result column="department_modifytime" property="departmentModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.DepartmentWithBLOBs" extends="BaseResultMap" >
+    <result column="department_name" property="departmentName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="department_notice" property="departmentNotice" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    department_id, department_number, department_logourl, department_amount, department_level, department_regionid, 
+    department_region, department_branchid, department_redundancy, department_founder, 
+    department_status, department_delete, department_createtime, department_modifytime
+  </sql>
+  <sql id="Blob_Column_List" >
+    department_name, department_notice
+  </sql>
+  
+  <!-- V2 SQL --><!-- by Sheryl -->
+  <insert id="AddNewMessage" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    insert into rb_department (department_id, department_number, department_logourl, department_amount,
+      department_level, department_regionid, department_region, 
+      department_branchid, department_redundancy, 
+      department_founder, department_status, department_delete, 
+      department_createtime, department_modifytime, 
+      department_name, department_notice
+      )
+    values (#{departmentId,jdbcType=BIGINT}, #{departmentNumber,jdbcType=VARCHAR}, #{departmentLogourl,jdbcType=VARCHAR}, 0.0000,
+      0.0, #{departmentRegionid,jdbcType=BIGINT}, #{departmentRegion,jdbcType=VARCHAR}, 
+      #{departmentBranchid,jdbcType=BIGINT}, #{departmentRedundancy,jdbcType=VARCHAR}, 
+      #{departmentFounder,jdbcType=BIGINT}, 0, 0, 
+      now(), now(), 
+      #{departmentName}, #{departmentNotice}
+      )
+  </insert>
+  
+  <sql id="wheresql" >
+	where 1 = 1
+    <if test="ID != null" >
+        AND department_founder = #{ID,jdbcType=BIGINT}
+      </if>
+    <if test="Rand != null" >
+        AND #{Rand} = #{Rand}
+      </if>
+    <if test="NumberLike != null" >
+        AND department_number LIKE #{NumberLike,jdbcType=VARCHAR}
+      </if>
+      <if test="DeptId != null" >
+        AND department_id = #{DeptId,jdbcType=BIGINT}
+      </if>
+      AND department_delete = 0 AND department_status >= 0
+  </sql>
+  
+   <resultMap id="QueryDeptListResultMap" type="com.huban.construct.LstDeptModel" >
+    <result column="department_id" property="deptId" jdbcType="BIGINT" />
+    <result column="department_number" property="deptNumber" jdbcType="VARCHAR" />
+    <result column="department_logourl" property="deptLogourl" jdbcType="VARCHAR" />
+    <result column="department_level" property="deptLevel" jdbcType="REAL" />
+    <result column="department_name" property="deptName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="department_notice" property="deptNotice" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="department_status" property="deptStatus" jdbcType="INTEGER" />
+    <result column="department_createtime" property="deptCreatetime" jdbcType="TIMESTAMP" />
+   	<result column="departmentfounder"  property="deptFounder" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+   	<result column="departmentPresident"  property="deptPresident" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+   	<!-- <result column="departmentPresident" property="deptPresident" typeHandler="com.huban.Utils.MyBlobTypeHandler" /> -->
+    <!-- <association column="department_founder"  property="deptFounder" select="com.huban.dao.UserMapper.BaseQueryUserPseudonym" />-->
+    <!-- <association column="department_id"  property="deptPresident" select="com.huban.dao.UserMapper.BaseQueryDeptPresident" /> --> 
+    <association column="department_id" property="deptUserHeadIcon" select="com.huban.dao.UserInfoMapper.BaseQueryLstHeadIcon"/>
+    <association column="department_id"  property="deptTotaluser" select="com.huban.dao.UserInfoMapper.BaseQueryUserCount" />
+    <association column="department_id"  property="deptTotalRead" select="com.huban.dao.SaveReadMapper.BaseQueryCount" />
+  </resultMap>
+  <select id="QueryDeptList" parameterType="map" resultMap="QueryDeptListResultMap">
+    SELECT  
+    	department_id, department_number, department_logourl, department_level, department_name, 
+    	department_notice, department_founder, department_status, department_createtime, 
+    	(SELECT
+			User_Name
+		FROM
+			rb_user
+		WHERE
+			1 = 1
+		AND User_Id = rde.department_founder
+		LIMIT 1
+		) AS departmentfounder ,
+		(
+			SELECT
+				(
+					SELECT
+						User_Name
+					FROM
+						rb_user
+					WHERE
+						User_Id = rbui.userinfo_userid
+				)
+			FROM
+				rb_userinfo AS rbui
+			WHERE
+				userinfo_belongdept = rde.department_id
+			AND userinfo_position = 1
+		) AS departmentPresident
+		FROM
+			rb_department AS rde 
+    	<include refid="wheresql" />
+    	ORDER BY department_status DESC, department_createtime ASC, department_number ASC, department_level DESC
+    	<if test="start != null and size != null" >
+       		 LIMIT #{start},#{size}
+     	</if>
+  </select>
+  
+  <select id="QuerySerialNumber" parameterType="map" resultType="java.lang.String">
+    SELECT  
+    	department_number
+    	FROM rb_department
+    	<include refid="wheresql" />
+    	ORDER BY department_createtime DESC LIMIT 1 
+  </select>
+  
+<resultMap type="java.util.Map" id="QuerySomeMessageMap" >  
+	<result property="DeptRead" column="department_amount" />
+	<result property="level" column="department_level" />  
+	<result property="time" column="department_createtime" />
+	<result property="modifytime" column="department_modifytime" />
+	<result property="status" column="department_status" />
+</resultMap>
+ <select id="QuerySomeMessage" resultMap="QuerySomeMessageMap" parameterType="map" >
+    SELECT 
+    department_amount, department_level, department_createtime, department_modifytime, department_status
+    FROM rb_department
+    	<include refid="wheresql" />
+    LIMIT 1
+  </select>
+  
+  
+  <resultMap id="BaseQueryDeptNameMap" type="java.lang.String" >
+    <result column="department_name" property="userBelongdept" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <select id="BaseQueryDeptName" resultMap="BaseQueryDeptNameMap" parameterType="map" >
+    SELECT 
+    	department_name
+    from rb_department
+    <where>
+			1=1
+				<if test="_parameter != null">
+					and department_id = #{_parameter}
+				</if>
+		</where>
+    LIMIT 1
+  </select>
+  
+  <!-- <resultMap id="QueryDeptDetailMap" type="com.huban.construct.LstDeptModel" >
+  	<result column="department_id" property="deptId" jdbcType="BIGINT" />
+    <result column="department_number" property="deptNumber" jdbcType="VARCHAR" />
+    <result column="department_logourl" property="deptLogourl" jdbcType="VARCHAR" />
+    <result column="department_level" property="deptLevel" jdbcType="REAL" />
+    <result column="department_name" property="deptName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="department_notice" property="deptNotice" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="department_status" property="deptStatus" jdbcType="INTEGER" />
+    <result column="department_createtime" property="deptCreatetime" jdbcType="TIMESTAMP" />
+    <result column="dept_president" property="deptPresident" jdbcType="VARCHAR" />
+    <result column="dept_founder" property="deptFounder" jdbcType="VARCHAR" />
+    <result column="dept_totaluser" property="deptTotaluser" jdbcType="INTEGER" />
+    <result column="dept_totalRead" property="deptTotalRead" jdbcType="BIGINT" />
+    <result column="dept_userHeadIcon" property="deptUserHeadIcon" />
+  </resultMap> -->
+  <!-- <select id="QueryDeptDetail" parameterType="map" resultMap="QueryDeptDetailMap">
+    SELECT  
+    	department_id, department_number, department_logourl, department_level, department_name, department_notice, department_status, department_createtime, 
+    	( SELECT 
+    	User_Name
+    from rb_user
+    <where>
+			1=1
+					and User_Id = rd.department_founder
+		</where>
+    LIMIT 1 ) AS dept_founder, (SELECT 
+  	User_Name 
+  FROM rb_user AS ru ,
+  ( 
+  	SELECT 
+  		userinfo_userid 
+  	FROM rb_userinfo 
+  	<where>
+			1=1
+					AND userinfo_belongdept = rd.department_id AND userinfo_position = 1
+		</where>
+  	) AS ui
+  <where>
+  	ru.User_Id = ui.userinfo_userid 
+  </where>
+  LIMIT 1) AS dept_president, (SELECT 
+    	COUNT(*) 
+    from rb_userinfo
+    <where>
+			1=1
+					and userinfo_belongdept = rd.department_id
+		</where>
+    LIMIT 1), ( SELECT
+		SUM(rs_number) AS todayNumber
+		FROM
+			rb_saveread
+			WHERE
+				rs_delete = 0 AND rs_type > 0 
+				AND rs_belongdept = rd.department_id), (SELECT User_HeadIcon FROM rb_user AS ru, rb_userinfo AS rui WHERE rui.userinfo_belongdept = rd.department_id
+AND ru.User_Id = rui.userinfo_userid AND rui.userinfo_position > 0 ORDER BY rui.userinfo_position ASC
+UNION 
+SELECT User_HeadIcon FROM rb_user AS ru, rb_userinfo AS rui WHERE rui.userinfo_belongdept = rd.department_id
+AND ru.User_Id = rui.userinfo_userid AND rui.userinfo_position = 0 ORDER BY rui.userinfo_readcount DESC )
+    	FROM 
+    	rb_department AS rd, 
+	rb_userinfo AS ru WHERE ru.userinfo_userid = #{ID.jdbcType=BIGINT} AND 
+    	rd.department_id = ru.userinfo_belongdept AND department_delete = 0
+  </select>
+   -->
+   
+   <update id="UpdateMessage" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    update rb_department
+    <set >
+      <if test="departmentNumber != null" >
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLogourl != null" >
+        department_logourl = #{departmentLogourl,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentAmount != null" >
+        department_amount = department_amount + #{departmentAmount},
+      </if>
+      <if test="departmentLevel != null" >
+        department_level = #{departmentLevel,jdbcType=REAL},
+      </if>
+      <if test="departmentRegionid != null" >
+        department_regionid = #{departmentRegionid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRegion != null" >
+        department_region = #{departmentRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentBranchid != null" >
+        department_branchid = #{departmentBranchid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRedundancy != null" >
+        department_redundancy = #{departmentRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentStatus != null" >
+        department_status = #{departmentStatus,jdbcType=INTEGER},
+        department_modifytime = now(),
+      </if>
+      <if test="departmentDelete != null" >
+        department_delete = #{departmentDelete,jdbcType=INTEGER},
+        department_modifytime = now(),
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName},
+      </if>
+      <if test="departmentNotice != null" >
+        department_notice = #{departmentNotice},
+      </if>
+    </set>
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </update>
+   
+  
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_department
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_department
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    insert into rb_department (department_id, department_number, department_logourl, 
+      department_level, department_regionid, department_region, 
+      department_branchid, department_redundancy, 
+      department_founder, department_status, department_delete, 
+      department_createtime, department_modifytime, 
+      department_name, department_notice
+      )
+    values (#{departmentId,jdbcType=BIGINT}, #{departmentNumber,jdbcType=VARCHAR}, #{departmentLogourl,jdbcType=VARCHAR}, 
+      #{departmentLevel,jdbcType=REAL}, #{departmentRegionid,jdbcType=BIGINT}, #{departmentRegion,jdbcType=VARCHAR}, 
+      #{departmentBranchid,jdbcType=BIGINT}, #{departmentRedundancy,jdbcType=VARCHAR}, 
+      #{departmentFounder,jdbcType=BIGINT}, #{departmentStatus,jdbcType=INTEGER}, #{departmentDelete,jdbcType=INTEGER}, 
+      #{departmentCreatetime,jdbcType=TIMESTAMP}, #{departmentModifytime,jdbcType=TIMESTAMP}, 
+      #{departmentName}, #{departmentNotice}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    insert into rb_department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="departmentNumber != null" >
+        department_number,
+      </if>
+      <if test="departmentLogourl != null" >
+        department_logourl,
+      </if>
+      <if test="departmentLevel != null" >
+        department_level,
+      </if>
+      <if test="departmentRegionid != null" >
+        department_regionid,
+      </if>
+      <if test="departmentRegion != null" >
+        department_region,
+      </if>
+      <if test="departmentBranchid != null" >
+        department_branchid,
+      </if>
+      <if test="departmentRedundancy != null" >
+        department_redundancy,
+      </if>
+      <if test="departmentFounder != null" >
+        department_founder,
+      </if>
+      <if test="departmentStatus != null" >
+        department_status,
+      </if>
+      <if test="departmentDelete != null" >
+        department_delete,
+      </if>
+      <if test="departmentCreatetime != null" >
+        department_createtime,
+      </if>
+      <if test="departmentModifytime != null" >
+        department_modifytime,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+      <if test="departmentNotice != null" >
+        department_notice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="departmentNumber != null" >
+        #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLogourl != null" >
+        #{departmentLogourl,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLevel != null" >
+        #{departmentLevel,jdbcType=REAL},
+      </if>
+      <if test="departmentRegionid != null" >
+        #{departmentRegionid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRegion != null" >
+        #{departmentRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentBranchid != null" >
+        #{departmentBranchid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRedundancy != null" >
+        #{departmentRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentFounder != null" >
+        #{departmentFounder,jdbcType=BIGINT},
+      </if>
+      <if test="departmentStatus != null" >
+        #{departmentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDelete != null" >
+        #{departmentDelete,jdbcType=INTEGER},
+      </if>
+      <if test="departmentCreatetime != null" >
+        #{departmentCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentModifytime != null" >
+        #{departmentModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName},
+      </if>
+      <if test="departmentNotice != null" >
+        #{departmentNotice},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    update rb_department
+    <set >
+      <if test="departmentNumber != null" >
+        department_number = #{departmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLogourl != null" >
+        department_logourl = #{departmentLogourl,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLevel != null" >
+        department_level = #{departmentLevel,jdbcType=REAL},
+      </if>
+      <if test="departmentRegionid != null" >
+        department_regionid = #{departmentRegionid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRegion != null" >
+        department_region = #{departmentRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentBranchid != null" >
+        department_branchid = #{departmentBranchid,jdbcType=BIGINT},
+      </if>
+      <if test="departmentRedundancy != null" >
+        department_redundancy = #{departmentRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentFounder != null" >
+        department_founder = #{departmentFounder,jdbcType=BIGINT},
+      </if>
+      <if test="departmentStatus != null" >
+        department_status = #{departmentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDelete != null" >
+        department_delete = #{departmentDelete,jdbcType=INTEGER},
+      </if>
+      <if test="departmentCreatetime != null" >
+        department_createtime = #{departmentCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentModifytime != null" >
+        department_modifytime = #{departmentModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName },
+      </if>
+      <if test="departmentNotice != null" >
+        department_notice = #{departmentNotice },
+      </if>
+    </set>
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.DepartmentWithBLOBs" >
+    update rb_department
+    set department_number = #{departmentNumber,jdbcType=VARCHAR},
+      department_logourl = #{departmentLogourl,jdbcType=VARCHAR},
+      department_level = #{departmentLevel,jdbcType=REAL},
+      department_regionid = #{departmentRegionid,jdbcType=BIGINT},
+      department_region = #{departmentRegion,jdbcType=VARCHAR},
+      department_branchid = #{departmentBranchid,jdbcType=BIGINT},
+      department_redundancy = #{departmentRedundancy,jdbcType=VARCHAR},
+      department_founder = #{departmentFounder,jdbcType=BIGINT},
+      department_status = #{departmentStatus,jdbcType=INTEGER},
+      department_delete = #{departmentDelete,jdbcType=INTEGER},
+      department_createtime = #{departmentCreatetime,jdbcType=TIMESTAMP},
+      department_modifytime = #{departmentModifytime,jdbcType=TIMESTAMP},
+      department_name = #{departmentName},
+      department_notice = #{departmentNotice}
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Department" >
+    update rb_department
+    set department_number = #{departmentNumber,jdbcType=VARCHAR},
+      department_logourl = #{departmentLogourl,jdbcType=VARCHAR},
+      department_level = #{departmentLevel,jdbcType=REAL},
+      department_regionid = #{departmentRegionid,jdbcType=BIGINT},
+      department_region = #{departmentRegion,jdbcType=VARCHAR},
+      department_branchid = #{departmentBranchid,jdbcType=BIGINT},
+      department_redundancy = #{departmentRedundancy,jdbcType=VARCHAR},
+      department_founder = #{departmentFounder,jdbcType=BIGINT},
+      department_status = #{departmentStatus,jdbcType=INTEGER},
+      department_delete = #{departmentDelete,jdbcType=INTEGER},
+      department_createtime = #{departmentCreatetime,jdbcType=TIMESTAMP},
+      department_modifytime = #{departmentModifytime,jdbcType=TIMESTAMP}
+    where department_id = #{departmentId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.SaveReadManuscriptMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.SaveReadManuscript" >
+    <id column="rs_id" property="rsId" jdbcType="BIGINT" />
+    <result column="rs_belongid" property="rsBelongid" jdbcType="BIGINT" />
+    <result column="rs_belongdept" property="rsBelongdept" jdbcType="BIGINT" />
+    <result column="rs_number" property="rsNumber" jdbcType="INTEGER" />
+    <result column="rs_title" property="rsTitle" jdbcType="VARCHAR" />
+    <result column="rs_publish" property="rsPublish" jdbcType="VARCHAR" />
+    <result column="rs_author" property="rsAuthor" jdbcType="VARCHAR" />
+    <result column="rs_reason" property="rsReason" jdbcType="VARCHAR" />
+    <result column="rs_readterrace" property="rsReadterrace" jdbcType="VARCHAR" />
+    <result column="rs_starttime" property="rsStarttime" jdbcType="TIMESTAMP" />
+    <result column="rs_endtime" property="rsEndtime" jdbcType="TIMESTAMP" />
+    <result column="rs_status" property="rsStatus" jdbcType="INTEGER" />
+    <result column="rs_delete" property="rsDelete" jdbcType="INTEGER" />
+    <result column="rs_grade" property="rsGrade" jdbcType="VARCHAR" />
+    <result column="rs_answerquiz" property="rsAnswerQuiz" typeHandler="com.huban.Utils.MyBlobTypeHandler"  />
+    <result column="rs_diyissue" property="rsDiyIssue" typeHandler="com.huban.Utils.MyBlobTypeHandler"  />
+    <result column="rs_type" property="rsType" jdbcType="INTEGER" />
+    <result column="rs_mold" property="rsMold" jdbcType="INTEGER" />
+    <result column="rs_createtime" property="rsCreatetime" jdbcType="TIMESTAMP" />
+    <result column="rs_modifytime" property="rsModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rs_id, rs_belongid, rs_belongdept, rs_number, rs_title, rs_publish, rs_author, rs_reason, rs_readterrace, rs_starttime , 
+    rs_endtime, rs_status, rs_delete, rs_grade, rs_answerquiz, rs_diyissue, rs_type, rs_mold, rs_createtime , rs_modifytime
+  </sql>
+  
+  <!-- V2 SQL --><!-- by Sheryl --><!-- For rb_saveread_manuscript -->
+  <insert id="AddNewManuscriptMessage" parameterType="com.huban.pojo.SaveRead" >
+    insert into rb_saveread_manuscript (rs_id, rs_belongid, rs_belongdept, rs_number, rs_title,
+      rs_reason, rs_publish, rs_author, rs_readterrace, 
+      rs_starttime, rs_endtime, rs_status, 
+      rs_delete, rs_grade, rs_answerquiz, rs_diyissue, rs_type, rs_mold, rs_createtime, 
+      rs_modifytime)
+    values (#{rsId,jdbcType=BIGINT}, #{rsBelongid,jdbcType=BIGINT}, #{rsBelongdept,jdbcType=BIGINT}, #{rsNumber,jdbcType=INTEGER}, #{rsTitle,jdbcType=VARCHAR}, 
+      #{rsReason,jdbcType=VARCHAR}, #{rsPublish,jdbcType=VARCHAR}, #{rsAuthor,jdbcType=VARCHAR}, #{rsReadterrace,jdbcType=VARCHAR}, 
+      #{rsStarttime,jdbcType=TIMESTAMP}, #{rsEndtime,jdbcType=TIMESTAMP}, #{rsStatus,jdbcType=INTEGER}, 
+      0, #{rsGrade,jdbcType=VARCHAR}, #{rsAnswerQuiz}, #{rsDiyIssue}, #{rsType,jdbcType=INTEGER}, #{rsMold,jdbcType=INTEGER}, now(), 
+      now())
+  </insert>
+  <update id="UpdateManuscriptMessageByRsId" parameterType="com.huban.pojo.SaveRead" >
+    update rb_saveread_manuscript
+    <set >
+      <if test="rsBelongdept != null" >
+        rs_belongdept = #{rsBelongdept,jdbcType=BIGINT},
+      </if>
+      <if test="rsNumber != null" >
+        rs_number = #{rsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rsTitle != null" >
+        rs_title = #{rsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="rsReason != null" >
+        rs_reason = #{rsReason,jdbcType=VARCHAR},
+      </if>
+      <if test="rsPublish != null" >
+        rs_publish = #{rsPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="rsAuthor != null" >
+        rs_author = #{rsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="rsReadterrace != null" >
+        rs_readterrace = #{rsReadterrace,jdbcType=VARCHAR},
+      </if>
+      <if test="rsStarttime != null" >
+        rs_starttime = #{rsStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsEndtime != null" >
+        rs_endtime = #{rsEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsStatus != null" >
+        rs_status = #{rsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rsDelete != null" >
+        rs_delete = #{rsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="rsGrade != null" >
+        rs_grade = #{rsGrade,jdbcType=VARCHAR},
+      </if>
+       <if test="rsAnswerQuiz != null" >
+        rs_answerquiz = #{rsAnswerQuiz},
+      </if>
+      <if test="rsDiyIssue != null" >
+        rs_diyissue = #{rsDiyIssue},
+      </if>
+      <if test="rsType != null" >
+        rs_type = #{rsType,jdbcType=INTEGER},
+      </if>
+      <if test="rsMold != null" >
+        rs_mold = #{rsMold,jdbcType=INTEGER},
+      </if>
+        rs_modifytime = now()
+    </set>
+    where rs_id = #{rsId,jdbcType=BIGINT} AND rs_type = 0 AND rs_delete = 0
+  </update>
+  
+   <sql id="wheresql" >
+ 	where
+ 		1=1
+ 		<if test="ID != null" >
+       	 AND rs_belongid = #{ID,jdbcType=BIGINT}
+    	</if>
+    	<if test="rsID != null" >
+       	 AND rs_id = #{rsID,jdbcType=BIGINT}
+    	</if>
+    	<if test="DeptId != null" >
+       	 AND rs_belongdept = #{DeptId,jdbcType=BIGINT}
+    	</if>
+    	<if test="Rand != null" >
+       	 AND #{Rand} = #{Rand}
+    	</if>
+    	<if test="NumberLike != null" >
+       	 AND userinfo_number LIKE #{NumberLike}
+    	</if>
+    	<if test="School != null">
+    	 AND userinfo_address = #{School}
+    	</if>
+    	<if test="Grade != null" >
+       	 AND userinfo_grade = #{Grade}
+    	</if>
+    	<if test="Class != null" >
+       	 AND userinfo_class = #{Class}
+    	</if>
+    	<if test="Type != null" >
+       	 AND rs_type = #{Type}
+    	</if>
+    	<if test="TimeMonth != null">
+    		<![CDATA[
+     			AND TO_DAYS(rs_modifytime) - TO_DAYS(STR_TO_DATE(#{TimeMonth},'%Y-%m-%d')) <= 30 
+        	]]>
+    	<!--  AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= date(rs_modifytime) --><!-- 这个好像是前后三十天的记录 -->
+    	</if>
+    	<if test="Time != null">
+    		<![CDATA[
+     			AND TO_DAYS(STR_TO_DATE(#{Time},'%Y-%m-%d')) <= TO_DAYS(rs_modifytime)
+       		]]>
+    	</if>
+    	<if test="MonthlysTime != null">
+    		<![CDATA[
+     			AND date_format(rs_modifytime, '%Y-%m') = date_format(#{MonthlysTime},'%Y-%m')
+       		]]>
+    	</if>
+    	<if test="WeekTime != null">
+    		<![CDATA[
+     			AND TO_DAYS(NOW()) - TO_DAYS(rs_modifytime) <= 7
+       		]]>
+    	</if>
+    	<if test="DayTime != null">
+    		<![CDATA[
+     			AND date_format(rs_modifytime, '%Y-%m-%d') = date_format(#{DayTime},'%Y-%m-%d')
+       		]]>
+    	</if>
+    	AND rs_delete = 0 
+  </sql>
+ 
+ <select id="QueryLackMessage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_saveread_manuscript
+    <include refid="wheresql" />
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_saveread_manuscript
+    where rs_id = #{rsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_saveread_manuscript
+    where rs_id = #{rsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.SaveRead" >
+    insert into rb_saveread_manuscript (rs_id, rs_belongid, rs_belongdept, rs_number, 
+      rs_reason, rs_publish, rs_author, rs_readterrace, 
+      rs_starttime, rs_endtime, rs_status, 
+      rs_delete, rs_grade, rs_type, rs_createtime, 
+      rs_modifytime)
+    values (#{rsId,jdbcType=BIGINT}, #{rsBelongid,jdbcType=BIGINT}, #{rsBelongdept,jdbcType=BIGINT}#{rsNumber,jdbcType=INTEGER}, 
+      #{rsReason,jdbcType=VARCHAR}, #{rsPublish,jdbcType=VARCHAR}, #{rsAuthor,jdbcType=VARCHAR}, #{rsReadterrace,jdbcType=VARCHAR}, 
+      #{rsStarttime,jdbcType=TIMESTAMP}, #{rsEndtime,jdbcType=TIMESTAMP}, #{rsStatus,jdbcType=INTEGER}, 
+      #{rsDelete,jdbcType=INTEGER}, #{rsGrade,jdbcType=VARCHAR}, #{rsAnswerQuiz}, #{rsDiyIssue}, #{rsType,jdbcType=VARCHAR}, #{rsCreatetime,jdbcType=TIMESTAMP}, 
+      #{rsModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.SaveRead" >
+    insert into rb_saveread_manuscript
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rsId != null" >
+        rs_id,
+      </if>
+      <if test="rsBelongid != null" >
+        rs_belongid,
+      </if>
+       <if test="rsBelongdept != null" >
+        rs_belongdept,
+      </if>
+      <if test="rsNumber != null" >
+        rs_number,
+      </if>
+      <if test="rsReason != null" >
+        rs_reason,
+      </if>
+      <if test="rsPublish != null" >
+        rs_publish,
+      </if>
+      <if test="rsAuthor != null" >
+        rs_author,
+      </if>
+      <if test="rsReadterrace != null" >
+        rs_readterrace,
+      </if>
+      <if test="rsStarttime != null" >
+        rs_starttime,
+      </if>
+      <if test="rsEndtime != null" >
+        rs_endtime,
+      </if>
+      <if test="rsStatus != null" >
+        rs_status,
+      </if>
+      <if test="rsDelete != null" >
+        rs_delete,
+      </if>
+      <if test="rsGrade != null" >
+        rs_grade,
+      </if>
+      <if test="rsAnswerQuiz != null" >
+        rs_answerquiz,
+      </if>
+      <if test="rsDiyIssue != null" >
+        rs_diyissue,
+      </if>
+      <if test="rsType != null" >
+        rs_type,
+      </if>
+      <if test="rsCreatetime != null" >
+        rs_createtime,
+      </if>
+      <if test="rsModifytime != null" >
+        rs_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rsId != null" >
+        #{rsId,jdbcType=BIGINT},
+      </if>
+      <if test="rsBelongid != null" >
+        #{rsBelongid,jdbcType=BIGINT},
+      </if>
+       <if test="rsBelongdept != null" >
+        #{rsBelongdept,jdbcType=BIGINT},
+      </if>
+      <if test="rsNumber != null" >
+        #{rsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rsReason != null" >
+        #{rsReason,jdbcType=VARCHAR},
+      </if>
+      <if test="rsPublish != null" >
+        #{rsPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="rsAuthor != null" >
+        #{rsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="rsReadterrace != null" >
+        #{rsReadterrace,jdbcType=VARCHAR},
+      </if>
+      <if test="rsStarttime != null" >
+        #{rsStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsEndtime != null" >
+        #{rsEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsStatus != null" >
+        #{rsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rsDelete != null" >
+        #{rsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="rsGrade != null" >
+        #{rsGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="rsAnswerQuiz != null" >
+        #{rsAnswerquiz},
+      </if>
+      <if test="rsDiyIssue != null" >
+        #{rsDiyIssue},
+      </if>
+      <if test="rsType != null" >
+        rs_type = #{rsType,jdbcType=INTEGER},
+      </if>
+      <if test="rsCreatetime != null" >
+        #{rsCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsModifytime != null" >
+        #{rsModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.SaveRead" >
+    update rb_saveread_manuscript
+    <set >
+      <if test="rsBelongid != null" >
+        rs_belongid = #{rsBelongid,jdbcType=BIGINT},
+      </if>
+       <if test="rsBelongdept != null" >
+        rs_belongdept = #{rsBelongdept,jdbcType=BIGINT},
+      </if>
+      <if test="rsNumber != null" >
+        rs_number = #{rsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rsReason != null" >
+        rs_reason = #{rsReason,jdbcType=VARCHAR},
+      </if>
+      <if test="rsPublish != null" >
+        rs_publish = #{rsPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="rsAuthor != null" >
+        rs_author = #{rsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="rsReadterrace != null" >
+        rs_readterrace = #{rsReadterrace,jdbcType=VARCHAR},
+      </if>
+      <if test="rsStarttime != null" >
+        rs_starttime = #{rsStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsEndtime != null" >
+        rs_endtime = #{rsEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsStatus != null" >
+        rs_status = #{rsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rsDelete != null" >
+        rs_delete = #{rsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="rsGrade != null" >
+        rs_grade = #{rsGrade,jdbcType=VARCHAR},
+      </if>
+       <if test="rsAnswerQuiz != null" >
+        rs_answerquiz = #{rsAnswerQuiz},
+      </if>
+      <if test="rsDiyIssue != null" >
+        rs_diyissue = #{rsDiyIssue},
+      </if>
+      <if test="rsType != null" >
+        rs_type = #{rsType,jdbcType=INTEGER},
+      </if>
+      <if test="rsCreatetime != null" >
+        rs_createtime = #{rsCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsModifytime != null" >
+        rs_modifytime = #{rsModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where rs_id = #{rsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.SaveRead" >
+    update rb_saveread_manuscript
+    set rs_belongid = #{rsBelongid,jdbcType=BIGINT},
+      rs_belongdept = #{rsBelongdept,jdbcType=BIGINT},
+      rs_number = #{rsNumber,jdbcType=INTEGER},
+      rs_reason = #{rsReason,jdbcType=VARCHAR},
+      rs_publish = #{rsPublish,jdbcType=VARCHAR},
+      rs_author = #{rsAuthor,jdbcType=VARCHAR},
+      rs_readterrace = #{rsReadterrace,jdbcType=VARCHAR},
+      rs_starttime = #{rsStarttime,jdbcType=TIMESTAMP},
+      rs_endtime = #{rsEndtime,jdbcType=TIMESTAMP},
+      rs_status = #{rsStatus,jdbcType=INTEGER},
+      rs_delete = #{rsDelete,jdbcType=INTEGER},
+      rs_grade = #{rsGrade,jdbcType=VARCHAR},
+      rs_answerquiz = #{rsAnswerQuiz},
+      rs_diyissue = #{rsDiyIssue},
+      rs_type = #{rsType,jdbcType=INTEGER},
+      rs_createtime = #{rsCreatetime,jdbcType=TIMESTAMP},
+      rs_modifytime = #{rsModifytime,jdbcType=TIMESTAMP}
+    where rs_id = #{rsId,jdbcType=BIGINT}
+  </update>
+</mapper>

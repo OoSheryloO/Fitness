@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.PostMapper">
+	<!-- 返回的map -->
+	<resultMap id="post" type="com.kjyl.pojo.Post">
+		<result property="Id" column="Post_Id" />
+		<result property="UseId" column="Post_UseId" />
+		<result property="TopicId" column="Post_TopicId" />
+		<result property="Title" column="Post_Title" />
+		<result property="Content" column="Post_Content" />
+		<result property="LikeCount" column="Post_LikeCount" />
+		<result property="Review" column="Post_Review" />
+		<result property="Status" column="Post_Status" />
+		<result property="Delete" column="Post_Delete" />
+		<result property="CreateTime" column="Post_CreateTime" />
+		<result property="ModifyTime" column="Post_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Post_Id, Post_UseId, Post_TopicId, Post_Title, Post_Content, Post_LikeCount, Post_Review, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Post_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Post_UseId = #{UseId}
+		</if>
+		<if test="TopicId!= null">
+				 AND Post_TopicId = #{TopicId}
+		</if>
+		<if test="Title!= null">
+				 AND Post_Title = #{Title}
+		</if>
+		<if test="Content!= null">
+				 AND Post_Content = #{Content}
+		</if>
+		<if test="LikeCount!= null">
+				 AND Post_LikeCount = #{LikeCount}
+		</if>
+		<if test="Review!= null">
+				 AND Post_Review = #{Review}
+		</if>
+		<if test="Status!= null">
+				 AND Post_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Post_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Post_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Post_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="post" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_post
+		<where>
+			Post_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="post" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_post
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_post
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Post"  useGeneratedKeys="true">
+		INSERT INTO fit_post( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TopicId},
+				#{Title},
+				#{Content},
+				#{LikeCount},
+				#{Review},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Post">
+		UPDATE fit_post SET Post_UseId = #{UseId}, Post_TopicId = #{TopicId}, Post_Title = #{Title}, Post_Content = #{Content}, Post_LikeCount = #{LikeCount}, Post_Review = #{Review}, Post_Status = #{Status}, Post_Delete = #{Delete}, Post_ModifyTime = now()
+		<where>
+			Post_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Post">
+		UPDATE fit_post SET Post_Status = 88 WHERE Post_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Post">
+		UPDATE fit_post SET Post_Status=  1 WHERE Post_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Post">
+		UPDATE fit_post SET Post_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Post">
+		UPDATE fit_post SET Post_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

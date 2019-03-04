@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.ErrorlogsMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Errorlogs" >
+    <id column="ErrorLog_ID" property="errorlogId" jdbcType="BIGINT" />
+    <result column="ErrorLog_UserID" property="errorlogUserid" jdbcType="BIGINT" />
+    <result column="ErrorLog_TypeID" property="errorlogTypeid" jdbcType="BIGINT" />
+    <result column="ErrorLog_CreateTime" property="errorlogCreatetime" jdbcType="TIMESTAMP" />
+    <result column="ErrorLog_ModifyTime" property="errorlogModifytime" jdbcType="TIMESTAMP" />
+    <result column="ErrorLog_Version" property="errorlogVersion" jdbcType="INTEGER" />
+    <result column="ErrorLog_Status" property="errorlogStatus" jdbcType="TINYINT" />
+    <result column="ErrorLog_Deleted" property="errorlogDeleted" jdbcType="TINYINT" />
+    <result column="ErrorLog_Device" property="errorlogDevice" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.Errorlogs" extends="BaseResultMap" >
+    <result column="ErrorLog_Note" property="errorlogNote" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ErrorLog_ID, ErrorLog_UserID, ErrorLog_TypeID, ErrorLog_CreateTime, ErrorLog_ModifyTime, 
+    ErrorLog_Version, ErrorLog_Status, ErrorLog_Deleted, ErrorLog_Device
+  </sql>
+  <sql id="Blob_Column_List" >
+    ErrorLog_Note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_errorlogs
+    where ErrorLog_ID = #{errorlogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_errorlogs
+    where ErrorLog_ID = #{errorlogId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Errorlogs" >
+    insert into rb_errorlogs (ErrorLog_ID, ErrorLog_UserID, ErrorLog_TypeID, 
+      ErrorLog_CreateTime, ErrorLog_ModifyTime, 
+      ErrorLog_Version, ErrorLog_Status, ErrorLog_Deleted, 
+      ErrorLog_Device, ErrorLog_Note)
+    values (#{errorlogId,jdbcType=BIGINT}, #{errorlogUserid,jdbcType=BIGINT}, #{errorlogTypeid,jdbcType=BIGINT}, 
+      now(), #{errorlogModifytime,jdbcType=TIMESTAMP}, 
+      #{errorlogVersion,jdbcType=INTEGER}, #{errorlogStatus,jdbcType=TINYINT}, #{errorlogDeleted,jdbcType=TINYINT}, 
+      #{errorlogDevice,jdbcType=VARCHAR}, #{errorlogNote,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Errorlogs" >
+    insert into rb_errorlogs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="errorlogId != null" >
+        ErrorLog_ID,
+      </if>
+      <if test="errorlogUserid != null" >
+        ErrorLog_UserID,
+      </if>
+      <if test="errorlogTypeid != null" >
+        ErrorLog_TypeID,
+      </if>
+      <if test="errorlogCreatetime != null" >
+        ErrorLog_CreateTime,
+      </if>
+      <if test="errorlogModifytime != null" >
+        ErrorLog_ModifyTime,
+      </if>
+      <if test="errorlogVersion != null" >
+        ErrorLog_Version,
+      </if>
+      <if test="errorlogStatus != null" >
+        ErrorLog_Status,
+      </if>
+      <if test="errorlogDeleted != null" >
+        ErrorLog_Deleted,
+      </if>
+      <if test="errorlogDevice != null" >
+        ErrorLog_Device,
+      </if>
+      <if test="errorlogNote != null" >
+        ErrorLog_Note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="errorlogId != null" >
+        #{errorlogId,jdbcType=BIGINT},
+      </if>
+      <if test="errorlogUserid != null" >
+        #{errorlogUserid,jdbcType=BIGINT},
+      </if>
+      <if test="errorlogTypeid != null" >
+        #{errorlogTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="errorlogCreatetime != null" >
+        #{errorlogCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="errorlogModifytime != null" >
+        #{errorlogModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="errorlogVersion != null" >
+        #{errorlogVersion,jdbcType=INTEGER},
+      </if>
+      <if test="errorlogStatus != null" >
+        #{errorlogStatus,jdbcType=TINYINT},
+      </if>
+      <if test="errorlogDeleted != null" >
+        #{errorlogDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="errorlogDevice != null" >
+        #{errorlogDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="errorlogNote != null" >
+        #{errorlogNote,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Errorlogs" >
+    update rb_errorlogs
+    <set >
+      <if test="errorlogUserid != null" >
+        ErrorLog_UserID = #{errorlogUserid,jdbcType=BIGINT},
+      </if>
+      <if test="errorlogTypeid != null" >
+        ErrorLog_TypeID = #{errorlogTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="errorlogCreatetime != null" >
+        ErrorLog_CreateTime = #{errorlogCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="errorlogModifytime != null" >
+        ErrorLog_ModifyTime = #{errorlogModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="errorlogVersion != null" >
+        ErrorLog_Version = #{errorlogVersion,jdbcType=INTEGER},
+      </if>
+      <if test="errorlogStatus != null" >
+        ErrorLog_Status = #{errorlogStatus,jdbcType=TINYINT},
+      </if>
+      <if test="errorlogDeleted != null" >
+        ErrorLog_Deleted = #{errorlogDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="errorlogDevice != null" >
+        ErrorLog_Device = #{errorlogDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="errorlogNote != null" >
+        ErrorLog_Note = #{errorlogNote,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ErrorLog_ID = #{errorlogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.Errorlogs" >
+    update rb_errorlogs
+    set ErrorLog_UserID = #{errorlogUserid,jdbcType=BIGINT},
+      ErrorLog_TypeID = #{errorlogTypeid,jdbcType=BIGINT},
+      ErrorLog_CreateTime = #{errorlogCreatetime,jdbcType=TIMESTAMP},
+      ErrorLog_ModifyTime = #{errorlogModifytime,jdbcType=TIMESTAMP},
+      ErrorLog_Version = #{errorlogVersion,jdbcType=INTEGER},
+      ErrorLog_Status = #{errorlogStatus,jdbcType=TINYINT},
+      ErrorLog_Deleted = #{errorlogDeleted,jdbcType=TINYINT},
+      ErrorLog_Device = #{errorlogDevice,jdbcType=VARCHAR},
+      ErrorLog_Note = #{errorlogNote,jdbcType=LONGVARCHAR}
+    where ErrorLog_ID = #{errorlogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Errorlogs" >
+    update rb_errorlogs
+    set ErrorLog_UserID = #{errorlogUserid,jdbcType=BIGINT},
+      ErrorLog_TypeID = #{errorlogTypeid,jdbcType=BIGINT},
+      ErrorLog_CreateTime = #{errorlogCreatetime,jdbcType=TIMESTAMP},
+      ErrorLog_ModifyTime = #{errorlogModifytime,jdbcType=TIMESTAMP},
+      ErrorLog_Version = #{errorlogVersion,jdbcType=INTEGER},
+      ErrorLog_Status = #{errorlogStatus,jdbcType=TINYINT},
+      ErrorLog_Deleted = #{errorlogDeleted,jdbcType=TINYINT},
+      ErrorLog_Device = #{errorlogDevice,jdbcType=VARCHAR}
+    where ErrorLog_ID = #{errorlogId,jdbcType=BIGINT}
+  </update>
+</mapper>

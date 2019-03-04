@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.ClubMapper">
+	<!-- 返回的map -->
+	<resultMap id="club" type="com.kjyl.pojo.Club">
+		<result property="Id" column="Club_Id" />
+		<result property="UseId" column="Club_UseId" />
+		<result property="Title" column="Club_Title" />
+		<result property="Theme" column="Club_Theme" />
+		<result property="Intro" column="Club_Intro" />
+		<result property="Site" column="Club_Site" />
+		<result property="Tel" column="Club_Tel" />
+		<result property="Memo" column="Club_Memo" />
+		<result property="Status" column="Club_Status" />
+		<result property="Delete" column="Club_Delete" />
+		<result property="CreateTime" column="Club_CreateTime" />
+		<result property="ModifyTime" column="Club_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Club_Id, Club_UseId, Club_Title, Club_Theme, Club_Intro, Club_Site, Club_Tel, Club_Memo, Club_Status, Club_Delete, Club_CreateTime, Club_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Club_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Club_UseId = #{UseId}
+		</if>
+		<if test="Title!= null">
+				 AND Club_Title = #{Title}
+		</if>
+		<if test="Theme!= null">
+				 AND Club_Theme = #{Theme}
+		</if>
+		<if test="Intro!= null">
+				 AND Club_Intro = #{Intro}
+		</if>
+		<if test="Site!= null">
+				 AND Club_Site = #{Site}
+		</if>
+		<if test="Tel!= null">
+				 AND Club_Tel = #{Tel}
+		</if>
+		<if test="Memo!= null">
+				 AND Club_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Club_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Club_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Club_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Club_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="club" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_club
+		<where>
+			Club_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="club" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_club
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_club
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Club"  useGeneratedKeys="true">
+		INSERT INTO fit_club( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Title},
+				#{Theme},
+				#{Intro},
+				#{Site},
+				#{Tel},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Club">
+		UPDATE fit_club SET Club_UseId = #{UseId}, Club_Title = #{Title}, Club_Theme = #{Theme}, Club_Intro = #{Intro}, Club_Site = #{Site}, Club_Tel = #{Tel}, Club_Memo = #{Memo}, Club_Status = #{Status}, Club_Delete = #{Delete}, Club_ModifyTime = now()
+		<where>
+			Club_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Club">
+		UPDATE fit_club SET Club_Status = 88 WHERE Club_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Club">
+		UPDATE fit_club SET Club_Status=  1 WHERE Club_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Club">
+		UPDATE fit_club SET Club_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Club">
+		UPDATE fit_club SET Club_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

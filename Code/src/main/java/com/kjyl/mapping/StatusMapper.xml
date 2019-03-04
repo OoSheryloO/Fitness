@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.StatusMapper">
+	<!-- 返回的map -->
+	<resultMap id="status" type="com.kjyl.pojo.Status">
+		<result property="Id" column="Status_Id" />
+		<result property="UseId" column="Status_UseId" />
+		<result property="ObjectId" column="Status_ObjectId" />
+		<result property="Like" column="Status_Like" />
+		<result property="Memo" column="Status_Memo" />
+		<result property="Status" column="Status_Status" />
+		<result property="Delete" column="Status_Delete" />
+		<result property="CreateTime" column="Status_CreateTime" />
+		<result property="ModifyTime" column="Status_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Status_Id, Status_UseId, Status_ObjectId, Status_Like, Status_Memo, Status_Status, Status_Delete, Status_CreateTime, Status_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Status_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Status_UseId = #{UseId}
+		</if>
+		<if test="ObjectId!= null">
+				 AND Status_ObjectId = #{ObjectId}
+		</if>
+		<if test="Like!= null">
+				 AND Status_Like = #{Like}
+		</if>
+		<if test="Memo!= null">
+				 AND Status_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Status_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Status_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Status_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Status_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="status" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_status
+		<where>
+			Status_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="status" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_status
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_status
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Status"  useGeneratedKeys="true">
+		INSERT INTO fit_status( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{ObjectId},
+				#{Like},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Status">
+		UPDATE fit_status SET Status_UseId = #{UseId}, Status_ObjectId = #{ObjectId}, Status_Like = #{Like}, Status_Memo = #{Memo}, Status_Status = #{Status}, Status_Delete = #{Delete}, Status_ModifyTime = now()
+		<where>
+			Status_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Status">
+		UPDATE fit_status SET Status_ModifyTime = 88 WHERE Status_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Status">
+		UPDATE fit_status SET Status_ModifyTime=  1 WHERE Status_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Status">
+		UPDATE fit_status SET Status_ModifyTime = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Status">
+		UPDATE fit_status SET Status_ModifyTime = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

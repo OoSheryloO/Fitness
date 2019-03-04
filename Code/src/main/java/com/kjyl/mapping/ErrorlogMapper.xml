@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.ErrorlogMapper">
+	<!-- 返回的map -->
+	<resultMap id="errorlog" type="com.kjyl.pojo.Errorlog">
+		<result property="Id" column="ErrorLog_Id" />
+		<result property="UseId" column="ErrorLog_UseId" />
+		<result property="TypeId" column="ErrorLog_TypeId" />
+		<result property="Note" column="ErrorLog_Note" />
+		<result property="Version" column="ErrorLog_Version" />
+		<result property="Device" column="ErrorLog_Device" />
+		<result property="Status" column="ErrorLog_Status" />
+		<result property="Delete" column="ErrorLog_Delete" />
+		<result property="CreateTime" column="ErrorLog_CreateTime" />
+		<result property="ModifyTime" column="ErrorLog_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		ErrorLog_Id, ErrorLog_UseId, ErrorLog_TypeId, ErrorLog_Note, ErrorLog_Version, ErrorLog_Device, ErrorLog_Status, ErrorLog_Delete, ErrorLog_CreateTime, ErrorLog_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND ErrorLog_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND ErrorLog_UseId = #{UseId}
+		</if>
+		<if test="TypeId!= null">
+				 AND ErrorLog_TypeId = #{TypeId}
+		</if>
+		<if test="Note!= null">
+				 AND ErrorLog_Note = #{Note}
+		</if>
+		<if test="Version!= null">
+				 AND ErrorLog_Version = #{Version}
+		</if>
+		<if test="Device!= null">
+				 AND ErrorLog_Device = #{Device}
+		</if>
+		<if test="Status!= null">
+				 AND ErrorLog_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND ErrorLog_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND ErrorLog_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND ErrorLog_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="errorlog" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_errorlog
+		<where>
+			ErrorLog_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="errorlog" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_errorlog
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_errorlog
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Errorlog"  useGeneratedKeys="true">
+		INSERT INTO fit_errorlog( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TypeId},
+				#{Note},
+				#{Version},
+				#{Device},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Errorlog">
+		UPDATE fit_errorlog SET ErrorLog_UseId = #{UseId}, ErrorLog_TypeId = #{TypeId}, ErrorLog_Note = #{Note}, ErrorLog_Version = #{Version}, ErrorLog_Device = #{Device}, ErrorLog_Status = #{Status}, ErrorLog_Delete = #{Delete}, ErrorLog_ModifyTime = now()
+		<where>
+			ErrorLog_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Errorlog">
+		UPDATE fit_errorlog SET ErrorLog_Status = 88 WHERE ErrorLog_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Errorlog">
+		UPDATE fit_errorlog SET ErrorLog_Status=  1 WHERE ErrorLog_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Errorlog">
+		UPDATE fit_errorlog SET ErrorLog_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Errorlog">
+		UPDATE fit_errorlog SET ErrorLog_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

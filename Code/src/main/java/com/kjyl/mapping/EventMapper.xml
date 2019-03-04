@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.EventMapper">
+	<!-- 返回的map -->
+	<resultMap id="event" type="com.kjyl.pojo.Event">
+		<result property="Id" column="Event_Id" />
+		<result property="UseId" column="Event_UseId" />
+		<result property="TouchId" column="Event_TouchId" />
+		<result property="Title" column="Event_Title" />
+		<result property="Intro" column="Event_Intro" />
+		<result property="Site" column="Event_Site" />
+		<result property="StartTime" column="Event_StartTime" />
+		<result property="EndTime" column="Event_EndTime" />
+		<result property="StartApply" column="Event_StartApply" />
+		<result property="EndApply" column="Event_EndApply" />
+		<result property="Memo" column="Event_Memo" />
+		<result property="Status" column="Event_Status" />
+		<result property="Delete" column="Event_Delete" />
+		<result property="CreateTime" column="Event_CreateTime" />
+		<result property="ModifyTime" column="Event_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Event_Id, Event_UseId, Event_TouchId, Event_Title, Event_Intro, Event_Site, Event_StartTime, Event_EndTime, Event_StartApply, Event_EndApply, Event_Memo, Event_Status, Event_Delete, Event_CreateTime, Event_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Event_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Event_UseId = #{UseId}
+		</if>
+		<if test="TouchId!= null">
+				 AND Event_TouchId = #{TouchId}
+		</if>
+		<if test="Title!= null">
+				 AND Event_Title = #{Title}
+		</if>
+		<if test="Intro!= null">
+				 AND Event_Intro = #{Intro}
+		</if>
+		<if test="Site!= null">
+				 AND Event_Site = #{Site}
+		</if>
+		<if test="StartTime!= null">
+				 AND Event_StartTime = #{StartTime}
+		</if>
+		<if test="EndTime!= null">
+				 AND Event_EndTime = #{EndTime}
+		</if>
+		<if test="StartApply!= null">
+				 AND Event_StartApply = #{StartApply}
+		</if>
+		<if test="EndApply!= null">
+				 AND Event_EndApply = #{EndApply}
+		</if>
+		<if test="Memo!= null">
+				 AND Event_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Event_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Event_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Event_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Event_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="event" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_event
+		<where>
+			Event_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="event" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_event
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_event
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Event"  useGeneratedKeys="true">
+		INSERT INTO fit_event( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TouchId},
+				#{Title},
+				#{Intro},
+				#{Site},
+				#{StartTime},
+				#{EndTime},
+				#{StartApply},
+				#{EndApply},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Event">
+		UPDATE fit_event SET Event_UseId = #{UseId}, Event_TouchId = #{TouchId}, Event_Title = #{Title}, Event_Intro = #{Intro}, Event_Site = #{Site}, Event_StartTime = #{StartTime}, Event_EndTime = #{EndTime}, Event_StartApply = #{StartApply}, Event_EndApply = #{EndApply}, Event_Memo = #{Memo}, Event_Status = #{Status}, Event_Delete = #{Delete}, Event_ModifyTime = now()
+		<where>
+			Event_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Event">
+		UPDATE fit_event SET Event_Status = 88 WHERE Event_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Event">
+		UPDATE fit_event SET Event_Status=  1 WHERE Event_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Event">
+		UPDATE fit_event SET Event_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Event">
+		UPDATE fit_event SET Event_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huban.dao.ArticleMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+	<!-- search result -->
+	<resultMap id="Article" type="com.huban.pojo.Article">
+		<result property="Article_Id" column="Article_Id" />
+		<result property="Article_UserId" column="Article_UserId" />
+		<result property="Article_Title" column="Article_Title" />
+		<result property="Article_Content" column="Article_Content" />
+		<result property="Article_Afterword" column="Article_Afterword" />
+		<result property="Article_Address" column="Article_Address" />
+		<result property="Article_Auther" column="Article_Auther" />
+		<result property="Article_Press" column="Article_Press" />
+		<result property="Article_HeadPictureId" column="Article_HeadPictureId" />
+		<result property="Article_HeadPictureUrl" column="Article_HeadPictureUrl" />
+		<result property="Article_PictureId" column="Article_PictureId" />
+		<result property="Article_PictureUrl" column="Article_PictureUrl" />
+		<result property="Article_RecommendType" column="Article_RecommendType" />
+		<result property="Article_Hotspot" column="Article_Hotspot" />
+		<result property="Article_Type" column="Article_Type" />
+		<result property="Article_Sort" column="Article_Sort" />
+		<result property="Article_Purpose" column="Article_Purpose" />
+		<result property="Article_RedirectUrl" column="Article_RedirectUrl" />
+		<result property="Article_Status" column="Article_Status" />
+		<result property="Article_Delete" column="Article_Delete" />
+		<result property="Article_VoteNum" column="Article_VoteNum" />
+		<result property="Article_ShareNum" column="Article_ShareNum" />
+		<result property="Article_DiscussNum" column="Article_DiscussNum" />
+		<result property="Article_LikeNum" column="Article_LikeNum" />
+		<result property="Article_Version" column="Article_Version" />
+		<result property="Article_ReadNum" column="Article_ReadNum" />
+		<result property="Article_Belong" column="Article_Belong" />
+		<result property="Article_CreateTime" column="Article_CreateTime" />
+		<result property="Article_ModifyTime" column="Article_ModifyTime" />
+		<result property="ReadStatus" column="ReadStatus" />
+		<result property="LikeStatus" column="LikeStatus" />
+		<result property="VoteStatus" column="VoteStatus" />
+	</resultMap>
+
+	<sql id="sql">
+		Article_Id,Article_UserId,Article_Title,Article_Content,Article_Afterword,Article_Address,Article_Auther,Article_Press,Article_HeadPictureId,Article_HeadPictureUrl,Article_PictureId,Article_PictureUrl,Article_RecommendType,Article_Hotspot,Article_Type,Article_Sort,Article_Purpose,Article_RedirectUrl,Article_Status,Article_Delete,Article_VoteNum,Article_ReadNum,Article_Version,Article_LikeNum,Article_DiscussNum,Article_ShareNum,Article_Belong,Article_CreateTime,Article_ModifyTime
+		<if test="userId != null and type != null">
+			,(SELECT COUNT(*) FROM rb_likestatus WHERE Like_Delete = 0 AND Colu_Id = Article_Id AND From_UserId = #{userId} AND like_Type = #{type}) AS ReadStatus
+			,(SELECT Like_Status FROM rb_likestatus WHERE Like_Delete = 0 AND Colu_Id = Article_Id AND From_UserId = #{userId} AND like_Type = #{type} LIMIT 1) AS LikeStatus
+		</if>
+	</sql>
+	<sql id="where">
+		1 = 1
+		<if test="Article_Id != null">
+			and Article_Id = #{Article_Id}
+		</if>
+		<if test="Article_UserId != null">
+			and Article_UserId = #{Article_UserId}
+		</if>
+		<if test="Article_Title != null">
+			and Article_Title = #{Article_Title}
+		</if>
+		<if test="Article_Content != null">
+			and Article_Content = #{Article_Content}
+		</if>
+		<if test="Article_Afterword != null">
+			and Article_Afterword = #{Article_Afterword}
+		</if>
+		<if test="Article_Address != null">
+			and Article_Address = #{Article_Address}
+		</if>
+		<if test="Article_Auther != null">
+			and Article_Auther = #{Article_Auther}
+		</if>
+		<if test="Article_Press != null">
+			and Article_Press = #{Article_Press}
+		</if>
+		<if test="Article_HeadPictureId != null">
+			and Article_HeadPictureId = #{Article_HeadPictureId}
+		</if>
+		<if test="Article_HeadPictureUrl != null">
+			and Article_HeadPictureUrl = #{Article_HeadPictureUrl}
+		</if>
+		<if test="Article_PictureId != null">
+			and Article_PictureId = #{Article_PictureId}
+		</if>
+		<if test="Article_PictureUrl != null">
+			and Article_PictureUrl = #{Article_PictureUrl}
+		</if>
+		<if test="Article_RecommendType != null">
+			and Article_RecommendType = #{Article_RecommendType}
+		</if>
+		<if test="Article_Hotspot != null">
+			and Article_Hotspot = #{Article_Hotspot}
+		</if>
+		<if test="Article_Type != null">
+			and Article_Type = #{Article_Type}
+		</if>
+		<if test="Article_Sort != null">
+			and Article_Sort = #{Article_Sort}
+		</if>
+		<if test="Article_Purpose != null">
+			and Article_Purpose = #{Article_Purpose}
+		</if>
+		<if test="Article_RedirectUrl != null">
+			and Article_RedirectUrl = #{Article_RedirectUrl}
+		</if>
+		<if test="Article_Status != null">
+			and Article_Status = #{Article_Status}
+		</if>
+		<if test="Article_Delete != null">
+			and Article_Delete &lt; #{Article_Delete}
+		</if>
+		<if test="Article_VoteNum != null">
+			and Article_VoteNum = #{Article_VoteNum}
+		</if>
+		<if test="Article_ReadNum != null">
+			and Article_ReadNum = #{Article_ReadNum}
+		</if>
+		<if test="Article_ShareNum != null">
+			and Article_ShareNum = #{Article_ShareNum}
+		</if>
+		<if test="Article_DiscussNum != null">
+			and Article_DiscussNum = #{Article_DiscussNum}
+		</if>
+		<if test="Article_LikeNum != null">
+			and Article_LikeNum = #{Article_LikeNum}
+		</if>
+		<if test="Article_Version != null">
+			and Article_Version = #{Article_Version}
+		</if>
+		<if test="Article_Belong != null">
+			and Article_Belong = #{Article_Belong}
+		</if>
+		<if test="Article_ModifyTime != null">
+			and Article_ModifyTime = #{Article_ModifyTime}
+		</if>
+	</sql>
+
+
+	<select id="FindByArticleId" resultType="com.huban.pojo.Article" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM rb_article
+		<where>
+			Article_Id = #{_parameter}
+		</where>
+	</select>
+
+	<select id="FindArticlesByCondition" resultMap="Article" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM rb_article
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Article_Sort ASC, Article_CreateTime DESC
+		<if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getCountByCondition" parameterType="map" resultType="int">
+		SELECT
+		Count(1)
+		FROM rb_article
+		<where>
+			<include refid="where"></include>
+		</where>
+
+	</select>
+
+	<!-- insert sql -->
+	<insert id="addArticle" parameterType="com.huban.pojo.Article" keyProperty="ID" useGeneratedKeys="true">
+		insert into
+		rb_article(Article_Id,Article_UserId,Article_Title,Article_Content,Article_Afterword,Article_Address,Article_Auther,Article_Press,Article_HeadPictureId,Article_HeadPictureUrl,Article_PictureId,Article_PictureUrl,Article_RecommendType,Article_Hotspot,Article_Type,Article_Sort,Article_Purpose,Article_RedirectUrl,Article_Status,Article_Delete,Article_VoteNum,Article_ReadNum,Article_ShareNum,Article_Version,Article_LikeNum,Article_DiscussNum,Article_Belong,Article_CreateTime,Article_ModifyTime)
+		values(
+		#{Article_Id},#{Article_UserId},#{Article_Title},#{Article_Content},#{Article_Afterword},#{Article_Address},#{Article_Auther},#{Article_Press},#{Article_HeadPictureId},#{Article_HeadPictureUrl},#{Article_PictureId},{Article_PictureUrl},#{Article_RecommendType},#{Article_Hotspot},#{Article_Type},#{Article_Sort},#{Article_Purpose},#{Article_RedirectUrl},#{Article_Status}, 0, 0, 0, 0, 0, 0, 0, #{Article_Belong}, now(), now())
+	</insert>
+
+
+	<update id="UpdateArticle" parameterType="com.huban.pojo.Article">
+		update rb_article set 
+			<if test="Article_Title != null">
+				Article_Title = #{Article_Title},
+			</if>
+			<if test="Article_Content != null">
+				Article_Content = #{Article_Content},
+			</if>
+			<if test="Article_Afterword != null">
+				Article_Afterword = #{Article_Afterword},
+			</if>
+			<if test="Article_Address != null">
+				Article_Address = #{Article_Address},
+			</if>
+			<if test="Article_Auther != null">
+				Article_Auther = #{Article_Auther},
+			</if>
+			<if test="Article_Press != null">
+				Article_Press = #{Article_Press},
+			</if>
+			<if test="Article_HeadPictureId != null">
+				Article_HeadPictureId = #{Article_HeadPictureId},
+			</if>
+			<if test="Article_HeadPictureUrl != null">
+				Article_HeadPictureUrl = #{Article_HeadPictureUrl},
+			</if>
+			<if test="Article_PictureId != null">
+				Article_PictureId = #{Article_PictureId},
+			</if>
+			<if test="Article_PictureUrl != null">
+				Article_PictureUrl = #{Article_PictureUrl},
+			</if>
+			<if test="Article_RecommendType != null">
+				Article_RecommendType = #{Article_RecommendType},
+			</if>
+			<if test="Article_Hotspot != null">
+				Article_Hotspot = #{Article_Hotspot},
+			</if>
+			<if test="Article_Type != null">
+				Article_Type = #{Article_Type},
+			</if>
+			<if test="Article_Sort != null">
+				Article_Sort = #{Article_Sort},
+			</if>
+			<if test="Article_Purpose != null">
+				Article_Purpose = #{Article_Purpose},
+			</if>
+			<if test="Article_RedirectUrl != null">
+				Article_RedirectUrl = #{Article_RedirectUrl},
+			</if>
+			<if test="Article_Status != null">
+				Article_Status = #{Article_Status},
+			</if>
+			<if test="Article_Delete != null">
+				Article_Delete = #{Article_Delete},
+			</if>
+			<if test="Article_VoteNum != null">
+				Article_VoteNum = Article_VoteNum + #{Article_VoteNum},
+			</if>
+			<if test="Article_ReadNum != null">
+				Article_ReadNum = Article_ReadNum + #{Article_ReadNum},
+			</if>
+			<if test="Article_ShareNum != null">
+				Article_ShareNum = Article_ShareNum + #{Article_ShareNum},
+			</if>
+			<if test="Article_DiscussNum != null">
+				Article_DiscussNum = Article_DiscussNum + #{Article_DiscussNum},
+			</if>
+			<if test="Article_LikeNum != null">
+				Article_LikeNum = Article_LikeNum + #{Article_LikeNum},
+			</if>
+			<if test="Article_Version != null">
+				Article_Version = Article_Version + 1,
+			</if>
+			<if test="Article_Belong != null">
+				Article_Belong = #{Article_Belong},
+			</if>
+				Article_ModifyTime = now()
+		<where>
+			1 = 1
+			<if test="Article_Id != null">
+				AND Article_Id = #{Article_Id}
+			</if>
+			<if test="Article_UserId != null">
+				AND Article_UserId = #{Article_UserId}
+			</if>
+		</where>
+	</update>
+
+	<delete id="DeleteArticleById" parameterType="com.huban.pojo.Article">
+		update rb_article set Article_Delete = 88
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+
+	<delete id="EnabledArticleById" parameterType="com.huban.pojo.Article">
+		update rb_article set Article_Delete = 1
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+</mapper>

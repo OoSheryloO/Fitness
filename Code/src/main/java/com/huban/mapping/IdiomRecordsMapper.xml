@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.IdiomRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.IdiomRecords" >
+    <id column="idiom_id" property="idiomId" jdbcType="BIGINT" />
+    <result column="idiom_originid" property="idiomOriginid" jdbcType="BIGINT" />
+    <result column="idiom_parentid" property="idiomParentid" jdbcType="BIGINT" />
+    <result column="idiom_userid" property="idiomUserid" jdbcType="BIGINT" />
+    <result column="idiom_content" property="idiomContent" jdbcType="VARCHAR" />
+    <result column="idiom_type" property="idiomType" jdbcType="INTEGER" />
+    <result column="idiom_delete" property="idiomDelete" jdbcType="INTEGER" />
+    <result column="idiom_createtime" property="idiomCreatetime" jdbcType="TIMESTAMP" />
+    <result column="idiom_modifytime" property="idiomModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    idiom_id, idiom_originid, idiom_parentid, idiom_userid, idiom_content, idiom_type, idiom_delete, 
+    idiom_createtime, idiom_modifytime
+  </sql>
+  
+  <insert id="IncreaseMessage" parameterType="com.huban.pojo.IdiomRecords" >
+    insert into rb_idiom_records (idiom_id, idiom_originid, idiom_parentid, idiom_userid, 
+      idiom_content, idiom_type, idiom_delete, 
+      idiom_createtime, idiom_modifytime)
+    values (#{idiomId,jdbcType=BIGINT}, #{idiomOriginid,jdbcType=BIGINT}, #{idiomParentid,jdbcType=BIGINT}, #{idiomUserid,jdbcType=BIGINT}, 
+      #{idiomContent,jdbcType=VARCHAR}, 0, 0, 
+      now(), now())
+  </insert>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_idiom_records
+    where idiom_id = #{idiomId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_idiom_records
+    where idiom_id = #{idiomId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.IdiomRecords" >
+    insert into rb_idiom_records (idiom_id, idiom_originid, idiom_parentid, idiom_userid, 
+      idiom_content, idiom_type, idiom_delete, 
+      idiom_createtime, idiom_modifytime)
+    values (#{idiomId,jdbcType=BIGINT}, #{idiomOriginid,jdbcType=BIGINT}, #{idiomParentid,jdbcType=BIGINT}, #{idiomUserid,jdbcType=BIGINT}, 
+      #{idiomContent,jdbcType=VARCHAR}, #{idiomType,jdbcType=INTEGER}, #{idiomDelete,jdbcType=INTEGER}, 
+      #{idiomCreatetime,jdbcType=TIMESTAMP}, #{idiomModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.IdiomRecords" >
+    insert into rb_idiom_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="idiomId != null" >
+        idiom_id,
+      </if>
+      <if test="idiomOriginid != null" >
+        idiom_originid,
+      </if>
+      <if test="idiomParentid != null" >
+        idiom_parentid,
+      </if>
+      <if test="idiomUserid != null" >
+        idiom_userid,
+      </if>
+      <if test="idiomContent != null" >
+        idiom_content,
+      </if>
+      <if test="idiomType != null" >
+        idiom_type,
+      </if>
+      <if test="idiomDelete != null" >
+        idiom_delete,
+      </if>
+      <if test="idiomCreatetime != null" >
+        idiom_createtime,
+      </if>
+      <if test="idiomModifytime != null" >
+        idiom_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="idiomId != null" >
+        #{idiomId,jdbcType=BIGINT},
+      </if>
+      <if test="idiomOriginid != null" >
+        #{idiomOriginid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomParentid != null" >
+        #{idiomParentid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomUserid != null" >
+        #{idiomUserid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomContent != null" >
+        #{idiomContent,jdbcType=VARCHAR},
+      </if>
+      <if test="idiomType != null" >
+        #{idiomType,jdbcType=INTEGER},
+      </if>
+      <if test="idiomDelete != null" >
+        #{idiomDelete,jdbcType=INTEGER},
+      </if>
+      <if test="idiomCreatetime != null" >
+        #{idiomCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idiomModifytime != null" >
+        #{idiomModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.IdiomRecords" >
+    update rb_idiom_records
+    <set >
+      <if test="idiomOriginid != null" >
+        idiom_originid = #{idiomOriginid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomParentid != null" >
+        idiom_parentid = #{idiomParentid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomUserid != null" >
+        idiom_userid = #{idiomUserid,jdbcType=BIGINT},
+      </if>
+      <if test="idiomContent != null" >
+        idiom_content = #{idiomContent,jdbcType=VARCHAR},
+      </if>
+      <if test="idiomType != null" >
+        idiom_type = #{idiomType,jdbcType=INTEGER},
+      </if>
+      <if test="idiomDelete != null" >
+        idiom_delete = #{idiomDelete,jdbcType=INTEGER},
+      </if>
+      <if test="idiomCreatetime != null" >
+        idiom_createtime = #{idiomCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idiomModifytime != null" >
+        idiom_modifytime = #{idiomModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where idiom_id = #{idiomId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.IdiomRecords" >
+    update rb_idiom_records
+    set idiom_originid = #{idiomOriginid,jdbcType=BIGINT},
+    	  idiom_parentid = #{idiomParentid,jdbcType=BIGINT},
+      idiom_userid = #{idiomUserid,jdbcType=BIGINT},
+      idiom_content = #{idiomContent,jdbcType=VARCHAR},
+      idiom_type = #{idiomType,jdbcType=INTEGER},
+      idiom_delete = #{idiomDelete,jdbcType=INTEGER},
+      idiom_createtime = #{idiomCreatetime,jdbcType=TIMESTAMP},
+      idiom_modifytime = #{idiomModifytime,jdbcType=TIMESTAMP}
+    where idiom_id = #{idiomId,jdbcType=BIGINT}
+  </update>
+</mapper>

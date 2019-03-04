@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Comment" >
+   <id column="Comment_Id" property="commentId" jdbcType="BIGINT" />
+    <result column="Comment_UserId" property="commentUserid" jdbcType="BIGINT" />
+    <result column="Comment_GoodsId" property="commentGoodsid" jdbcType="BIGINT" />
+    <result column="Comment_VideoId" property="commentVideoid" jdbcType="BIGINT" />
+    <result column="Comment_ReplyDataId" property="commentReplydataid" jdbcType="BIGINT" />
+    <result column="Comment_FromUserId" property="commentFromuserid" jdbcType="BIGINT" />
+    <result column="Comment_CreateTime" property="commentCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Comment_ModifyTime" property="commentModifytime" jdbcType="TIMESTAMP" />
+    <result column="Comment_NoticesId" property="commentNoticesid" jdbcType="BIGINT" />
+    <result column="Comment_Type" property="commentType" jdbcType="INTEGER" />
+    <result column="Comment_Status" property="commentStatus" jdbcType="INTEGER" />
+    <result column="Comment_Delete" property="commentDelete" jdbcType="INTEGER" />
+    <result column="Comment_Content" property="commentContent" jdbcType="LONGVARBINARY" />
+    <result column="Comment_Comment" property="commentComment" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Comment_Id, Comment_UserId, Comment_GoodsId, Comment_VideoId, Comment_ReplyDataId, 
+    Comment_FromUserId, Comment_CreateTime, Comment_ModifyTime, Comment_NoticesId, Comment_Type, 
+    Comment_Status, Comment_Delete
+  </sql>
+  <sql id="Blob_Column_List" >
+    Comment_Content, Comment_Comment
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_comment
+    where Comment_Id = #{commentId,jdbcType=BIGINT}
+  </select>
+<!-- 自定义sql -->  
+<select id="commentNum" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select 
+	count(*)
+    from rb_comment
+    where Comment_NoticesId = #{forumId,jdbcType=BIGINT } AND Comment_Delete = 0
+  </select>
+<select id="RedateIdToUserId" resultType="java.lang.Long" parameterType="java.lang.Long" >
+    select 
+	Comment_UserId
+    from rb_comment
+    where Comment_Id = #{replyDataId,jdbcType=BIGINT }
+    AND Comment_Delete = 0
+  </select>
+  <select id="videocomment" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_comment
+    where Comment_VideoId = #{videoId }
+    AND Comment_Type = 1<!-- 视频类别 -->
+    AND Comment_Delete = 0
+    order by Comment_ModifyTime DESC
+    <if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+  </select>
+  <select id="bookComment" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_comment
+    where Comment_GoodsId = #{bookId }
+    AND Comment_Type = 2<!-- 书籍类别 -->
+    AND Comment_Delete = 0
+    order by Comment_ModifyTime DESC
+     <if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+  </select>
+  <select id="tome" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+	Comment_UserId,  Comment_ReplyDataId, 
+    Comment_FromUserId, Comment_CreateTime, Comment_NoticesId,Comment_Comment
+    from rb_comment
+    where Comment_ReplyDataId = #{userId,jdbcType=BIGINT }
+    AND Comment_Delete = 0 AND Comment_Type = 0
+  </select>
+<select id="selectnoteid" parameterType="map" resultType="java.lang.Long">
+    SELECT	
+    Comment_NoticesId
+	FROM
+		rb_comment
+	WHERE
+		Comment_FromUserId = #{replydataId}
+	GROUP BY
+		Comment_NoticesId
+	 <if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+  </select> 
+  <select id="ComToMe" parameterType="map" resultMap="BaseResultMap">
+    SELECT	
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+	FROM
+		rb_comment
+	WHERE
+		Comment_FromUserId = #{userId}
+	AND 
+		Comment_NoticesId = #{belongId}
+	GROUP BY Comment_ReplyDataId 
+	ORDER BY
+		Comment_CreateTime DESC
+	 <if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+  </select> 
+   <select id="forumcomment" parameterType="map" resultMap="BaseResultMap">
+    SELECT	
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+	FROM
+		rb_comment
+	WHERE
+		Comment_NoticesId = #{belongId}
+	ORDER BY
+		Comment_CreateTime DESC
+	 <if test="start != null and size != null">
+			LIMIT #{start},#{size}
+		</if>
+  </select> 
+  
+   <select id="selectByReplyDateId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT	
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+	FROM
+		rb_comment
+	WHERE
+		Comment_ReplyDataId = #{replyDataId,jdbcType = BIGINT}
+		ORDER BY
+		Comment_CreateTime DESC
+  </select> 
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_comment
+    where Comment_Id = #{commentId,jdbcType=BIGINT}
+  </delete>
+   <!-- 增加评论 -->
+  <insert id="insert" parameterType="com.huban.pojo.Comment" >
+  insert into rb_comment (Comment_Id, Comment_UserId, 
+      Comment_GoodsId, Comment_VideoId, Comment_ReplyDataId, 
+      Comment_FromUserId, Comment_CreateTime, 
+      Comment_ModifyTime, Comment_NoticesId, Comment_Type, 
+      Comment_Status, Comment_Delete, Comment_Content, 
+      Comment_Comment)
+    values (#{commentId,jdbcType=BIGINT}, #{commentUserid,jdbcType=BIGINT}, 
+      #{commentGoodsid,jdbcType=BIGINT}, #{commentVideoid,jdbcType=BIGINT}, #{commentReplydataid,jdbcType=BIGINT}, 
+      #{commentFromuserid,jdbcType=BIGINT},now(), 
+      now(), #{commentNoticesid,jdbcType=BIGINT}, #{commentType,jdbcType=INTEGER}, 
+      0, 0, #{commentContent,jdbcType=LONGVARBINARY}, 
+      #{commentComment,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Comment" >
+    insert into rb_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        Comment_Id,
+      </if>
+      <if test="commentUserid != null" >
+        Comment_UserId,
+      </if>
+      <if test="commentGoodsid != null" >
+        Comment_GoodsId,
+      </if>
+      <if test="commentVideoid != null" >
+        Comment_VideoId,
+      </if>
+      <if test="commentReplydataid != null" >
+        Comment_ReplyDataId,
+      </if>
+      <if test="commentFromuserid != null" >
+        Comment_FromUserId,
+      </if>
+      <if test="commentCreatetime != null" >
+        Comment_CreateTime,
+      </if>
+      <if test="commentModifytime != null" >
+        Comment_ModifyTime,
+      </if>
+      <if test="commentNoticesid != null" >
+        Comment_NoticesId,
+      </if>
+      <if test="commentType != null" >
+        Comment_Type,
+      </if>
+      <if test="commentStatus != null" >
+        Comment_Status,
+      </if>
+      <if test="commentDelete != null" >
+        Comment_Delete,
+      </if>
+      <if test="commentContent != null" >
+        Comment_Content,
+      </if>
+      <if test="commentComment != null" >
+        Comment_Comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentUserid != null" >
+        #{commentUserid,jdbcType=BIGINT},
+      </if>
+      <if test="commentGoodsid != null" >
+        #{commentGoodsid,jdbcType=BIGINT},
+      </if>
+      <if test="commentVideoid != null" >
+        #{commentVideoid,jdbcType=BIGINT},
+      </if>
+      <if test="commentReplydataid != null" >
+        #{commentReplydataid,jdbcType=BIGINT},
+      </if>
+      <if test="commentFromuserid != null" >
+        #{commentFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="commentCreatetime != null" >
+        #{commentCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentModifytime != null" >
+        #{commentModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentNoticesid != null" >
+        #{commentNoticesid,jdbcType=BIGINT},
+      </if>
+      <if test="commentType != null" >
+        #{commentType,jdbcType=INTEGER},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="commentDelete != null" >
+        #{commentDelete,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null" >
+        #{commentContent,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="commentComment != null" >
+        #{commentComment,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.dao.CommentMapper" >
+    update rb_comment
+    <set >
+      <if test="commentUserid != null" >
+        Comment_UserId = #{commentUserid,jdbcType=BIGINT},
+      </if>
+      <if test="commentGoodsid != null" >
+        Comment_GoodsId = #{commentGoodsid,jdbcType=BIGINT},
+      </if>
+      <if test="commentVideoid != null" >
+        Comment_VideoId = #{commentVideoid,jdbcType=BIGINT},
+      </if>
+      <if test="commentReplydataid != null" >
+        Comment_ReplyDataId = #{commentReplydataid,jdbcType=BIGINT},
+      </if>
+      <if test="commentFromuserid != null" >
+        Comment_FromUserId = #{commentFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="commentCreatetime != null" >
+        Comment_CreateTime = #{commentCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentModifytime != null" >
+        Comment_ModifyTime = #{commentModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentNoticesid != null" >
+        Comment_NoticesId = #{commentNoticesid,jdbcType=BIGINT},
+      </if>
+      <if test="commentType != null" >
+        Comment_Type = #{commentType,jdbcType=INTEGER},
+      </if>
+      <if test="commentStatus != null" >
+        Comment_Status = #{commentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="commentDelete != null" >
+        Comment_Delete = #{commentDelete,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null" >
+        Comment_Content = #{commentContent,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="commentComment != null" >
+        Comment_Comment = #{commentComment,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where Comment_Id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.dao.CommentMapper" >
+    update rb_comment
+    set Comment_UserId = #{commentUserid,jdbcType=BIGINT},
+      Comment_GoodsId = #{commentGoodsid,jdbcType=BIGINT},
+      Comment_VideoId = #{commentVideoid,jdbcType=BIGINT},
+      Comment_ReplyDataId = #{commentReplydataid,jdbcType=BIGINT},
+      Comment_FromUserId = #{commentFromuserid,jdbcType=BIGINT},
+      Comment_CreateTime = #{commentCreatetime,jdbcType=TIMESTAMP},
+      Comment_ModifyTime = #{commentModifytime,jdbcType=TIMESTAMP},
+      Comment_NoticesId = #{commentNoticesid,jdbcType=BIGINT},
+      Comment_Type = #{commentType,jdbcType=INTEGER},
+      Comment_Status = #{commentStatus,jdbcType=INTEGER},
+      Comment_Delete = #{commentDelete,jdbcType=INTEGER},
+      Comment_Content = #{commentContent,jdbcType=LONGVARBINARY},
+      Comment_Comment = #{commentComment,jdbcType=LONGVARBINARY}
+    where Comment_Id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Comment" >
+    update rb_comment
+    set Comment_UserId = #{commentUserid,jdbcType=BIGINT},
+      Comment_GoodsId = #{commentGoodsid,jdbcType=BIGINT},
+      Comment_VideoId = #{commentVideoid,jdbcType=BIGINT},
+      Comment_ReplyDataId = #{commentReplydataid,jdbcType=BIGINT},
+      Comment_FromUserId = #{commentFromuserid,jdbcType=BIGINT},
+      Comment_CreateTime = #{commentCreatetime,jdbcType=TIMESTAMP},
+      Comment_ModifyTime = #{commentModifytime,jdbcType=TIMESTAMP},
+      Comment_NoticesId = #{commentNoticesid,jdbcType=BIGINT},
+      Comment_Type = #{commentType,jdbcType=INTEGER},
+      Comment_Status = #{commentStatus,jdbcType=INTEGER},
+      Comment_Delete = #{commentDelete,jdbcType=INTEGER}
+    where Comment_Id = #{commentId,jdbcType=BIGINT}
+  </update>
+</mapper>

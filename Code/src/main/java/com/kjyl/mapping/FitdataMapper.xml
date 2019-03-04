@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.FitdataMapper">
+	<!-- 返回的map -->
+	<resultMap id="fitdata" type="com.kjyl.pojo.Fitdata">
+		<result property="Id" column="FitData_Id" />
+		<result property="UseId" column="FitData_UseId" />
+		<result property="Date" column="FitData_Date" />
+		<result property="Height" column="FitData_Height" />
+		<result property="Weight" column="FitData_Weight" />
+		<result property="BMI" column="FitData_BMI" />
+		<result property="BodyFat" column="FitData_BodyFat" />
+		<result property="FatRate" column="FitData_FatRate" />
+		<result property="MetabolicRate" column="FitData_MetabolicRate" />
+		<result property="WHR" column="FitData_WHR" />
+		<result property="Humidity" column="FitData_Humidity" />
+		<result property="MuscleMass" column="FitData_MuscleMass" />
+		<result property="UpperArm" column="FitData_UpperArm" />
+		<result property="UnderArm" column="FitData_UnderArm" />
+		<result property="Bust" column="FitData_Bust" />
+		<result property="Waist" column="FitData_Waist" />
+		<result property="Hipline" column="FitData_Hipline" />
+		<result property="LeftThigh" column="FitData_LeftThigh" />
+		<result property="RightThigh" column="FitData_RightThigh" />
+		<result property="LeftShank" column="FitData_LeftShank" />
+		<result property="RightShank" column="FitData_RightShank" />
+		<result property="Memo" column="FitData_Memo" />
+		<result property="Status" column="FitData_Status" />
+		<result property="Delete" column="FitData_Delete" />
+		<result property="CreateTime" column="FitData_CreateTime" />
+		<result property="ModifyTime" column="FitData_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		FitData_Id, FitData_UseId, FitData_Date, FitData_Height, FitData_Weight, FitData_BMI, FitData_BodyFat, FitData_FatRate, FitData_MetabolicRate, FitData_WHR, FitData_Humidity, FitData_MuscleMass, FitData_UpperArm, FitData_UnderArm, FitData_Bust, FitData_Waist, FitData_Hipline, FitData_LeftThigh, FitData_RightThigh, FitData_LeftShank, FitData_RightShank, FitData_Memo, FitData_Status, FitData_Delete, FitData_CreateTime, FitData_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND FitData_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND FitData_UseId = #{UseId}
+		</if>
+		<if test="Date!= null">
+				 AND FitData_Date = #{Date}
+		</if>
+		<if test="Height!= null">
+				 AND FitData_Height = #{Height}
+		</if>
+		<if test="Weight!= null">
+				 AND FitData_Weight = #{Weight}
+		</if>
+		<if test="BMI!= null">
+				 AND FitData_BMI = #{BMI}
+		</if>
+		<if test="BodyFat!= null">
+				 AND FitData_BodyFat = #{BodyFat}
+		</if>
+		<if test="FatRate!= null">
+				 AND FitData_FatRate = #{FatRate}
+		</if>
+		<if test="MetabolicRate!= null">
+				 AND FitData_MetabolicRate = #{MetabolicRate}
+		</if>
+		<if test="WHR!= null">
+				 AND FitData_WHR = #{WHR}
+		</if>
+		<if test="Humidity!= null">
+				 AND FitData_Humidity = #{Humidity}
+		</if>
+		<if test="MuscleMass!= null">
+				 AND FitData_MuscleMass = #{MuscleMass}
+		</if>
+		<if test="UpperArm!= null">
+				 AND FitData_UpperArm = #{UpperArm}
+		</if>
+		<if test="UnderArm!= null">
+				 AND FitData_UnderArm = #{UnderArm}
+		</if>
+		<if test="Bust!= null">
+				 AND FitData_Bust = #{Bust}
+		</if>
+		<if test="Waist!= null">
+				 AND FitData_Waist = #{Waist}
+		</if>
+		<if test="Hipline!= null">
+				 AND FitData_Hipline = #{Hipline}
+		</if>
+		<if test="LeftThigh!= null">
+				 AND FitData_LeftThigh = #{LeftThigh}
+		</if>
+		<if test="RightThigh!= null">
+				 AND FitData_RightThigh = #{RightThigh}
+		</if>
+		<if test="LeftShank!= null">
+				 AND FitData_LeftShank = #{LeftShank}
+		</if>
+		<if test="RightShank!= null">
+				 AND FitData_RightShank = #{RightShank}
+		</if>
+		<if test="Memo!= null">
+				 AND FitData_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND FitData_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND FitData_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND FitData_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND FitData_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="fitdata" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_fitdata
+		<where>
+			FitData_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="fitdata" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_fitdata
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_fitdata
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Fitdata"  useGeneratedKeys="true">
+		INSERT INTO fit_fitdata( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Date},
+				#{Height},
+				#{Weight},
+				#{BMI},
+				#{BodyFat},
+				#{FatRate},
+				#{MetabolicRate},
+				#{WHR},
+				#{Humidity},
+				#{MuscleMass},
+				#{UpperArm},
+				#{UnderArm},
+				#{Bust},
+				#{Waist},
+				#{Hipline},
+				#{LeftThigh},
+				#{RightThigh},
+				#{LeftShank},
+				#{RightShank},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Fitdata">
+		UPDATE fit_fitdata SET FitData_UseId = #{UseId}, FitData_Date = #{Date}, FitData_Height = #{Height}, FitData_Weight = #{Weight}, FitData_BMI = #{BMI}, FitData_BodyFat = #{BodyFat}, FitData_FatRate = #{FatRate}, FitData_MetabolicRate = #{MetabolicRate}, FitData_WHR = #{WHR}, FitData_Humidity = #{Humidity}, FitData_MuscleMass = #{MuscleMass}, FitData_UpperArm = #{UpperArm}, FitData_UnderArm = #{UnderArm}, FitData_Bust = #{Bust}, FitData_Waist = #{Waist}, FitData_Hipline = #{Hipline}, FitData_LeftThigh = #{LeftThigh}, FitData_RightThigh = #{RightThigh}, FitData_LeftShank = #{LeftShank}, FitData_RightShank = #{RightShank}, FitData_Memo = #{Memo}, FitData_Status = #{Status}, FitData_Delete = #{Delete}, FitData_ModifyTime = now()
+		<where>
+			FitData_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Fitdata">
+		UPDATE fit_fitdata SET FitData_Status = 88 WHERE FitData_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Fitdata">
+		UPDATE fit_fitdata SET FitData_Status=  1 WHERE FitData_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Fitdata">
+		UPDATE fit_fitdata SET FitData_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Fitdata">
+		UPDATE fit_fitdata SET FitData_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.OpinionMapper">
+	<!-- 返回的map -->
+	<resultMap id="opinion" type="com.kjyl.pojo.Opinion">
+		<result property="Id" column="Opinion_Id" />
+		<result property="UseId" column="Opinion_UseId" />
+		<result property="ObjectId" column="Opinion_ObjectId" />
+		<result property="Title" column="Opinion_Title" />
+		<result property="Content" column="Opinion_Content" />
+		<result property="Memo" column="Opinion_Memo" />
+		<result property="Type" column="Opinion_Type" />
+		<result property="Status" column="Opinion_Status" />
+		<result property="Delete" column="Opinion_Delete" />
+		<result property="CreateTime" column="Opinion_CreateTime" />
+		<result property="ModifyTime" column="Opinion_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Opinion_Id, Opinion_UseId, Opinion_ObjectId, Opinion_Title, Opinion_Content, Opinion_Memo, Opinion_Type, Opinion_Status, Opinion_Delete, Opinion_CreateTime, Opinion_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Opinion_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Opinion_UseId = #{UseId}
+		</if>
+		<if test="ObjectId!= null">
+				 AND Opinion_ObjectId = #{ObjectId}
+		</if>
+		<if test="Title!= null">
+				 AND Opinion_Title = #{Title}
+		</if>
+		<if test="Content!= null">
+				 AND Opinion_Content = #{Content}
+		</if>
+		<if test="Memo!= null">
+				 AND Opinion_Memo = #{Memo}
+		</if>
+		<if test="Type!= null">
+				 AND Opinion_Type = #{Type}
+		</if>
+		<if test="Status!= null">
+				 AND Opinion_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Opinion_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Opinion_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Opinion_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="opinion" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_opinion
+		<where>
+			Opinion_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="opinion" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_opinion
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_opinion
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Opinion"  useGeneratedKeys="true">
+		INSERT INTO fit_opinion( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{ObjectId},
+				#{Title},
+				#{Content},
+				#{Memo},
+				#{Type},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Opinion">
+		UPDATE fit_opinion SET Opinion_UseId = #{UseId}, Opinion_ObjectId = #{ObjectId}, Opinion_Title = #{Title}, Opinion_Content = #{Content}, Opinion_Memo = #{Memo}, Opinion_Type = #{Type}, Opinion_Status = #{Status}, Opinion_Delete = #{Delete}, Opinion_ModifyTime = now()
+		<where>
+			Opinion_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Opinion">
+		UPDATE fit_opinion SET Opinion_Status = 88 WHERE Opinion_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Opinion">
+		UPDATE fit_opinion SET Opinion_Status=  1 WHERE Opinion_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Opinion">
+		UPDATE fit_opinion SET Opinion_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Opinion">
+		UPDATE fit_opinion SET Opinion_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

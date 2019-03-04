@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.DevicesMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Devices" >
+    <id column="Device_ID" property="deviceId" jdbcType="BIGINT" />
+    <result column="Device_UserID" property="deviceUserid" jdbcType="BIGINT" />
+    <result column="Device_TypeID" property="deviceTypeid" jdbcType="BIGINT" />
+    <result column="Device_UDID" property="deviceUdid" jdbcType="VARCHAR" />
+    <result column="Device_Name" property="deviceName" jdbcType="VARCHAR" />
+    <result column="Device_Model" property="deviceModel" jdbcType="VARCHAR" />
+    <result column="Device_System" property="deviceSystem" jdbcType="VARCHAR" />
+    <result column="Device_CreateTime" property="deviceCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Device_ModifyTime" property="deviceModifytime" jdbcType="TIMESTAMP" />
+    <result column="Device_Version" property="deviceVersion" jdbcType="INTEGER" />
+    <result column="Device_Status" property="deviceStatus" jdbcType="TINYINT" />
+    <result column="Device_Deleted" property="deviceDeleted" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Device_ID, Device_UserID, Device_TypeID, Device_UDID, Device_Name, Device_Model, 
+    Device_System, Device_CreateTime, Device_ModifyTime, Device_Version, Device_Status, 
+    Device_Deleted
+  </sql>
+  
+  <sql id="wheresql" >
+ 	where
+ 		1=1
+ 		<if test="ID != null" >
+       	 AND Device_UserID = #{ID,jdbcType=BIGINT}
+    	</if>
+    	<if test="DBID != null" >
+       	 AND Device_ID = #{DBID,jdbcType=BIGINT}
+    	</if>
+    	<if test="Status != null" >
+       	 AND Device_Status = #{Status,jdbcType=TINYINT}
+    	</if>
+    	<if test="Rand != null" >
+       	 AND #{Rand} = #{Rand}
+    	</if>
+    	AND Device_Deleted = 0 
+  </sql>
+  <!-- 自定义sql -->
+   <insert id="addAPPmessage" parameterType="com.huban.pojo.Devices" >
+    insert into rb_devices (Device_ID, Device_UserID, Device_TypeID, 
+      Device_UDID, Device_Name, Device_Model, 
+      Device_System, Device_CreateTime, Device_ModifyTime, 
+      Device_Version, Device_Status, Device_Deleted
+      )
+    values (#{deviceId,jdbcType=BIGINT}, #{deviceUserid,jdbcType=BIGINT}, #{deviceTypeid,jdbcType=BIGINT}, 
+      #{deviceUdid,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, #{deviceModel,jdbcType=VARCHAR}, 
+      #{deviceSystem,jdbcType=VARCHAR}, now(), now(), 
+      1, #{deviceStatus,jdbcType=TINYINT}, 0
+      )
+  </insert>
+  <select id="QueryCountByUID" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+    COUNT(*)
+    FROM rb_devices
+    <include refid="wheresql" />
+  </select>
+  
+  <update id="UpdateMessage" parameterType="com.huban.pojo.Devices" >
+    update rb_devices
+    <set>
+      <if test="deviceUserid != null" >
+        Device_UserID = #{deviceUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceTypeid != null" >
+        Device_TypeID = #{deviceTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceUdid != null" >
+        Device_UDID = #{deviceUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        Device_Name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceModel != null" >
+        Device_Model = #{deviceModel,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSystem != null" >
+        Device_System = #{deviceSystem,jdbcType=VARCHAR},
+      </if>
+        Device_Version = Device_Version + 1,
+      <if test="deviceStatus != null" >
+        Device_Status = #{deviceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="deviceDeleted != null" >
+        Device_Deleted = #{deviceDeleted,jdbcType=TINYINT},
+      </if>
+      Device_ModifyTime = now()
+    </set>
+    where Device_ID = #{deviceId,jdbcType=BIGINT} AND Device_Deleted = 0
+  </update>
+  <select id="QueryLstDevices" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_devices
+    <include refid="wheresql" />
+    ORDER BY Device_ModifyTime DESC
+  </select>
+  <select id="QueryDevice" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_devices
+    <include refid="wheresql" />
+    ORDER BY Device_ModifyTime DESC LIMIT 1
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_devices
+    where Device_ID = #{deviceId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_devices
+    where Device_ID = #{deviceId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Devices" >
+    insert into rb_devices (Device_ID, Device_UserID, Device_TypeID, 
+      Device_UDID, Device_Name, Device_Model, 
+      Device_System, Device_CreateTime, Device_ModifyTime, 
+      Device_Version, Device_Status, Device_Deleted
+      )
+    values (#{deviceId,jdbcType=BIGINT}, #{deviceUserid,jdbcType=BIGINT}, #{deviceTypeid,jdbcType=BIGINT}, 
+      #{deviceUdid,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, #{deviceModel,jdbcType=VARCHAR}, 
+      #{deviceSystem,jdbcType=VARCHAR}, #{deviceCreatetime,jdbcType=TIMESTAMP}, #{deviceModifytime,jdbcType=TIMESTAMP}, 
+      #{deviceVersion,jdbcType=INTEGER}, #{deviceStatus,jdbcType=TINYINT}, #{deviceDeleted,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Devices" >
+    insert into rb_devices
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deviceId != null" >
+        Device_ID,
+      </if>
+      <if test="deviceUserid != null" >
+        Device_UserID,
+      </if>
+      <if test="deviceTypeid != null" >
+        Device_TypeID,
+      </if>
+      <if test="deviceUdid != null" >
+        Device_UDID,
+      </if>
+      <if test="deviceName != null" >
+        Device_Name,
+      </if>
+      <if test="deviceModel != null" >
+        Device_Model,
+      </if>
+      <if test="deviceSystem != null" >
+        Device_System,
+      </if>
+      <if test="deviceCreatetime != null" >
+        Device_CreateTime,
+      </if>
+      <if test="deviceModifytime != null" >
+        Device_ModifyTime,
+      </if>
+      <if test="deviceVersion != null" >
+        Device_Version,
+      </if>
+      <if test="deviceStatus != null" >
+        Device_Status,
+      </if>
+      <if test="deviceDeleted != null" >
+        Device_Deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="deviceUserid != null" >
+        #{deviceUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceTypeid != null" >
+        #{deviceTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceUdid != null" >
+        #{deviceUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceModel != null" >
+        #{deviceModel,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSystem != null" >
+        #{deviceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceCreatetime != null" >
+        #{deviceCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceModifytime != null" >
+        #{deviceModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceVersion != null" >
+        #{deviceVersion,jdbcType=INTEGER},
+      </if>
+      <if test="deviceStatus != null" >
+        #{deviceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="deviceDeleted != null" >
+        #{deviceDeleted,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Devices" >
+    update rb_devices
+    <set >
+      <if test="deviceUserid != null" >
+        Device_UserID = #{deviceUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceTypeid != null" >
+        Device_TypeID = #{deviceTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="deviceUdid != null" >
+        Device_UDID = #{deviceUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        Device_Name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceModel != null" >
+        Device_Model = #{deviceModel,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSystem != null" >
+        Device_System = #{deviceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceCreatetime != null" >
+        Device_CreateTime = #{deviceCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceModifytime != null" >
+        Device_ModifyTime = #{deviceModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceVersion != null" >
+        Device_Version = #{deviceVersion,jdbcType=INTEGER},
+      </if>
+      <if test="deviceStatus != null" >
+        Device_Status = #{deviceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="deviceDeleted != null" >
+        Device_Deleted = #{deviceDeleted,jdbcType=TINYINT},
+      </if>
+    </set>
+    where Device_ID = #{deviceId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Devices" >
+    update rb_devices
+    set Device_UserID = #{deviceUserid,jdbcType=BIGINT},
+      Device_TypeID = #{deviceTypeid,jdbcType=BIGINT},
+      Device_UDID = #{deviceUdid,jdbcType=VARCHAR},
+      Device_Name = #{deviceName,jdbcType=VARCHAR},
+      Device_Model = #{deviceModel,jdbcType=VARCHAR},
+      Device_System = #{deviceSystem,jdbcType=VARCHAR},
+      Device_CreateTime = #{deviceCreatetime,jdbcType=TIMESTAMP},
+      Device_ModifyTime = #{deviceModifytime,jdbcType=TIMESTAMP},
+      Device_Version = #{deviceVersion,jdbcType=INTEGER},
+      Device_Status = #{deviceStatus,jdbcType=TINYINT},
+      Device_Deleted = #{deviceDeleted,jdbcType=TINYINT}
+    where Device_ID = #{deviceId,jdbcType=BIGINT}
+  </update>
+</mapper>

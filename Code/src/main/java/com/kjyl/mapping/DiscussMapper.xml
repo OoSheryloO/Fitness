@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.DiscussMapper">
+	<!-- 返回的map -->
+	<resultMap id="discuss" type="com.kjyl.pojo.Discuss">
+		<result property="Id" column="Discuss_Id" />
+		<result property="UseId" column="Discuss_UseId" />
+		<result property="TopicId" column="Discuss_TopicId" />
+		<result property="ParentId" column="Discuss_ParentId" />
+		<result property="Title" column="Discuss_Title" />
+		<result property="Content" column="Discuss_Content" />
+		<result property="LikeCount" column="Discuss_LikeCount" />
+		<result property="Review" column="Discuss_Review" />
+		<result property="Status" column="Discuss_Status" />
+		<result property="Delete" column="Discuss_Delete" />
+		<result property="CreateTime" column="Discuss_CreateTime" />
+		<result property="ModifyTime" column="Discuss_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Discuss_Id, Discuss_UseId, Discuss_TopicId, Discuss_ParentId, Discuss_Title, Discuss_Content, Discuss_LikeCount, Discuss_Review, Discuss_Status, Discuss_Delete, Discuss_CreateTime, Discuss_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Discuss_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Discuss_UseId = #{UseId}
+		</if>
+		<if test="TopicId!= null">
+				 AND Discuss_TopicId = #{TopicId}
+		</if>
+		<if test="ParentId!= null">
+				 AND Discuss_ParentId = #{ParentId}
+		</if>
+		<if test="Title!= null">
+				 AND Discuss_Title = #{Title}
+		</if>
+		<if test="Content!= null">
+				 AND Discuss_Content = #{Content}
+		</if>
+		<if test="LikeCount!= null">
+				 AND Discuss_LikeCount = #{LikeCount}
+		</if>
+		<if test="Review!= null">
+				 AND Discuss_Review = #{Review}
+		</if>
+		<if test="Status!= null">
+				 AND Discuss_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Discuss_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Discuss_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Discuss_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="discuss" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_discuss
+		<where>
+			Discuss_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="discuss" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_discuss
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_discuss
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Discuss"  useGeneratedKeys="true">
+		INSERT INTO fit_discuss( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TopicId},
+				#{ParentId},
+				#{Title},
+				#{Content},
+				#{LikeCount},
+				#{Review},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Discuss">
+		UPDATE fit_discuss SET Discuss_UseId = #{UseId}, Discuss_TopicId = #{TopicId}, Discuss_ParentId = #{ParentId}, Discuss_Title = #{Title}, Discuss_Content = #{Content}, Discuss_LikeCount = #{LikeCount}, Discuss_Review = #{Review}, Discuss_Status = #{Status}, Discuss_Delete = #{Delete}, Discuss_ModifyTime = now()
+		<where>
+			Discuss_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Discuss">
+		UPDATE fit_discuss SET Discuss_Status = 88 WHERE Discuss_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Discuss">
+		UPDATE fit_discuss SET Discuss_Status=  1 WHERE Discuss_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Discuss">
+		UPDATE fit_discuss SET Discuss_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Discuss">
+		UPDATE fit_discuss SET Discuss_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huban.dao.GameMapper">
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Game">
+    <id column="game_Id" jdbcType="BIGINT" property="gameId" />
+    <result column="game_Name" jdbcType="VARCHAR" property="gameName" />
+    <result column="game_CreateTime" jdbcType="TIMESTAMP" property="gameCreatetime" />
+    <result column="game_ModifyTime" jdbcType="TIMESTAMP" property="gameModifytime" />
+    <result column="game_Pass" jdbcType="INTEGER" property="gamePass" />
+    <result column="game_Passtotel" jdbcType="INTEGER" property="gamePasstotel" />
+    <result column="game_linkId" jdbcType="BIGINT" property="gameLinkid" />
+    <result column="game_Iconurl" jdbcType="VARCHAR" property="gameIconurl" />
+    <result column="game_Url" jdbcType="VARCHAR" property="gameUrl" />
+    <result column="game_JoinNum" jdbcType="INTEGER" property="gameJoinnum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    game_Id, game_Name, game_CreateTime, game_ModifyTime, game_Pass, game_Passtotel, 
+    game_linkId, game_Iconurl, game_Url, game_JoinNum
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rb_game
+    where game_Id = #{gameId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from rb_game
+    where game_Id = #{gameId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Game">
+    insert into rb_game (game_Id, game_Name, game_CreateTime, 
+      game_ModifyTime, game_Pass, game_Passtotel, 
+      game_linkId, game_Iconurl, game_Url, 
+      game_JoinNum)
+    values (#{gameId,jdbcType=BIGINT}, #{gameName,jdbcType=VARCHAR}, #{gameCreatetime,jdbcType=TIMESTAMP}, 
+      #{gameModifytime,jdbcType=TIMESTAMP}, #{gamePass,jdbcType=INTEGER}, #{gamePasstotel,jdbcType=INTEGER}, 
+      #{gameLinkid,jdbcType=BIGINT}, #{gameIconurl,jdbcType=VARCHAR}, #{gameUrl,jdbcType=VARCHAR}, 
+      #{gameJoinnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Game">
+    insert into rb_game
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gameId != null">
+        game_Id,
+      </if>
+      <if test="gameName != null">
+        game_Name,
+      </if>
+      <if test="gameCreatetime != null">
+        game_CreateTime,
+      </if>
+      <if test="gameModifytime != null">
+        game_ModifyTime,
+      </if>
+      <if test="gamePass != null">
+        game_Pass,
+      </if>
+      <if test="gamePasstotel != null">
+        game_Passtotel,
+      </if>
+      <if test="gameLinkid != null">
+        game_linkId,
+      </if>
+      <if test="gameIconurl != null">
+        game_Iconurl,
+      </if>
+      <if test="gameUrl != null">
+        game_Url,
+      </if>
+      <if test="gameJoinnum != null">
+        game_JoinNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gameId != null">
+        #{gameId,jdbcType=BIGINT},
+      </if>
+      <if test="gameName != null">
+        #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="gameCreatetime != null">
+        #{gameCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gameModifytime != null">
+        #{gameModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gamePass != null">
+        #{gamePass,jdbcType=INTEGER},
+      </if>
+      <if test="gamePasstotel != null">
+        #{gamePasstotel,jdbcType=INTEGER},
+      </if>
+      <if test="gameLinkid != null">
+        #{gameLinkid,jdbcType=BIGINT},
+      </if>
+      <if test="gameIconurl != null">
+        #{gameIconurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameUrl != null">
+        #{gameUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameJoinnum != null">
+        #{gameJoinnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Game">
+    update rb_game
+    <set>
+      <if test="gameName != null">
+        game_Name = #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="gameCreatetime != null">
+        game_CreateTime = #{gameCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gameModifytime != null">
+        game_ModifyTime = #{gameModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gamePass != null">
+        game_Pass = #{gamePass,jdbcType=INTEGER},
+      </if>
+      <if test="gamePasstotel != null">
+        game_Passtotel = #{gamePasstotel,jdbcType=INTEGER},
+      </if>
+      <if test="gameLinkid != null">
+        game_linkId = #{gameLinkid,jdbcType=BIGINT},
+      </if>
+      <if test="gameIconurl != null">
+        game_Iconurl = #{gameIconurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameUrl != null">
+        game_Url = #{gameUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameJoinnum != null">
+        game_JoinNum = #{gameJoinnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where game_Id = #{gameId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Game">
+    update rb_game
+    set game_Name = #{gameName,jdbcType=VARCHAR},
+      game_CreateTime = #{gameCreatetime,jdbcType=TIMESTAMP},
+      game_ModifyTime = #{gameModifytime,jdbcType=TIMESTAMP},
+      game_Pass = #{gamePass,jdbcType=INTEGER},
+      game_Passtotel = #{gamePasstotel,jdbcType=INTEGER},
+      game_linkId = #{gameLinkid,jdbcType=BIGINT},
+      game_Iconurl = #{gameIconurl,jdbcType=VARCHAR},
+      game_Url = #{gameUrl,jdbcType=VARCHAR},
+      game_JoinNum = #{gameJoinnum,jdbcType=INTEGER}
+    where game_Id = #{gameId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

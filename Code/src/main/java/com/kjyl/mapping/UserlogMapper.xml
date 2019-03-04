@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.UserlogMapper">
+	<!-- 返回的map -->
+	<resultMap id="userlog" type="com.kjyl.pojo.Userlog">
+		<result property="Id" column="UserLog_Id" />
+		<result property="UseId" column="UserLog_UseId" />
+		<result property="TypeId" column="UserLog_TypeId" />
+		<result property="Note" column="UserLog_Note" />
+		<result property="Version" column="UserLog_Version" />
+		<result property="Status" column="UserLog_Status" />
+		<result property="Delete" column="UserLog_Delete" />
+		<result property="CreateTime" column="UserLog_CreateTime" />
+		<result property="ModifyTime" column="UserLog_ModifyTime" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		UserLog_Id, UserLog_UseId, UserLog_TypeId, UserLog_Note, UserLog_Version, UserLog_Status, UserLog_Delete, UserLog_CreateTime, UserLog_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND UserLog_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND UserLog_UseId = #{UseId}
+		</if>
+		<if test="TypeId!= null">
+				 AND UserLog_TypeId = #{TypeId}
+		</if>
+		<if test="Note!= null">
+				 AND UserLog_Note = #{Note}
+		</if>
+		<if test="Version!= null">
+				 AND UserLog_Version = #{Version}
+		</if>
+		<if test="Status!= null">
+				 AND UserLog_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND UserLog_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND UserLog_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND UserLog_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="userlog" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_userlog
+		<where>
+			UserLog_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="userlog" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_userlog
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_userlog
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Userlog"  useGeneratedKeys="true">
+		INSERT INTO fit_userlog( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TypeId},
+				#{Note},
+				#{Version},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Userlog">
+		UPDATE fit_userlog SET UserLog_UseId = #{UseId}, UserLog_TypeId = #{TypeId}, UserLog_Note = #{Note}, UserLog_Version = #{Version}, UserLog_Status = #{Status}, UserLog_Delete = #{Delete}, UserLog_ModifyTime = now()
+		<where>
+			UserLog_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Userlog">
+		UPDATE fit_userlog SET UserLog_Status = 88 WHERE UserLog_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Userlog">
+		UPDATE fit_userlog SET UserLog_Status=  1 WHERE UserLog_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Userlog">
+		UPDATE fit_userlog SET UserLog_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Userlog">
+		UPDATE fit_userlog SET UserLog_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

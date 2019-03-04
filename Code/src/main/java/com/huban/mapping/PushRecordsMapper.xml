@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.PushRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.PushRecords" >
+    <id column="PushRecord_ID" property="pushrecordId" jdbcType="BIGINT" />
+    <result column="PushRecord_UserID" property="pushrecordUserid" jdbcType="BIGINT" />
+    <result column="PushRecord_PushID" property="pushrecordPushid" jdbcType="BIGINT" />
+    <result column="PushRecord_PushUserID" property="pushrecordPushuserid" jdbcType="BIGINT" />
+    <result column="PushRecord_TypeID" property="pushrecordTypeid" jdbcType="INTEGER" />
+    <result column="PushRecord_Title" property="pushrecordTitle" jdbcType="VARCHAR" />
+    <result column="PushRecord_Content" property="pushrecordContent" jdbcType="VARCHAR" />
+    <result column="PushRecord_CreateTime" property="pushrecordCreatetime" jdbcType="TIMESTAMP" />
+    <result column="PushRecord_ModifyTime" property="pushrecordModifytime" jdbcType="TIMESTAMP" />
+    <result column="PushRecord_Version" property="pushrecordVersion" jdbcType="INTEGER" />
+    <result column="PushRecord_Status" property="pushrecordStatus" jdbcType="TINYINT" />
+    <result column="PushRecord_Deleted" property="pushrecordDeleted" jdbcType="TINYINT" />
+    <result column="User_Name" property="ByName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PushRecord_ID, PushRecord_UserID, PushRecord_PushID, PushRecord_PushUserID, PushRecord_TypeID, PushRecord_Title, 
+    PushRecord_Content, PushRecord_CreateTime, PushRecord_ModifyTime, PushRecord_Version, 
+    PushRecord_Status, PushRecord_Deleted
+  </sql>
+  
+   <!-- V2 SQL -->
+  <sql id="WhereSql">
+  WHERE
+  	   1 = 1
+    <if test="ID != null" >
+      AND PushRecord_ID = #{ID}
+      </if>
+    <if test="UID != null" >
+      AND PushRecord_PushUserID = #{UID}
+      </if>
+    <if test="KeyWord != null" >
+      <![CDATA[
+       AND PushRecord_Title LIKE CONCAT(CONCAT('%', #{KeyWord}), '%')
+      ]]>
+      </if>
+     <if test="Type != null" >
+      AND PushRecord_Status = #{Type}
+      </if>
+    <if test="Rand != null" >
+      AND #{Rand} = #{Rand}
+      </if>
+      AND PushRecord_Deleted = 0 
+  </sql>
+  <sql id="ConstantSql">
+  	  AND PushRecord_Deleted = 0  
+  </sql>
+  <sql id="ConditionSql">
+  	<if test="start != null and size != null" >
+      LIMIT #{start},#{size}
+      </if>
+  </sql>
+  
+  
+  <!-- V2 SQL By Sheryl -->
+  <insert id="AddNewMessage" parameterType="com.huban.pojo.PushRecords" >
+    insert into rb_pushrecords (PushRecord_ID, PushRecord_UserID, PushRecord_PushID, PushRecord_PushUserID,
+      PushRecord_TypeID, PushRecord_Title, PushRecord_Content, 
+      PushRecord_CreateTime, PushRecord_ModifyTime, 
+      PushRecord_Version, PushRecord_Status, PushRecord_Deleted
+      )
+    values (#{pushrecordId,jdbcType=BIGINT}, #{pushrecordUserid,jdbcType=BIGINT}, #{pushrecordPushid,jdbcType=BIGINT}, #{pushrecordPushuserid,jdbcType=BIGINT},
+      #{pushrecordTypeid,jdbcType=INTEGER}, #{pushrecordTitle,jdbcType=VARCHAR}, #{pushrecordContent,jdbcType=VARCHAR}, 
+      now(), now(), 
+      0, 0, 0
+      )
+  </insert>
+  
+  <select id="LstQueryByCondition" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />, ( SELECT User_Name FROM rb_user WHERE User_Id = PushRecord_UserID ) AS User_Name
+    from rb_pushrecords
+    <include refid="WhereSql" />
+    ORDER BY PushRecord_CreateTime DESC
+    <include refid="ConditionSql" />
+  </select>
+  
+  <select id="QueryByModel" resultMap="BaseResultMap" parameterType="com.huban.pojo.PushRecords" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_pushrecords
+    <include refid="WhereSql" />
+  </select>
+  
+  <select id="QueryCountByCondition" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+    COUNT(*)
+    FROM rb_pushrecords
+    <include refid="WhereSql" />
+  </select>
+  
+  <update id="ChangeMessage" parameterType="com.huban.pojo.PushRecords" >
+    update rb_pushrecords
+    <set >
+      <if test="pushrecordUserid != null" >
+        PushRecord_UserID = #{pushrecordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordPushid != null" >
+        PushRecord_PushID = #{pushrecordPushid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordPushuserid != null" >
+        PushRecord_PushUserID = #{pushrecordPushuserid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordTypeid != null" >
+        PushRecord_TypeID = #{pushrecordTypeid,jdbcType=INTEGER},
+      </if>
+      <if test="pushrecordTitle != null" >
+        PushRecord_Title = #{pushrecordTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordContent != null" >
+        PushRecord_Content = #{pushrecordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordCreatetime != null" >
+        PushRecord_CreateTime = #{pushrecordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordModifytime != null" >
+        PushRecord_ModifyTime = #{pushrecordModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordStatus != null" >
+        PushRecord_Status = #{pushrecordStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pushrecordDeleted != null" >
+        PushRecord_Deleted = #{pushrecordDeleted,jdbcType=TINYINT},
+      </if>
+      PushRecord_Version = PushRecord_Version + 1
+    </set>
+    where PushRecord_ID = #{pushrecordId,jdbcType=BIGINT}
+  </update>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_pushrecords
+    where PushRecord_ID = #{pushrecordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_pushrecords
+    where PushRecord_ID = #{pushrecordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.PushRecords" >
+    insert into rb_pushrecords (PushRecord_ID, PushRecord_UserID, PushRecord_PushID, 
+      PushRecord_TypeID, PushRecord_Title, PushRecord_Content, 
+      PushRecord_CreateTime, PushRecord_ModifyTime, 
+      PushRecord_Version, PushRecord_Status, PushRecord_Deleted
+      )
+    values (#{pushrecordId,jdbcType=BIGINT}, #{pushrecordUserid,jdbcType=INTEGER}, #{pushrecordPushid,jdbcType=BIGINT}, 
+      #{pushrecordTypeid,jdbcType=BIGINT}, #{pushrecordTitle,jdbcType=VARCHAR}, #{pushrecordContent,jdbcType=VARCHAR}, 
+      #{pushrecordCreatetime,jdbcType=TIMESTAMP}, #{pushrecordModifytime,jdbcType=TIMESTAMP}, 
+      #{pushrecordVersion,jdbcType=INTEGER}, #{pushrecordStatus,jdbcType=TINYINT}, #{pushrecordDeleted,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.PushRecords" >
+    insert into rb_pushrecords
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pushrecordId != null" >
+        PushRecord_ID,
+      </if>
+      <if test="pushrecordUserid != null" >
+        PushRecord_UserID,
+      </if>
+      <if test="pushrecordPushid != null" >
+        PushRecord_PushID,
+      </if>
+      <if test="pushrecordTypeid != null" >
+        PushRecord_TypeID,
+      </if>
+      <if test="pushrecordTitle != null" >
+        PushRecord_Title,
+      </if>
+      <if test="pushrecordContent != null" >
+        PushRecord_Content,
+      </if>
+      <if test="pushrecordCreatetime != null" >
+        PushRecord_CreateTime,
+      </if>
+      <if test="pushrecordModifytime != null" >
+        PushRecord_ModifyTime,
+      </if>
+      <if test="pushrecordVersion != null" >
+        PushRecord_Version,
+      </if>
+      <if test="pushrecordStatus != null" >
+        PushRecord_Status,
+      </if>
+      <if test="pushrecordDeleted != null" >
+        PushRecord_Deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pushrecordId != null" >
+        #{pushrecordId,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordUserid != null" >
+        #{pushrecordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordPushid != null" >
+        #{pushrecordPushid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordTypeid != null" >
+        #{pushrecordTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordTitle != null" >
+        #{pushrecordTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordContent != null" >
+        #{pushrecordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordCreatetime != null" >
+        #{pushrecordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordModifytime != null" >
+        #{pushrecordModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordVersion != null" >
+        #{pushrecordVersion,jdbcType=INTEGER},
+      </if>
+      <if test="pushrecordStatus != null" >
+        #{pushrecordStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pushrecordDeleted != null" >
+        #{pushrecordDeleted,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.PushRecords" >
+    update rb_pushrecords
+    <set >
+      <if test="pushrecordUserid != null" >
+        PushRecord_UserID = #{pushrecordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordPushid != null" >
+        PushRecord_PushID = #{pushrecordPushid,jdbcType=BIGINT},
+      </if>
+      <if test="pushrecordTypeid != null" >
+        PushRecord_TypeID = #{pushrecordTypeid,jdbcType=INTEGER},
+      </if>
+      <if test="pushrecordTitle != null" >
+        PushRecord_Title = #{pushrecordTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordContent != null" >
+        PushRecord_Content = #{pushrecordContent,jdbcType=VARCHAR},
+      </if>
+      <if test="pushrecordCreatetime != null" >
+        PushRecord_CreateTime = #{pushrecordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordModifytime != null" >
+        PushRecord_ModifyTime = #{pushrecordModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushrecordVersion != null" >
+        PushRecord_Version = #{pushrecordVersion,jdbcType=INTEGER},
+      </if>
+      <if test="pushrecordStatus != null" >
+        PushRecord_Status = #{pushrecordStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pushrecordDeleted != null" >
+        PushRecord_Deleted = #{pushrecordDeleted,jdbcType=TINYINT},
+      </if>
+    </set>
+    where PushRecord_ID = #{pushrecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.PushRecords" >
+    update rb_pushrecords
+    set PushRecord_UserID = #{pushrecordUserid,jdbcType=BIGINT},
+      PushRecord_PushID = #{pushrecordPushid,jdbcType=BIGINT},
+      PushRecord_TypeID = #{pushrecordTypeid,jdbcType=INTEGER},
+      PushRecord_Title = #{pushrecordTitle,jdbcType=VARCHAR},
+      PushRecord_Content = #{pushrecordContent,jdbcType=VARCHAR},
+      PushRecord_CreateTime = #{pushrecordCreatetime,jdbcType=TIMESTAMP},
+      PushRecord_ModifyTime = #{pushrecordModifytime,jdbcType=TIMESTAMP},
+      PushRecord_Version = #{pushrecordVersion,jdbcType=INTEGER},
+      PushRecord_Status = #{pushrecordStatus,jdbcType=TINYINT},
+      PushRecord_Deleted = #{pushrecordDeleted,jdbcType=TINYINT}
+    where PushRecord_ID = #{pushrecordId,jdbcType=BIGINT}
+  </update>
+</mapper>

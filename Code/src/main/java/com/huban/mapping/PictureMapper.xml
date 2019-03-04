@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.PictureMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Picture" >
+    <id column="Picture_ID" property="pictureId" jdbcType="BIGINT" />
+    <result column="Picture_UserID" property="pictureUserid" jdbcType="BIGINT" />
+    <result column="Picture_TypeID" property="pictureTypeid" jdbcType="BIGINT" />
+    <result column="Picture_Identity" property="pictureIdentity" jdbcType="VARCHAR" />
+    <result column="Picture_Protocol" property="pictureProtocol" jdbcType="VARCHAR" />
+    <result column="Picture_Domain" property="pictureDomain" jdbcType="VARCHAR" />
+    <result column="Picture_IPAddress" property="pictureIpaddress" jdbcType="VARCHAR" />
+    <result column="Picture_Port" property="picturePort" jdbcType="VARCHAR" />
+    <result column="Picture_Folder" property="pictureFolder" jdbcType="VARCHAR" />
+    <result column="Picture_Path" property="picturePath" jdbcType="VARCHAR" />
+    <result column="Picture_Name" property="pictureName" jdbcType="VARCHAR" />
+    <result column="Picture_CreateTime" property="pictureCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Picture_ModifyTime" property="pictureModifytime" jdbcType="TIMESTAMP" />
+    <result column="Picture_Version" property="pictureVersion" jdbcType="INTEGER" />
+    <result column="Picture_Status" property="pictureStatus" jdbcType="TINYINT" />
+    <result column="Picture_Purpose" property="PicturePurpose" jdbcType="TINYINT" />
+    <result column="Picture_Deleted" property="pictureDeleted" jdbcType="TINYINT" />
+    <result column="Picture_BelongID" property="pictureBelongid" jdbcType="BIGINT" />
+    <result column="Picture_RedirectUrl" property="pictureRedirecturl" jdbcType="VARCHAR" />
+    <result column="Picture_Url" property="pictureUrl" jdbcType="VARCHAR"/>
+    <result column="Picture_Sort" property="pictureSort" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Picture_ID, Picture_UserID, Picture_TypeID, Picture_Identity, Picture_Protocol, Picture_Domain, 
+    Picture_IPAddress, Picture_Port, Picture_Folder, Picture_Path, Picture_Name, Picture_CreateTime, 
+    Picture_ModifyTime, Picture_Version, Picture_Status, Picture_Purpose, Picture_Deleted, Picture_BelongID, 
+    Picture_RedirectUrl,Picture_Url,Picture_Sort
+  </sql>
+  <!-- 自定义的sql -->
+  
+  <resultMap type="com.huban.construct.PictrueModel" id="PictrueModelMap" >  
+  	<result property="PictureRedirectUrl" column="Picture_RedirectUrl" />
+	<result property="PicturePurpose" column="Picture_Purpose" />  
+	<result property="PictureURL" column="Picture_Url" />
+</resultMap>
+ <select id="SearchBannerByCondition" resultMap="PictrueModelMap" parameterType="map" >
+ 	SELECT
+		Picture_RedirectUrl, Picture_Purpose, Picture_Url
+	FROM rb_picture
+		WHERE 1=1
+	<if test="Type != null" >
+       AND Picture_BelongID = #{Type}
+      </if>
+      AND Picture_Status = 0 AND Picture_Deleted = 0 ORDER BY Picture_Sort DESC
+  </select>
+  
+  <select id="selectBanner" resultType="java.lang.String" parameterType="java.lang.Long" >
+    select 
+    Picture_Url
+    from rb_picture
+    where Picture_BelongID = #{pictureBelongid,jdbcType=BIGINT} AND Picture_Deleted = 0
+  </select>
+  <insert id="notePicture" parameterType="com.huban.pojo.Picture" >
+    insert into rb_picture (Picture_ID, Picture_UserID, Picture_TypeID, 
+      Picture_Identity, Picture_Protocol, Picture_Domain, 
+      Picture_IPAddress, Picture_Port, Picture_Folder, 
+      Picture_Path, Picture_Name, Picture_CreateTime, 
+      Picture_ModifyTime, Picture_Version, Picture_Status, Picture_Purpose,
+      Picture_Deleted, Picture_BelongID, Picture_RedirectUrl,Picture_Url
+      )
+    values (#{pictureId,jdbcType=BIGINT}, #{pictureUserid,jdbcType=BIGINT}, #{pictureTypeid,jdbcType=BIGINT}, 
+      #{pictureIdentity,jdbcType=VARCHAR}, #{pictureProtocol,jdbcType=VARCHAR}, #{pictureDomain,jdbcType=VARCHAR}, 
+      #{pictureIpaddress,jdbcType=VARCHAR}, #{picturePort,jdbcType=VARCHAR}, #{pictureFolder,jdbcType=VARCHAR}, 
+      #{picturePath,jdbcType=VARCHAR}, #{pictureName,jdbcType=VARCHAR}, now(), 
+      now(), #{pictureVersion,jdbcType=INTEGER}, 0, #{picturePurpose}, 
+      0, #{pictureBelongid,jdbcType=BIGINT}, #{pictureRedirecturl,jdbcType=VARCHAR},
+      #{pictureUrl,jdbcType=VARCHAR} 
+      )
+  </insert>
+  <select id="selectBy" resultType="java.lang.String" parameterType="java.lang.Long" >
+    select 
+    Picture_Url
+    from rb_picture
+    where Picture_UserID = #{noteId,jdbcType=BIGINT}
+    AND Picture_BelongID = 2 AND Picture_Deleted = 0
+    ORDER BY Picture_CreateTime ASC
+  </select>
+  <update id="AddLink" parameterType="map" >
+    update rb_picture
+    <set >
+      Picture_UserID = #{noteId,jdbcType = BIGINT}
+    </set>
+    where Picture_ID = #{pictureId,jdbcType = BIGINT}
+    AND Picture_BelongID = 2 AND Picture_Deleted = 0
+    </update>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_picture
+    where Picture_ID = #{pictureId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_picture
+    where Picture_ID = #{pictureId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Picture" >
+    insert into rb_picture (Picture_ID, Picture_UserID, Picture_TypeID, 
+      Picture_Identity, Picture_Protocol, Picture_Domain, 
+      Picture_IPAddress, Picture_Port, Picture_Folder, 
+      Picture_Path, Picture_Name, Picture_CreateTime, 
+      Picture_ModifyTime, Picture_Version, Picture_Status, 
+      Picture_Deleted, Picture_BelongID, Picture_RedirectUrl,Picture_Url
+      )
+    values (#{pictureId,jdbcType=BIGINT}, #{pictureUserid,jdbcType=BIGINT}, #{pictureTypeid,jdbcType=BIGINT}, 
+      #{pictureIdentity,jdbcType=VARCHAR}, #{pictureProtocol,jdbcType=VARCHAR}, #{pictureDomain,jdbcType=VARCHAR}, 
+      #{pictureIpaddress,jdbcType=VARCHAR}, #{picturePort,jdbcType=VARCHAR}, #{pictureFolder,jdbcType=VARCHAR}, 
+      #{picturePath,jdbcType=VARCHAR}, #{pictureName,jdbcType=VARCHAR}, #{pictureCreatetime,jdbcType=TIMESTAMP}, 
+      #{pictureModifytime,jdbcType=TIMESTAMP}, #{pictureVersion,jdbcType=INTEGER}, #{pictureStatus,jdbcType=TINYINT}, 
+      #{pictureDeleted,jdbcType=TINYINT}, #{pictureBelongid,jdbcType=BIGINT}, #{pictureRedirecturl,jdbcType=VARCHAR},
+      #{pictureUrl,jdbcType=VARCHAR} 
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Picture" >
+    insert into rb_picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pictureId != null" >
+        Picture_ID,
+      </if>
+      <if test="pictureUserid != null" >
+        Picture_UserID,
+      </if>
+      <if test="pictureTypeid != null" >
+        Picture_TypeID,
+      </if>
+      <if test="pictureIdentity != null" >
+        Picture_Identity,
+      </if>
+      <if test="pictureProtocol != null" >
+        Picture_Protocol,
+      </if>
+      <if test="pictureDomain != null" >
+        Picture_Domain,
+      </if>
+      <if test="pictureIpaddress != null" >
+        Picture_IPAddress,
+      </if>
+      <if test="picturePort != null" >
+        Picture_Port,
+      </if>
+      <if test="pictureFolder != null" >
+        Picture_Folder,
+      </if>
+      <if test="picturePath != null" >
+        Picture_Path,
+      </if>
+      <if test="pictureName != null" >
+        Picture_Name,
+      </if>
+      <if test="pictureCreatetime != null" >
+        Picture_CreateTime,
+      </if>
+      <if test="pictureModifytime != null" >
+        Picture_ModifyTime,
+      </if>
+      <if test="pictureVersion != null" >
+        Picture_Version,
+      </if>
+      <if test="pictureStatus != null" >
+        Picture_Status,
+      </if>
+      <if test="pictureDeleted != null" >
+        Picture_Deleted,
+      </if>
+      <if test="pictureBelongid != null" >
+        Picture_BelongID,
+      </if>
+      <if test="pictureRedirecturl != null" >
+        Picture_RedirectUrl,
+      </if>
+      <if test="pictureUrl != null" >
+        Picture_Url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pictureId != null" >
+        #{pictureId,jdbcType=BIGINT},
+      </if>
+      <if test="pictureUserid != null" >
+        #{pictureUserid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureTypeid != null" >
+        #{pictureTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureIdentity != null" >
+        #{pictureIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureProtocol != null" >
+        #{pictureProtocol,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDomain != null" >
+        #{pictureDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureIpaddress != null" >
+        #{pictureIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePort != null" >
+        #{picturePort,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureFolder != null" >
+        #{pictureFolder,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePath != null" >
+        #{picturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null" >
+        #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureCreatetime != null" >
+        #{pictureCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pictureModifytime != null" >
+        #{pictureModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pictureVersion != null" >
+        #{pictureVersion,jdbcType=INTEGER},
+      </if>
+      <if test="pictureStatus != null" >
+        #{pictureStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pictureDeleted != null" >
+        #{pictureDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="pictureBelongid != null" >
+        #{pictureBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureRedirecturl != null" >
+        #{pictureRedirecturl,jdbcType=VARCHAR},
+      </if>
+       <if test="pictureUrl != null" >
+        #{Picture_Url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Picture" >
+    update rb_picture
+    <set >
+      <if test="pictureUserid != null" >
+        Picture_UserID = #{pictureUserid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureTypeid != null" >
+        Picture_TypeID = #{pictureTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureIdentity != null" >
+        Picture_Identity = #{pictureIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureProtocol != null" >
+        Picture_Protocol = #{pictureProtocol,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDomain != null" >
+        Picture_Domain = #{pictureDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureIpaddress != null" >
+        Picture_IPAddress = #{pictureIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePort != null" >
+        Picture_Port = #{picturePort,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureFolder != null" >
+        Picture_Folder = #{pictureFolder,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePath != null" >
+        Picture_Path = #{picturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null" >
+        Picture_Name = #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureCreatetime != null" >
+        Picture_CreateTime = #{pictureCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pictureModifytime != null" >
+        Picture_ModifyTime = #{pictureModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pictureVersion != null" >
+        Picture_Version = #{pictureVersion,jdbcType=INTEGER},
+      </if>
+      <if test="pictureStatus != null" >
+        Picture_Status = #{pictureStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pictureDeleted != null" >
+        Picture_Deleted = #{pictureDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="pictureBelongid != null" >
+        Picture_BelongID = #{pictureBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureRedirecturl != null" >
+        Picture_RedirectUrl = #{pictureRedirecturl,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null" >
+        Picture_Url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Picture_ID = #{pictureId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Picture" >
+    update rb_picture
+    set Picture_UserID = #{pictureUserid,jdbcType=BIGINT},
+      Picture_TypeID = #{pictureTypeid,jdbcType=BIGINT},
+      Picture_Identity = #{pictureIdentity,jdbcType=VARCHAR},
+      Picture_Protocol = #{pictureProtocol,jdbcType=VARCHAR},
+      Picture_Domain = #{pictureDomain,jdbcType=VARCHAR},
+      Picture_IPAddress = #{pictureIpaddress,jdbcType=VARCHAR},
+      Picture_Port = #{picturePort,jdbcType=VARCHAR},
+      Picture_Folder = #{pictureFolder,jdbcType=VARCHAR},
+      Picture_Path = #{picturePath,jdbcType=VARCHAR},
+      Picture_Name = #{pictureName,jdbcType=VARCHAR},
+      Picture_CreateTime = #{pictureCreatetime,jdbcType=TIMESTAMP},
+      Picture_ModifyTime = #{pictureModifytime,jdbcType=TIMESTAMP},
+      Picture_Version = #{pictureVersion,jdbcType=INTEGER},
+      Picture_Status = #{pictureStatus,jdbcType=TINYINT},
+      Picture_Deleted = #{pictureDeleted,jdbcType=TINYINT},
+      Picture_BelongID = #{pictureBelongid,jdbcType=BIGINT},
+      Picture_RedirectUrl = #{pictureRedirecturl,jdbcType=VARCHAR},
+      Picture_Url = #{pictureUrl,jdbcType=VARCHAR}
+    where Picture_ID = #{pictureId,jdbcType=BIGINT}
+  </update>
+</mapper>

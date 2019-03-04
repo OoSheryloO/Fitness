@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ReadBank"
+  id="myeclipse.1496739833087"
+  context-root="/ReadBank"
+  j2ee-spec="1.7"
+  archive="ReadBank.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

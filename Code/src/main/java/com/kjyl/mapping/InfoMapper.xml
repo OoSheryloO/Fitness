@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.InfoMapper">
+	<!-- 返回的map -->
+	<resultMap id="info" type="com.kjyl.pojo.Info">
+		<result property="Id" column="Info_Id" />
+		<result property="UseId" column="Info_UseId" />
+		<result property="Title" column="Info_Title" />
+		<result property="Content" column="Info_Content" />
+		<result property="LikeCount" column="Info_LikeCount" />
+		<result property="Review" column="Info_Review" />
+		<result property="Share" column="Info_Share" />
+		<result property="Status" column="Info_Status" />
+		<result property="Delete" column="Info_Delete" />
+		<result property="CreateTime" column="Info_CreateTime" />
+		<result property="ModifyTime" column="Info_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Info_Id, Info_UseId, Info_Title, Info_Content, Info_LikeCount, Info_Review, Info_Share, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Info_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Info_UseId = #{UseId}
+		</if>
+		<if test="Title!= null">
+				 AND Info_Title = #{Title}
+		</if>
+		<if test="Content!= null">
+				 AND Info_Content = #{Content}
+		</if>
+		<if test="LikeCount!= null">
+				 AND Info_LikeCount = #{LikeCount}
+		</if>
+		<if test="Review!= null">
+				 AND Info_Review = #{Review}
+		</if>
+		<if test="Share!= null">
+				 AND Info_Share = #{Share}
+		</if>
+		<if test="Status!= null">
+				 AND Info_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Info_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Info_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Info_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="info" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_info
+		<where>
+			Info_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="info" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_info
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_info
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Info"  useGeneratedKeys="true">
+		INSERT INTO fit_info( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Title},
+				#{Content},
+				#{LikeCount},
+				#{Review},
+				#{Share},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Info">
+		UPDATE fit_info SET Info_UseId = #{UseId}, Info_Title = #{Title}, Info_Content = #{Content}, Info_LikeCount = #{LikeCount}, Info_Review = #{Review}, Info_Share = #{Share}, Info_Status = #{Status}, Info_Delete = #{Delete}, Info_ModifyTime = now()
+		<where>
+			Info_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Info">
+		UPDATE fit_info SET Info_Status = 88 WHERE Info_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Info">
+		UPDATE fit_info SET Info_Status=  1 WHERE Info_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Info">
+		UPDATE fit_info SET Info_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Info">
+		UPDATE fit_info SET Info_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

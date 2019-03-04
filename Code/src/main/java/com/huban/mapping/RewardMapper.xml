@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.RewardMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Reward" >
+    <!-- <id column="Reward_Id" property="rewardId" jdbcType="BIGINT" /> -->
+    <result column="Reward_Id" property="rewardId" jdbcType="BIGINT" />
+    <result column="Reward_UserId" property="rewardUserid" jdbcType="BIGINT" />
+    <result column="Reward_FromUserId" property="rewardFromuserid" jdbcType="BIGINT" />
+    <result column="Reward_Money" property="rewardMoney" jdbcType="DECIMAL" />
+    <result column="Reward_CreateTIme" property="rewardCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Reward_ModifyTime" property="rewardModifytime" jdbcType="TIMESTAMP" />
+    <result column="Reward_Status" property="rewardStatus" jdbcType="INTEGER" />
+    <result column="Reward_Type" property="rewardType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Reward_Id, Reward_UserId, Reward_FromUserId, Reward_Money, Reward_CreateTIme, Reward_ModifyTime, 
+    Reward_Status, Reward_Type
+  </sql>
+  <!-- 自定义sql -->
+  <select id="FindUserByRId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    Reward_FromUserId
+    from rb_reward WHERE Reward_Type = 0<!-- 0表示视频 -->
+    AND Reward_UserId = #{videoId,jdbcType=BIGINT}
+    order by Reward_CreateTIme Desc
+  </select>
+  <!-- V1 -->
+  <select id="FindUserIdByRId" resultType="java.lang.Long" parameterType="map" >
+    select 
+    Reward_FromUserId
+    from rb_reward WHERE<!-- 0表示视频 -->
+    Reward_Id = #{Id,jdbcType=BIGINT}
+    AND Reward_Type = #{typeId,jdbcType=INTEGER}
+    order by Reward_CreateTIme
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_reward
+    where Reward_Id = #{rewardId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_reward
+    where Reward_Id = #{rewardId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Reward" >
+    insert into rb_reward (Reward_Id, Reward_UserId, Reward_FromUserId, 
+      Reward_Money, Reward_CreateTIme, Reward_ModifyTime, 
+      Reward_Status, Reward_Type)
+    values (#{rewardId,jdbcType=BIGINT}, #{rewardUserid,jdbcType=BIGINT}, #{rewardFromuserid,jdbcType=BIGINT}, 
+      #{rewardMoney,jdbcType=DECIMAL}, now(), now(), 
+      #{rewardStatus,jdbcType=INTEGER}, #{rewardType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Reward" >
+    insert into rb_reward
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rewardId != null" >
+        Reward_Id,
+      </if>
+      <if test="rewardUserid != null" >
+        Reward_UserId,
+      </if>
+      <if test="rewardFromuserid != null" >
+        Reward_FromUserId,
+      </if>
+      <if test="rewardMoney != null" >
+        Reward_Money,
+      </if>
+      <if test="rewardCreatetime != null" >
+        Reward_CreateTIme,
+      </if>
+      <if test="rewardModifytime != null" >
+        Reward_ModifyTime,
+      </if>
+      <if test="rewardStatus != null" >
+        Reward_Status,
+      </if>
+      <if test="rewardType != null" >
+        Reward_Type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rewardId != null" >
+        #{rewardId,jdbcType=BIGINT},
+      </if>
+      <if test="rewardUserid != null" >
+        #{rewardUserid,jdbcType=BIGINT},
+      </if>
+      <if test="rewardFromuserid != null" >
+        #{rewardFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="rewardMoney != null" >
+        #{rewardMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardCreatetime != null" >
+        #{rewardCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewardModifytime != null" >
+        #{rewardModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewardStatus != null" >
+        #{rewardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rewardType != null" >
+        #{rewardType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Reward" >
+    update rb_reward
+    <set >
+      <if test="rewardUserid != null" >
+        Reward_UserId = #{rewardUserid,jdbcType=BIGINT},
+      </if>
+      <if test="rewardFromuserid != null" >
+        Reward_FromUserId = #{rewardFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="rewardMoney != null" >
+        Reward_Money = #{rewardMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardCreatetime != null" >
+        Reward_CreateTIme = #{rewardCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewardModifytime != null" >
+        Reward_ModifyTime = #{rewardModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewardStatus != null" >
+        Reward_Status = #{rewardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rewardType != null" >
+        Reward_Type = #{rewardType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Reward_Id = #{rewardId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Reward" >
+    update rb_reward
+    set Reward_UserId = #{rewardUserid,jdbcType=BIGINT},
+      Reward_FromUserId = #{rewardFromuserid,jdbcType=BIGINT},
+      Reward_Money = #{rewardMoney,jdbcType=DECIMAL},
+      Reward_CreateTIme = #{rewardCreatetime,jdbcType=TIMESTAMP},
+      Reward_ModifyTime = #{rewardModifytime,jdbcType=TIMESTAMP},
+      Reward_Status = #{rewardStatus,jdbcType=INTEGER},
+      Reward_Type = #{rewardType,jdbcType=INTEGER}
+    where Reward_Id = #{rewardId,jdbcType=BIGINT}
+  </update>
+</mapper>

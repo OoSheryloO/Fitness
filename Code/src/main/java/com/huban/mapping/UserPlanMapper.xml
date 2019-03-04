@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.UserPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.UserPlan" >
+    <id column="plan_id" property="planId" jdbcType="BIGINT" />
+    <result column="plan_userid" property="planUserid" jdbcType="BIGINT" />
+    <result column="plan_starttime" property="planStarttime" jdbcType="TIMESTAMP" />
+    <result column="plan_endtime" property="planEndtime" jdbcType="TIMESTAMP" />
+    <result column="plan_createtime" property="planCreatetime" jdbcType="TIMESTAMP" />
+    <result column="plan_modifytime" property="planModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.UserPlan" extends="BaseResultMap" >
+    <result column="plan_title" property="planTitle" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="plan_content" property="planContent" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    plan_id, plan_userid, plan_starttime, plan_endtime, plan_createtime, plan_modifytime
+  </sql>
+  <sql id="Blob_Column_List" >
+    plan_title, plan_content
+  </sql>
+  
+  <insert id="AddNewMessage" parameterType="com.huban.pojo.UserPlan" >
+    insert into rb_userplan (plan_id, plan_userid, plan_starttime, 
+      plan_endtime, plan_createtime, plan_modifytime, 
+      plan_title, plan_content)
+    values (#{planId,jdbcType=BIGINT}, #{planUserid,jdbcType=BIGINT}, #{planStarttime,jdbcType=TIMESTAMP}, 
+      #{planEndtime,jdbcType=TIMESTAMP}, now(), now(), 
+      #{planTitle}, #{planContent})
+  </insert>
+ <select id="QueryNowList" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_userplan
+    where plan_userid = #{ID,jdbcType=INTEGER} AND to_days(plan_createtime) = to_days(#{Time})
+    ORDER BY plan_starttime ASC, plan_createtime ASC
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_userplan
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_userplan
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.UserPlan" >
+    insert into rb_userplan (plan_id, plan_userid, plan_starttime, 
+      plan_endtime, plan_createtime, plan_modifytime, 
+      plan_title, plan_content)
+    values (#{planId,jdbcType=BIGINT}, #{planUserid,jdbcType=BIGINT}, #{planStarttime,jdbcType=TIMESTAMP}, 
+      #{planEndtime,jdbcType=TIMESTAMP}, #{planCreatetime,jdbcType=TIMESTAMP}, #{planModifytime,jdbcType=TIMESTAMP}, 
+      #{planTitle}, #{planContent})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.UserPlan" >
+    insert into rb_userplan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="planUserid != null" >
+        plan_userid,
+      </if>
+      <if test="planStarttime != null" >
+        plan_starttime,
+      </if>
+      <if test="planEndtime != null" >
+        plan_endtime,
+      </if>
+      <if test="planCreatetime != null" >
+        plan_createtime,
+      </if>
+      <if test="planModifytime != null" >
+        plan_modifytime,
+      </if>
+      <if test="planTitle != null" >
+        plan_title,
+      </if>
+      <if test="planContent != null" >
+        plan_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="planId != null" >
+        #{planId,jdbcType=BIGINT},
+      </if>
+      <if test="planUserid != null" >
+        #{planUserid,jdbcType=BIGINT},
+      </if>
+      <if test="planStarttime != null" >
+        #{planStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndtime != null" >
+        #{planEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planCreatetime != null" >
+        #{planCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planModifytime != null" >
+        #{planModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planTitle != null" >
+        #{planTitle},
+      </if>
+      <if test="planContent != null" >
+        #{planContent},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.UserPlan" >
+    update rb_userplan
+    <set >
+      <if test="planUserid != null" >
+        plan_userid = #{planUserid,jdbcType=BIGINT},
+      </if>
+      <if test="planStarttime != null" >
+        plan_starttime = #{planStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndtime != null" >
+        plan_endtime = #{planEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planCreatetime != null" >
+        plan_createtime = #{planCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planModifytime != null" >
+        plan_modifytime = #{planModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planTitle != null" >
+        plan_title = #{planTitle},
+      </if>
+      <if test="planContent != null" >
+        plan_content = #{planContent},
+      </if>
+    </set>
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.UserPlan" >
+    update rb_userplan
+    set plan_userid = #{planUserid,jdbcType=BIGINT},
+      plan_starttime = #{planStarttime,jdbcType=TIMESTAMP},
+      plan_endtime = #{planEndtime,jdbcType=TIMESTAMP},
+      plan_createtime = #{planCreatetime,jdbcType=TIMESTAMP},
+      plan_modifytime = #{planModifytime,jdbcType=TIMESTAMP},
+      plan_title = #{planTitle},
+      plan_content = #{planContent}
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.UserPlan" >
+    update rb_userplan
+    set plan_userid = #{planUserid,jdbcType=BIGINT},
+      plan_starttime = #{planStarttime,jdbcType=TIMESTAMP},
+      plan_endtime = #{planEndtime,jdbcType=TIMESTAMP},
+      plan_createtime = #{planCreatetime,jdbcType=TIMESTAMP},
+      plan_modifytime = #{planModifytime,jdbcType=TIMESTAMP}
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </update>
+</mapper>

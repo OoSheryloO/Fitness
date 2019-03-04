@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.UserMapper">
+	<!-- 返回的map -->
+	<resultMap id="user" type="com.kjyl.pojo.User">
+		<result property="Id" column="User_Id" />
+		<result property="HeadIcon" column="User_HeadIcon" />
+		<result property="Name" column="User_Name" />
+		<result property="Sex" column="User_Sex" />
+		<result property="Phone" column="User_Phone" />
+		<result property="QQ" column="User_QQ" />
+		<result property="MicroBlog" column="User_MicroBlog" />
+		<result property="QRCode" column="User_QRCode" />
+		<result property="WeChatOpenID" column="User_WeChatOpenID" />
+		<result property="Password" column="User_Password" />
+		<result property="PayPassword" column="User_PayPassword" />
+		<result property="City" column="User_City" />
+		<result property="FitClub" column="User_FitClub" />
+		<result property="Status" column="User_Status" />
+		<result property="Delete" column="User_Delete" />
+		<result property="CreateTime" column="User_CreateTime" />
+		<result property="ModifyTime" column="User_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		User_Id, User_HeadIcon, User_Name, User_Sex, User_Phone, User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenID, User_Password, User_PayPassword, User_City, User_FitClub, User_Status, User_Delete, User_CreateTime, User_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND User_Id = #{Id}
+		</if>
+		<if test="HeadIcon!= null">
+				 AND User_HeadIcon = #{HeadIcon}
+		</if>
+		<if test="Name!= null">
+				 AND User_Name = #{Name}
+		</if>
+		<if test="Sex!= null">
+				 AND User_Sex = #{Sex}
+		</if>
+		<if test="Phone!= null">
+				 AND User_Phone = #{Phone}
+		</if>
+		<if test="QQ!= null">
+				 AND User_QQ = #{QQ}
+		</if>
+		<if test="MicroBlog!= null">
+				 AND User_MicroBlog = #{MicroBlog}
+		</if>
+		<if test="QRCode!= null">
+				 AND User_QRCode = #{QRCode}
+		</if>
+		<if test="WeChatOpenID!= null">
+				 AND User_WeChatOpenID = #{WeChatOpenID}
+		</if>
+		<if test="Password!= null">
+				 AND User_Password = #{Password}
+		</if>
+		<if test="PayPassword!= null">
+				 AND User_PayPassword = #{PayPassword}
+		</if>
+		<if test="City!= null">
+				 AND User_City = #{City}
+		</if>
+		<if test="FitClub!= null">
+				 AND User_FitClub = #{FitClub}
+		</if>
+		<if test="Status!= null">
+				 AND User_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND User_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND User_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND User_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="user" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_user
+		<where>
+			User_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="user" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_user
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_user
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.User"  useGeneratedKeys="true">
+		INSERT INTO fit_user( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{HeadIcon},
+				#{Name},
+				#{Sex},
+				#{Phone},
+				#{QQ},
+				#{MicroBlog},
+				#{QRCode},
+				#{WeChatOpenID},
+				#{Password},
+				#{PayPassword},
+				#{City},
+				#{FitClub},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.User">
+		UPDATE fit_user SET User_HeadIcon = #{HeadIcon}, User_Name = #{Name}, User_Sex = #{Sex}, User_Phone = #{Phone}, User_QQ = #{QQ}, User_MicroBlog = #{MicroBlog}, User_QRCode = #{QRCode}, User_WeChatOpenID = #{WeChatOpenID}, User_Password = #{Password}, User_PayPassword = #{PayPassword}, User_City = #{City}, User_FitClub = #{FitClub}, User_Status = #{Status}, User_Delete = #{Delete}, User_ModifyTime = now()
+		<where>
+			User_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.User">
+		UPDATE fit_user SET User_Status = 88 WHERE User_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.User">
+		UPDATE fit_user SET User_Status=  1 WHERE User_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.User">
+		UPDATE fit_user SET User_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.User">
+		UPDATE fit_user SET User_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

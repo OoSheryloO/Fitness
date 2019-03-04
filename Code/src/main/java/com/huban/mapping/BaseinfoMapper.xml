@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.BaseinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Baseinfo" >
+    <id column="BaseInfo_ID" property="baseinfoId" jdbcType="BIGINT" />
+    <result column="BaseInfo_Name" property="baseinfoName" jdbcType="VARCHAR" />
+    <result column="BaseInfo_Memo" property="baseinfoMemo" jdbcType="VARCHAR" />
+    <result column="BaseInfo_parentID" property="baseinfoParentid" jdbcType="BIGINT" />
+    <result column="BaseInfo_Status" property="baseinfoStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    BaseInfo_ID, BaseInfo_Name, BaseInfo_Memo, BaseInfo_parentID, BaseInfo_Status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_baseinfo
+    where BaseInfo_ID = #{baseinfoId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_baseinfo
+    where BaseInfo_ID = #{baseinfoId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Baseinfo" >
+    insert into rb_baseinfo (BaseInfo_ID, BaseInfo_Name, BaseInfo_Memo, 
+      BaseInfo_parentID, BaseInfo_Status)
+    values (#{baseinfoId,jdbcType=BIGINT}, #{baseinfoName,jdbcType=VARCHAR}, #{baseinfoMemo,jdbcType=VARCHAR}, 
+      #{baseinfoParentid,jdbcType=BIGINT}, #{baseinfoStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Baseinfo" >
+    insert into rb_baseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="baseinfoId != null" >
+        BaseInfo_ID,
+      </if>
+      <if test="baseinfoName != null" >
+        BaseInfo_Name,
+      </if>
+      <if test="baseinfoMemo != null" >
+        BaseInfo_Memo,
+      </if>
+      <if test="baseinfoParentid != null" >
+        BaseInfo_parentID,
+      </if>
+      <if test="baseinfoStatus != null" >
+        BaseInfo_Status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="baseinfoId != null" >
+        #{baseinfoId,jdbcType=BIGINT},
+      </if>
+      <if test="baseinfoName != null" >
+        #{baseinfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseinfoMemo != null" >
+        #{baseinfoMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="baseinfoParentid != null" >
+        #{baseinfoParentid,jdbcType=BIGINT},
+      </if>
+      <if test="baseinfoStatus != null" >
+        #{baseinfoStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Baseinfo" >
+    update rb_baseinfo
+    <set >
+      <if test="baseinfoName != null" >
+        BaseInfo_Name = #{baseinfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseinfoMemo != null" >
+        BaseInfo_Memo = #{baseinfoMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="baseinfoParentid != null" >
+        BaseInfo_parentID = #{baseinfoParentid,jdbcType=BIGINT},
+      </if>
+      <if test="baseinfoStatus != null" >
+        BaseInfo_Status = #{baseinfoStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BaseInfo_ID = #{baseinfoId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Baseinfo" >
+    update rb_baseinfo
+    set BaseInfo_Name = #{baseinfoName,jdbcType=VARCHAR},
+      BaseInfo_Memo = #{baseinfoMemo,jdbcType=VARCHAR},
+      BaseInfo_parentID = #{baseinfoParentid,jdbcType=BIGINT},
+      BaseInfo_Status = #{baseinfoStatus,jdbcType=INTEGER}
+    where BaseInfo_ID = #{baseinfoId,jdbcType=BIGINT}
+  </update>
+</mapper>

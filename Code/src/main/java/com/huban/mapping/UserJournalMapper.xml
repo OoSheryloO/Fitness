@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.UserJournalMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.UserJournal" >
+    <id column="journal_id" property="journalId" jdbcType="BIGINT" />
+    <result column="journal_userid" property="journalUserid" jdbcType="BIGINT" />
+    <result column="journal_share" property="journalShare" jdbcType="INTEGER" />
+    <result column="journal_version" property="journalVersion" jdbcType="INTEGER" />
+    <result column="journal_status" property="journalStatus" jdbcType="INTEGER" />
+    <result column="journal_standby" property="journalStandby" jdbcType="VARCHAR" />
+    <result column="journal_createtime" property="journalCreatetime" jdbcType="TIMESTAMP" />
+    <result column="journal_modifytime" property="journalModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.UserJournal" extends="BaseResultMap" >
+    <result column="journal_mood" property="journalMood" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_weather" property="journalWeather" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_title" property="journalTitle" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_content" property="journalContent" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_adscript" property="journalAdscript" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    journal_id, journal_userid, journal_share, journal_version, journal_status, journal_standby, 
+    journal_createtime, journal_modifytime
+  </sql>
+  <sql id="Blob_Column_List" >
+    journal_mood, journal_weather, journal_title, journal_content, journal_adscript
+  </sql>
+  <sql id="wheresql" >
+ 	where
+ 		1=1
+ 		<if test="UID != null" >
+       	 AND journal_userid = #{UID,jdbcType=BIGINT}
+    	</if>
+    	<if test="ID != null" >
+       	 AND journal_id = #{ID,jdbcType=BIGINT}
+    	</if>
+    	<if test="Rand != null" >
+       	 AND #{Rand} = #{Rand}
+    	</if>
+    	 AND journal_status &lt; 88 
+    	 ORDER BY journal_createtime DESC
+    	<if test="start != null and size != null" >
+       	 LIMIT #{start},#{size}
+    	</if>
+  </sql>
+  
+  <insert id="AddNewMessage" parameterType="com.huban.pojo.UserJournal" >
+    insert into rb_userjournal (journal_id, journal_userid, journal_share, 
+      journal_version, journal_status, journal_standby, 
+      journal_createtime, journal_modifytime, 
+      journal_mood, journal_weather, 
+      journal_title, journal_content, 
+      journal_adscript)
+    values (#{journalId,jdbcType=BIGINT}, #{journalUserid,jdbcType=BIGINT}, 0, 
+      0, #{journalStatus,jdbcType=INTEGER}, #{journalStandby,jdbcType=VARCHAR}, 
+      now(), now(), 
+      #{journalMood}, #{journalWeather}, 
+      #{journalTitle}, #{journalContent}, 
+      #{journalAdscript})
+  </insert>
+  <select id="QueryNowCount" resultType="java.lang.Integer" parameterType="map" >
+    select 
+    count(*)
+    from rb_userjournal
+    where journal_userid = #{ID,jdbcType=INTEGER} AND to_days(journal_createtime) = to_days(now())
+    AND journal_status &lt; 88
+  </select>
+  <select id="QueryList" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    <!-- journal_mood, journal_weather, journal_title -->
+    from rb_userjournal
+    <include refid="wheresql" />
+  </select>
+  
+  <resultMap id="QueryLstJournalModelResultMap" type="com.huban.construct.JournalModel" >
+    <result column="User_Name" property="Name" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="User_HeadIcon" property="IconUrl" jdbcType="BIGINT" />
+    <result column="journal_mood" property="Mood" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_weather" property="Weather" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_title" property="Title" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_content" property="Content" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_adscript" property="Adscript" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="journal_status" property="Status" />
+    <result column="journal_share" property="ShareCount" />
+    <result column="journal_version" property="Version" />
+    <result column="journal_createtime" property="Createtime" />
+  </resultMap>
+  <select id="QueryLstJournalModel" resultMap="QueryLstJournalModelResultMap" parameterType="map" >
+	SELECT
+		User_Name,
+		User_HeadIcon,
+		journal_mood,
+		journal_weather,
+		journal_title,
+		journal_content,
+		journal_adscript,
+		journal_status,
+		journal_share,
+		journal_version,
+		journal_createtime
+	FROM
+		rb_user AS rb,
+		rb_userinfo AS rui,
+		rb_userjournal AS ruj
+	WHERE
+		1 = 1
+		<if test="NumberLike != null" >
+       	 AND userinfo_number LIKE #{NumberLike}
+    	</if>
+    	<if test="DayTime != null and DayTime != ''">
+    		<![CDATA[
+     			AND date_format(journal_createtime, '%Y-%m-%d') = date_format(#{DayTime},'%Y-%m-%d')
+       		]]>
+    	</if>
+    	<if test="School != null">
+    	 AND userinfo_address = #{School}
+    	</if>
+    	<if test="Grade != null" >
+       	 AND userinfo_grade = #{Grade}
+    	</if>
+    	<if test="Class != null" >
+       	 AND userinfo_class = #{Class}
+    	</if>
+	AND journal_userid = userinfo_userid
+	AND User_Id = userinfo_userid
+	AND journal_status = 0 AND userinfo_identity = 2 AND User_Delete = 0
+	<if test="start != null and size != null" >
+       	 LIMIT #{start},#{size}
+    	</if>
+  </select>
+  
+  <update id="UpdateMessage" parameterType="com.huban.pojo.UserJournalRecord" >
+    update rb_userjournal
+    <set >
+      <if test="journalShare != null" >
+        journal_share = #{journalShare,jdbcType=INTEGER},
+      </if>
+      <if test="journalVersion != null" >
+        journal_version = journal_version + 1,
+      </if>
+      <if test="journalStatus != null" >
+        journal_status = #{journalStatus,jdbcType=INTEGER},
+      </if>
+      <if test="journalStandby != null" >
+        journal_standby = #{journalStandby,jdbcType=VARCHAR},
+      </if>
+      <if test="journalMood != null" >
+        journal_mood = #{journalMood,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="journalWeather != null" >
+        journal_weather = #{journalWeather,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="journalTitle != null" >
+        journal_title = #{journalTitle,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="journalContent != null" >
+        journal_content = #{journalContent,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="journalAdscript != null" >
+        journal_adscript = #{journalAdscript,jdbcType=LONGVARBINARY},
+      </if>
+      journal_modifytime = now()
+    </set>
+    where journal_id = #{journalId,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

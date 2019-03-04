@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Goods" >
+    <id column="goods_Id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_HeadIcon" property="goodsHeadicon" jdbcType="VARCHAR" />
+    <result column="goods_Publisher" property="goodsPublisher" jdbcType="BIGINT" />
+    <result column="goods_Prize" property="goodsPrize" jdbcType="INTEGER" />
+    <result column="goods_MinPrize" property="goodsMinprize" jdbcType="INTEGER" />
+    <result column="goods_MaxPrize" property="goodsMaxprize" jdbcType="INTEGER" />
+    <result column="goods_Remind" property="goodsRemind" jdbcType="VARCHAR" />
+    <result column="goods_AuctionStart" property="goodsAuctionstart" jdbcType="TIMESTAMP" />
+    <result column="goods_AuctionEnd" property="goodsAuctionend" jdbcType="TIMESTAMP" />
+    <result column="goods_Url" property="goodsUrl" jdbcType="VARCHAR" />
+    <result column="goods_Status" property="goodsStatus" jdbcType="INTEGER" />
+    <result column="goods_Type" property="goodsType" jdbcType="INTEGER" />
+    <result column="goods_Delete" property="goodsDelete" jdbcType="INTEGER" />
+    <result column="goods_CreateTime" property="goodsCreatetime" jdbcType="TIMESTAMP" />
+    <result column="goods_ModifyTime" property="goodsModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.Goods" extends="BaseResultMap" >
+    <result column="goods_Name" property="goodsName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="goods_Information" property="goodsInformation" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  
+  <!-- V2 SQL -->
+    <sql id="WhereSql">
+    WHERE
+    	   1 = 1
+      <if test="ID != null" >
+        AND goods_Id = #{ID}
+        </if>
+      <if test="UID != null" >
+        AND goods_Publisher = #{UID}
+        </if>
+      <if test="KeyWord != null" >
+        AND goods_Name LIKE CONCAT(CONCAT('%', #{KeyWord}), '%')
+        </if>
+      <if test="Type != null" >
+        AND goods_Type = #{Type}
+        </if>
+      <if test="Rand != null" >
+        AND #{Rand} = #{Rand}
+        </if>
+    </sql>
+    <sql id="FiltrateSql">
+    	  AND goods_Delete = 0  
+    </sql>
+    <sql id="SpecialSql">
+    	<if test="start != null and size != null" >
+        LIMIT #{start},#{size}
+        </if>
+    </sql>
+  
+  <insert id="IncreaseMessaga" parameterType="com.huban.pojo.Goods" >
+    insert into rb_goods (goods_Id, goods_HeadIcon, goods_Publisher, 
+      goods_Prize, goods_MinPrize, goods_MaxPrize, 
+      goods_Remind, goods_AuctionStart, goods_AuctionEnd, 
+      goods_Url, goods_Status, goods_Type, 
+      goods_Delete, goods_CreateTime, goods_ModifyTime, 
+      goods_Name, goods_Information
+      )
+    values (#{goodsId,jdbcType=BIGINT}, #{goodsHeadicon,jdbcType=VARCHAR}, #{goodsPublisher,jdbcType=BIGINT}, 
+      #{goodsPrize,jdbcType=INTEGER}, #{goodsMinprize,jdbcType=INTEGER}, #{goodsMaxprize,jdbcType=INTEGER}, 
+      #{goodsRemind,jdbcType=VARCHAR}, #{goodsAuctionstart,jdbcType=TIMESTAMP}, #{goodsAuctionend,jdbcType=TIMESTAMP}, 
+      #{goodsUrl,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER}, #{goodsType,jdbcType=INTEGER}, 
+      0, now(), now(), 
+      #{goodsName}, #{goodsInformation}
+      )
+  </insert>
+  
+  <select id="LstSearchByCondition" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_goods
+    <include refid="WhereSql" />
+    <include refid="FiltrateSql" />
+    <include refid="SpecialSql" />
+  </select>
+  
+  <select id="SearchByCondition" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_goods
+    <include refid="WhereSql" />
+    <include refid="FiltrateSql" />
+    <include refid="SpecialSql" />
+  </select>
+  
+  <update id="ModifyMessage" parameterType="com.huban.pojo.Goods" >
+    update rb_goods
+    <set >
+      <if test="goodsHeadicon != null" >
+        goods_HeadIcon = #{goodsHeadicon,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPublisher != null" >
+        goods_Publisher = #{goodsPublisher,jdbcType=BIGINT},
+      </if>
+      <if test="goodsPrize != null" >
+        goods_Prize = #{goodsPrize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMinprize != null" >
+        goods_MinPrize = #{goodsMinprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMaxprize != null" >
+        goods_MaxPrize = #{goodsMaxprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsRemind != null" >
+        goods_Remind = #{goodsRemind,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAuctionstart != null" >
+        goods_AuctionStart = #{goodsAuctionstart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsAuctionend != null" >
+        goods_AuctionEnd = #{goodsAuctionend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUrl != null" >
+        goods_Url = #{goodsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStatus != null" >
+        goods_Status = #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null" >
+        goods_Type = #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDelete != null" >
+        goods_Delete = #{goodsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        goods_Name = #{goodsName},
+      </if>
+      <if test="goodsInformation != null" >
+        goods_Information = #{goodsInformation},
+      </if>
+      goods_ModifyTime = now()
+    </set>
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </update>
+  
+  
+  
+  <sql id="Base_Column_List" >
+    goods_Id, goods_HeadIcon, goods_Publisher, goods_Prize, goods_MinPrize, goods_MaxPrize, 
+    goods_Remind, goods_AuctionStart, goods_AuctionEnd, goods_Url, goods_Status, goods_Type, 
+    goods_Delete, goods_CreateTime, goods_ModifyTime
+  </sql>
+  <sql id="Blob_Column_List" >
+    goods_Name, goods_Information
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_goods
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_goods
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Goods" >
+    insert into rb_goods (goods_Id, goods_HeadIcon, goods_Publisher, 
+      goods_Prize, goods_MinPrize, goods_MaxPrize, 
+      goods_Remind, goods_AuctionStart, goods_AuctionEnd, 
+      goods_Url, goods_Status, goods_Type, 
+      goods_Delete, goods_CreateTime, goods_ModifyTime, 
+      goods_Name, goods_Information
+      )
+    values (#{goodsId,jdbcType=BIGINT}, #{goodsHeadicon,jdbcType=VARCHAR}, #{goodsPublisher,jdbcType=BIGINT}, 
+      #{goodsPrize,jdbcType=INTEGER}, #{goodsMinprize,jdbcType=INTEGER}, #{goodsMaxprize,jdbcType=INTEGER}, 
+      #{goodsRemind,jdbcType=VARCHAR}, #{goodsAuctionstart,jdbcType=TIMESTAMP}, #{goodsAuctionend,jdbcType=TIMESTAMP}, 
+      #{goodsUrl,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER}, #{goodsType,jdbcType=INTEGER}, 
+      #{goodsDelete,jdbcType=INTEGER}, #{goodsCreatetime,jdbcType=TIMESTAMP}, #{goodsModifytime,jdbcType=TIMESTAMP}, 
+      #{goodsName,jdbcType=LONGVARBINARY}, #{goodsInformation,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Goods" >
+    insert into rb_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_Id,
+      </if>
+      <if test="goodsHeadicon != null" >
+        goods_HeadIcon,
+      </if>
+      <if test="goodsPublisher != null" >
+        goods_Publisher,
+      </if>
+      <if test="goodsPrize != null" >
+        goods_Prize,
+      </if>
+      <if test="goodsMinprize != null" >
+        goods_MinPrize,
+      </if>
+      <if test="goodsMaxprize != null" >
+        goods_MaxPrize,
+      </if>
+      <if test="goodsRemind != null" >
+        goods_Remind,
+      </if>
+      <if test="goodsAuctionstart != null" >
+        goods_AuctionStart,
+      </if>
+      <if test="goodsAuctionend != null" >
+        goods_AuctionEnd,
+      </if>
+      <if test="goodsUrl != null" >
+        goods_Url,
+      </if>
+      <if test="goodsStatus != null" >
+        goods_Status,
+      </if>
+      <if test="goodsType != null" >
+        goods_Type,
+      </if>
+      <if test="goodsDelete != null" >
+        goods_Delete,
+      </if>
+      <if test="goodsCreatetime != null" >
+        goods_CreateTime,
+      </if>
+      <if test="goodsModifytime != null" >
+        goods_ModifyTime,
+      </if>
+      <if test="goodsName != null" >
+        goods_Name,
+      </if>
+      <if test="goodsInformation != null" >
+        goods_Information,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsHeadicon != null" >
+        #{goodsHeadicon,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPublisher != null" >
+        #{goodsPublisher,jdbcType=BIGINT},
+      </if>
+      <if test="goodsPrize != null" >
+        #{goodsPrize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMinprize != null" >
+        #{goodsMinprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMaxprize != null" >
+        #{goodsMaxprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsRemind != null" >
+        #{goodsRemind,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAuctionstart != null" >
+        #{goodsAuctionstart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsAuctionend != null" >
+        #{goodsAuctionend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUrl != null" >
+        #{goodsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStatus != null" >
+        #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDelete != null" >
+        #{goodsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCreatetime != null" >
+        #{goodsCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsModifytime != null" >
+        #{goodsModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="goodsInformation != null" >
+        #{goodsInformation,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Goods" >
+    update rb_goods
+    <set >
+      <if test="goodsHeadicon != null" >
+        goods_HeadIcon = #{goodsHeadicon,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPublisher != null" >
+        goods_Publisher = #{goodsPublisher,jdbcType=BIGINT},
+      </if>
+      <if test="goodsPrize != null" >
+        goods_Prize = #{goodsPrize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMinprize != null" >
+        goods_MinPrize = #{goodsMinprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsMaxprize != null" >
+        goods_MaxPrize = #{goodsMaxprize,jdbcType=INTEGER},
+      </if>
+      <if test="goodsRemind != null" >
+        goods_Remind = #{goodsRemind,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAuctionstart != null" >
+        goods_AuctionStart = #{goodsAuctionstart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsAuctionend != null" >
+        goods_AuctionEnd = #{goodsAuctionend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsUrl != null" >
+        goods_Url = #{goodsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStatus != null" >
+        goods_Status = #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null" >
+        goods_Type = #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDelete != null" >
+        goods_Delete = #{goodsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCreatetime != null" >
+        goods_CreateTime = #{goodsCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsModifytime != null" >
+        goods_ModifyTime = #{goodsModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsName != null" >
+        goods_Name = #{goodsName,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="goodsInformation != null" >
+        goods_Information = #{goodsInformation,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.Goods" >
+    update rb_goods
+    set goods_HeadIcon = #{goodsHeadicon,jdbcType=VARCHAR},
+      goods_Publisher = #{goodsPublisher,jdbcType=BIGINT},
+      goods_Prize = #{goodsPrize,jdbcType=INTEGER},
+      goods_MinPrize = #{goodsMinprize,jdbcType=INTEGER},
+      goods_MaxPrize = #{goodsMaxprize,jdbcType=INTEGER},
+      goods_Remind = #{goodsRemind,jdbcType=VARCHAR},
+      goods_AuctionStart = #{goodsAuctionstart,jdbcType=TIMESTAMP},
+      goods_AuctionEnd = #{goodsAuctionend,jdbcType=TIMESTAMP},
+      goods_Url = #{goodsUrl,jdbcType=VARCHAR},
+      goods_Status = #{goodsStatus,jdbcType=INTEGER},
+      goods_Type = #{goodsType,jdbcType=INTEGER},
+      goods_Delete = #{goodsDelete,jdbcType=INTEGER},
+      goods_CreateTime = #{goodsCreatetime,jdbcType=TIMESTAMP},
+      goods_ModifyTime = #{goodsModifytime,jdbcType=TIMESTAMP},
+      goods_Name = #{goodsName,jdbcType=LONGVARBINARY},
+      goods_Information = #{goodsInformation,jdbcType=LONGVARBINARY}
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Goods" >
+    update rb_goods
+    set goods_HeadIcon = #{goodsHeadicon,jdbcType=VARCHAR},
+      goods_Publisher = #{goodsPublisher,jdbcType=BIGINT},
+      goods_Prize = #{goodsPrize,jdbcType=INTEGER},
+      goods_MinPrize = #{goodsMinprize,jdbcType=INTEGER},
+      goods_MaxPrize = #{goodsMaxprize,jdbcType=INTEGER},
+      goods_Remind = #{goodsRemind,jdbcType=VARCHAR},
+      goods_AuctionStart = #{goodsAuctionstart,jdbcType=TIMESTAMP},
+      goods_AuctionEnd = #{goodsAuctionend,jdbcType=TIMESTAMP},
+      goods_Url = #{goodsUrl,jdbcType=VARCHAR},
+      goods_Status = #{goodsStatus,jdbcType=INTEGER},
+      goods_Type = #{goodsType,jdbcType=INTEGER},
+      goods_Delete = #{goodsDelete,jdbcType=INTEGER},
+      goods_CreateTime = #{goodsCreatetime,jdbcType=TIMESTAMP},
+      goods_ModifyTime = #{goodsModifytime,jdbcType=TIMESTAMP}
+    where goods_Id = #{goodsId,jdbcType=BIGINT}
+  </update>
+</mapper>

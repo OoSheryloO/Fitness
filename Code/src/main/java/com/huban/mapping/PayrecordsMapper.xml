@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.PayrecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Payrecords" >
+    <id column="PayRecord_ID" property="payrecordId" jdbcType="BIGINT" />
+    <result column="PayRecord_UserID" property="payrecordUserid" jdbcType="BIGINT" />
+    <result column="PayRecord_BelongId" property="payrecordBelongid" jdbcType="BIGINT" />
+    <result column="PayRecord_OrderID" property="payrecordOrderid" jdbcType="BIGINT" />
+    <result column="PayRecord_PayMethod" property="payrecordPaymethod" jdbcType="VARCHAR" />
+    <result column="PayRecord_PayReason" property="payrecordPayreason" jdbcType="VARCHAR" />
+    <result column="PayRecord_Money" property="payrecordMoney" jdbcType="DECIMAL" />
+    <result column="PayRecord_Tarde" property="payrecordTarde" jdbcType="TINYINT" />
+    <result column="PayRecord_CreateTime" property="payrecordCreatetime" jdbcType="TIMESTAMP" />
+    <result column="PayRecord_ModifyTime" property="payrecordModifytime" jdbcType="TIMESTAMP" />
+    <result column="PayRecord_Version" property="payrecordVersion" jdbcType="INTEGER" />
+    <result column="PayRecord_Status" property="payrecordStatus" jdbcType="TINYINT" />
+    <result column="PayRecord_Deleted" property="payrecordDeleted" jdbcType="TINYINT" />
+    <result column="PayRecord_FromUserID" property="payrecordFromuserid" jdbcType="BIGINT" />
+    <result column="PayRecord_TypeId" property="payrecordTypeid" jdbcType="BIGINT" />
+    <result column="Picture_ID" property="pictureId" jdbcType="TINYINT" />
+    <result column="Picture_Deleted" property="pictureDeleted" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PayRecord_ID, PayRecord_UserID,PayRecord_BelongId, PayRecord_OrderID, PayRecord_PayMethod, PayRecord_PayReason, 
+    PayRecord_Money, PayRecord_Tarde, PayRecord_CreateTime, PayRecord_ModifyTime, PayRecord_Version, 
+    PayRecord_Status, PayRecord_Deleted, PayRecord_FromUserID,PayRecord_TypeId, Picture_ID, Picture_Deleted
+  </sql>
+  <!-- 自定义sql -->
+  <select id="payMessage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_payrecords
+    where PayRecord_UserID = #{userId,jdbcType=BIGINT}
+    AND PayRecord_Deleted = 0
+    AND PayRecord_Status = 0
+    ORDER BY PayRecord_CreateTime DESC
+    LIMIT #{start},#{size}
+  </select>
+  <!-- 插入记录 -->
+  <insert id="addPayMessage" parameterType="com.huban.pojo.Payrecords" >
+    insert into rb_payrecords (PayRecord_ID, PayRecord_UserID,PayRecord_BelongId, PayRecord_OrderID, 
+      PayRecord_PayMethod, PayRecord_PayReason, 
+      PayRecord_Money, PayRecord_Tarde, PayRecord_CreateTime, 
+      PayRecord_ModifyTime, PayRecord_Version, 
+      PayRecord_Status, PayRecord_Deleted, PayRecord_FromUserID, PayRecord_TypeId,
+      Picture_ID, Picture_Deleted)
+    values (#{payrecordId,jdbcType=BIGINT}, #{payrecordUserid,jdbcType=BIGINT},#{payrecordBelongid,jdbcType=BIGINT} ,#{payrecordOrderid,jdbcType=BIGINT}, 
+      #{payrecordPaymethod,jdbcType=VARCHAR}, #{payrecordPayreason,jdbcType=VARCHAR}, 
+      #{payrecordMoney,jdbcType=DECIMAL}, #{payrecordTarde,jdbcType=TINYINT}, now(), 
+      now(), #{payrecordVersion,jdbcType=INTEGER}, 
+      #{payrecordStatus,jdbcType=TINYINT}, 0, #{payrecordFromuserid,jdbcType=BIGINT}, #{payrecordTypeid,jdbcType=BIGINT},
+      #{pictureId,jdbcType=TINYINT}, 0)
+  </insert>
+  <!-- 查询视频付费信息 -->
+  <select id="payVideo" resultType="java.lang.Integer" parameterType="map" >
+    select 
+    count(*)
+    from rb_payrecords
+    WHERE PayRecord_UserID = #{userId,jdbcType=BIGINT}
+    AND PayRecord_BelongId = #{videoId,jdbcType=BIGINT}
+    AND PayRecord_TypeId = 0<!-- 视频所属id -->
+    AND PayRecord_Deleted = 0
+    AND PayRecord_Status = 0
+  </select>
+  <select id="embodyquery" resultType="java.lang.Integer" parameterType="map" >
+    select 
+    count(*)
+    from rb_payrecords
+    where PayRecord_ID = #{Id,jdbcType=BIGINT}
+    AND PayRecord_Deleted = 0
+    AND PayRecord_Status = 0
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_payrecords
+    where PayRecord_ID = #{payrecordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_payrecords
+    where PayRecord_ID = #{payrecordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Payrecords" >
+    insert into rb_payrecords (PayRecord_ID, PayRecord_UserID,PayRecord_BelongId, PayRecord_OrderID, 
+      PayRecord_PayMethod, PayRecord_PayReason, 
+      PayRecord_Money, PayRecord_Tarde, PayRecord_CreateTime, 
+      PayRecord_ModifyTime, PayRecord_Version, 
+      PayRecord_Status, PayRecord_Deleted, PayRecord_FromUserID,PayRecord_TypeId
+      Picture_ID, Picture_Deleted)
+    values (#{payrecordId,jdbcType=BIGINT}, #{payrecordUserid,jdbcType=BIGINT}, #{payrecordBelongid,jdbcType=BIGINT},#{payrecordOrderid,jdbcType=BIGINT}, 
+      #{payrecordPaymethod,jdbcType=VARCHAR}, #{payrecordPayreason,jdbcType=VARCHAR}, 
+      #{payrecordMoney,jdbcType=DECIMAL}, #{payrecordTarde,jdbcType=TINYINT}, #{payrecordCreatetime,jdbcType=TIMESTAMP}, 
+      #{payrecordModifytime,jdbcType=TIMESTAMP}, #{payrecordVersion,jdbcType=INTEGER}, 
+      #{payrecordStatus,jdbcType=TINYINT}, #{payrecordDeleted,jdbcType=TINYINT}, #{payrecordFromuserid,jdbcType=BIGINT},#{payrecordTypeid,jdbcType=BIGINT} 
+      #{pictureId,jdbcType=TINYINT}, #{pictureDeleted,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Payrecords" >
+    insert into rb_payrecords
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payrecordId != null" >
+        PayRecord_ID,
+      </if>
+      <if test="payrecordUserid != null" >
+        PayRecord_UserID,
+      </if>
+      <if test="payrecordBelongid != null">
+      	PayRecord_BelongId,
+      </if>
+      <if test="payrecordOrderid != null" >
+        PayRecord_OrderID,
+      </if>
+      <if test="payrecordPaymethod != null" >
+        PayRecord_PayMethod,
+      </if>
+      <if test="payrecordPayreason != null" >
+        PayRecord_PayReason,
+      </if>
+      <if test="payrecordMoney != null" >
+        PayRecord_Money,
+      </if>
+      <if test="payrecordTarde != null" >
+        PayRecord_Tarde,
+      </if>
+      <if test="payrecordCreatetime != null" >
+        PayRecord_CreateTime,
+      </if>
+      <if test="payrecordModifytime != null" >
+        PayRecord_ModifyTime,
+      </if>
+      <if test="payrecordVersion != null" >
+        PayRecord_Version,
+      </if>
+      <if test="payrecordStatus != null" >
+        PayRecord_Status,
+      </if>
+      <if test="payrecordDeleted != null" >
+        PayRecord_Deleted,
+      </if>
+      <if test="payrecordFromuserid != null" >
+        PayRecord_FromUserID,
+      </if>
+      <if test="payrecordTypeid != null">
+      	PayRecord_TypeId,
+      </if>
+      <if test="pictureId != null" >
+        Picture_ID,
+      </if>
+      <if test="pictureDeleted != null" >
+        Picture_Deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payrecordId != null" >
+        #{payrecordId,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordUserid != null" >
+        #{payrecordUserid,jdbcType=BIGINT},
+      </if>
+       <if test="payrecordBelongid != null">
+      	#{payrecordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordOrderid != null" >
+        #{payrecordOrderid,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordPaymethod != null" >
+        #{payrecordPaymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="payrecordPayreason != null" >
+        #{payrecordPayreason,jdbcType=VARCHAR},
+      </if>
+      <if test="payrecordMoney != null" >
+        #{payrecordMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payrecordTarde != null" >
+        #{payrecordTarde,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordCreatetime != null" >
+        #{payrecordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payrecordModifytime != null" >
+        #{payrecordModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payrecordVersion != null" >
+        #{payrecordVersion,jdbcType=INTEGER},
+      </if>
+      <if test="payrecordStatus != null" >
+        #{payrecordStatus,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordDeleted != null" >
+        #{payrecordDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordFromuserid != null" >
+        #{payrecordFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="PayRecord_TypeId != null" >
+        #{payrecordtypeid,jdbcType=BIGINT},
+      </if> 
+      <if test="pictureId != null" >
+        #{pictureId,jdbcType=TINYINT},
+      </if>
+      <if test="pictureDeleted != null" >
+        #{pictureDeleted,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Payrecords" >
+    update rb_payrecords
+    <set >
+      <if test="payrecordUserid != null" >
+        PayRecord_UserID = #{payrecordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordOrderid != null" >
+        PayRecord_OrderID = #{payrecordOrderid,jdbcType=BIGINT},
+      </if>
+       <if test="payrecordBelongid != null">
+      	PayRecord_BelongId = #{payrecordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordPaymethod != null" >
+        PayRecord_PayMethod = #{payrecordPaymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="payrecordPayreason != null" >
+        PayRecord_PayReason = #{payrecordPayreason,jdbcType=VARCHAR},
+      </if>
+      <if test="payrecordMoney != null" >
+        PayRecord_Money = #{payrecordMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payrecordTarde != null" >
+        PayRecord_Tarde = #{payrecordTarde,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordCreatetime != null" >
+        PayRecord_CreateTime = #{payrecordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payrecordModifytime != null" >
+        PayRecord_ModifyTime = #{payrecordModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payrecordVersion != null" >
+        PayRecord_Version = #{payrecordVersion,jdbcType=INTEGER},
+      </if>
+      <if test="payrecordStatus != null" >
+        PayRecord_Status = #{payrecordStatus,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordDeleted != null" >
+        PayRecord_Deleted = #{payrecordDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="payrecordFromuserid != null" >
+        PayRecord_FromUserID = #{payrecordFromuserid,jdbcType=BIGINT},
+      </if>
+      <if test="payrecordTypeid != null" >
+        PayRecord_TypeId = #{payrecordTypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pictureId != null" >
+        Picture_ID = #{pictureId,jdbcType=TINYINT},
+      </if>
+      <if test="pictureDeleted != null" >
+        Picture_Deleted = #{pictureDeleted,jdbcType=TINYINT},
+      </if>
+    </set>
+    where PayRecord_ID = #{payrecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Payrecords" >
+    update rb_payrecords
+    set PayRecord_UserID = #{payrecordUserid,jdbcType=BIGINT},
+      PayRecord_BelongId = #{payrecordBelongid,jdbcType=BIGINT},
+      PayRecord_OrderID = #{payrecordOrderid,jdbcType=BIGINT},
+      PayRecord_PayMethod = #{payrecordPaymethod,jdbcType=VARCHAR},
+      PayRecord_PayReason = #{payrecordPayreason,jdbcType=VARCHAR},
+      PayRecord_Money = #{payrecordMoney,jdbcType=DECIMAL},
+      PayRecord_Tarde = #{payrecordTarde,jdbcType=TINYINT},
+      PayRecord_CreateTime = #{payrecordCreatetime,jdbcType=TIMESTAMP},
+      PayRecord_ModifyTime = #{payrecordModifytime,jdbcType=TIMESTAMP},
+      PayRecord_Version = #{payrecordVersion,jdbcType=INTEGER},
+      PayRecord_Status = #{payrecordStatus,jdbcType=TINYINT},
+      PayRecord_Deleted = #{payrecordDeleted,jdbcType=TINYINT},
+      PayRecord_FromUserID = #{payrecordFromuserid,jdbcType=BIGINT},
+      PayRecord_TypeId = #{payrecordTypeid,jdbcType=BIGINT},
+      Picture_ID = #{pictureId,jdbcType=TINYINT},
+      Picture_Deleted = #{pictureDeleted,jdbcType=TINYINT}
+    where PayRecord_ID = #{payrecordId,jdbcType=BIGINT}
+  </update>
+</mapper>

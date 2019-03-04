@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.AdminMapper">
+	<!-- 返回的map -->
+	<resultMap id="admin" type="com.kjyl.pojo.Admin">
+		<result property="Id" column="Admin_Id" />
+		<result property="Name" column="Admin_Name" />
+		<result property="PassWord" column="Admin_PassWord" />
+		<result property="NickName" column="Admin_NickName" />
+		<result property="Image" column="Admin_Image" />
+		<result property="Phone" column="Admin_Phone" />
+		<result property="Level" column="Admin_Level" />
+		<result property="Version" column="Admin_Version" />
+		<result property="Memo" column="Admin_Memo" />
+		<result property="ParentId" column="Admin_ParentId" />
+		<result property="AreaId" column="Admin_AreaId" />
+		<result property="Status" column="Admin_Status" />
+		<result property="Delete" column="Admin_Delete" />
+		<result property="CreateTime" column="Admin_CreateTime" />
+		<result property="ModifyTime" column="Admin_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Admin_Id, Admin_Name, Admin_PassWord, Admin_NickName, Admin_Image, Admin_Phone, Admin_Level, Admin_Version, Admin_Memo, Admin_ParentId, Admin_AreaId, Admin_Status, Admin_Delete, Admin_CreateTime, Admin_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Admin_Id = #{Id}
+		</if>
+		<if test="Name!= null">
+				 AND Admin_Name = #{Name}
+		</if>
+		<if test="PassWord!= null">
+				 AND Admin_PassWord = #{PassWord}
+		</if>
+		<if test="NickName!= null">
+				 AND Admin_NickName = #{NickName}
+		</if>
+		<if test="Image!= null">
+				 AND Admin_Image = #{Image}
+		</if>
+		<if test="Phone!= null">
+				 AND Admin_Phone = #{Phone}
+		</if>
+		<if test="Level!= null">
+				 AND Admin_Level = #{Level}
+		</if>
+		<if test="Version!= null">
+				 AND Admin_Version = #{Version}
+		</if>
+		<if test="Memo!= null">
+				 AND Admin_Memo = #{Memo}
+		</if>
+		<if test="ParentId!= null">
+				 AND Admin_ParentId = #{ParentId}
+		</if>
+		<if test="AreaId!= null">
+				 AND Admin_AreaId = #{AreaId}
+		</if>
+		<if test="Status!= null">
+				 AND Admin_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Admin_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Admin_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Admin_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="admin" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_admin
+		<where>
+			Admin_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="admin" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_admin
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_admin
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Admin"  useGeneratedKeys="true">
+		INSERT INTO fit_admin( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{Name},
+				#{PassWord},
+				#{NickName},
+				#{Image},
+				#{Phone},
+				#{Level},
+				#{Version},
+				#{Memo},
+				#{ParentId},
+				#{AreaId},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Admin">
+		UPDATE fit_admin SET Admin_Name = #{Name}, Admin_PassWord = #{PassWord}, Admin_NickName = #{NickName}, Admin_Image = #{Image}, Admin_Phone = #{Phone}, Admin_Level = #{Level}, Admin_Version = #{Version}, Admin_Memo = #{Memo}, Admin_ParentId = #{ParentId}, Admin_AreaId = #{AreaId}, Admin_Status = #{Status}, Admin_Delete = #{Delete}, Admin_ModifyTime = now()
+		<where>
+			Admin_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Admin">
+		UPDATE fit_admin SET Admin_Status = 88 WHERE Admin_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Admin">
+		UPDATE fit_admin SET Admin_Status=  1 WHERE Admin_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Admin">
+		UPDATE fit_admin SET Admin_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Admin">
+		UPDATE fit_admin SET Admin_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.PictureMapper">
+	<!-- 返回的map -->
+	<resultMap id="picture" type="com.kjyl.pojo.Picture">
+		<result property="Id" column="Picture_Id" />
+		<result property="UseId" column="Picture_UseId" />
+		<result property="TypeId" column="Picture_TypeId" />
+		<result property="Identity" column="Picture_Identity" />
+		<result property="Purpose" column="Picture_Purpose" />
+		<result property="BelongId" column="Picture_BelongId" />
+		<result property="Title" column="Picture_Title" />
+		<result property="Content" column="Picture_Content" />
+		<result property="Url" column="Picture_Url" />
+		<result property="RedirectUrl" column="Picture_RedirectUrl" />
+		<result property="Sort" column="Picture_Sort" />
+		<result property="Version" column="Picture_Version" />
+		<result property="Status" column="Picture_Status" />
+		<result property="Delete" column="Picture_Delete" />
+		<result property="CreateTime" column="Picture_CreateTime" />
+		<result property="ModifyTime" column="Picture_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Picture_Id, Picture_UseId, Picture_TypeId, Picture_Identity, Picture_Purpose, Picture_BelongId, Picture_Title, Picture_Content, Picture_Url, Picture_RedirectUrl, Picture_Sort, Picture_Version, Picture_Status, Picture_Delete, Picture_CreateTime, Picture_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Picture_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Picture_UseId = #{UseId}
+		</if>
+		<if test="TypeId!= null">
+				 AND Picture_TypeId = #{TypeId}
+		</if>
+		<if test="Identity!= null">
+				 AND Picture_Identity = #{Identity}
+		</if>
+		<if test="Purpose!= null">
+				 AND Picture_Purpose = #{Purpose}
+		</if>
+		<if test="BelongId!= null">
+				 AND Picture_BelongId = #{BelongId}
+		</if>
+		<if test="Title!= null">
+				 AND Picture_Title = #{Title}
+		</if>
+		<if test="Content!= null">
+				 AND Picture_Content = #{Content}
+		</if>
+		<if test="Url!= null">
+				 AND Picture_Url = #{Url}
+		</if>
+		<if test="RedirectUrl!= null">
+				 AND Picture_RedirectUrl = #{RedirectUrl}
+		</if>
+		<if test="Sort!= null">
+				 AND Picture_Sort = #{Sort}
+		</if>
+		<if test="Version!= null">
+				 AND Picture_Version = #{Version}
+		</if>
+		<if test="Status!= null">
+				 AND Picture_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Picture_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Picture_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Picture_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="picture" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_picture
+		<where>
+			Picture_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="picture" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_picture
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_picture
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Picture"  useGeneratedKeys="true">
+		INSERT INTO fit_picture( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TypeId},
+				#{Identity},
+				#{Purpose},
+				#{BelongId},
+				#{Title},
+				#{Content},
+				#{Url},
+				#{RedirectUrl},
+				#{Sort},
+				#{Version},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_UseId = #{UseId}, Picture_TypeId = #{TypeId}, Picture_Identity = #{Identity}, Picture_Purpose = #{Purpose}, Picture_BelongId = #{BelongId}, Picture_Title = #{Title}, Picture_Content = #{Content}, Picture_Url = #{Url}, Picture_RedirectUrl = #{RedirectUrl}, Picture_Sort = #{Sort}, Picture_Version = #{Version}, Picture_Status = #{Status}, Picture_Delete = #{Delete}, Picture_ModifyTime = now()
+		<where>
+			Picture_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_Status = 88 WHERE Picture_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_Status=  1 WHERE Picture_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

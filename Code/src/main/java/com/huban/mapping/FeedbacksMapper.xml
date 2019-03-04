@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.FeedbacksMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Feedbacks" >
+    <id column="Feedback_ID" property="feedbackId" jdbcType="BIGINT" />
+    <result column="Feedback_UserID" property="feedbackUserid" jdbcType="BIGINT" />
+    <result column="Feedback_DriveID" property="feedbackDriveid" jdbcType="BIGINT" />
+    <result column="Feedback_CreateTime" property="feedbackCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Feedback_ModifyTime" property="feedbackModifytime" jdbcType="TIMESTAMP" />
+    <result column="Feedback_Version" property="feedbackVersion" jdbcType="INTEGER" />
+    <result column="Feedback_Status" property="feedbackStatus" jdbcType="TINYINT" />
+    <result column="Feedback_Deleted" property="feedbackDeleted" jdbcType="TINYINT" />
+    <result column="Feedback_TypeID" property="feedbackTypeid" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.Feedbacks" extends="BaseResultMap" >
+    <result column="Feedback_Content" property="feedbackContent" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Feedback_ID, Feedback_UserID, Feedback_DriveID, Feedback_CreateTime, Feedback_ModifyTime, 
+    Feedback_Version, Feedback_Status, Feedback_Deleted, Feedback_TypeID
+  </sql>
+  <sql id="Blob_Column_List" >
+    Feedback_Content
+  </sql>
+  <!-- 自定义sql -->
+   <insert id="addFeedback" parameterType="com.huban.pojo.Feedbacks" >
+    insert into rb_feedbacks (Feedback_ID, Feedback_UserID, Feedback_DriveID, 
+      Feedback_CreateTime, Feedback_ModifyTime, 
+      Feedback_Version, Feedback_Status, Feedback_Deleted, 
+      Feedback_TypeID, Feedback_Content)
+    values (#{feedbackId,jdbcType=BIGINT}, #{feedbackUserid,jdbcType=BIGINT}, #{feedbackDriveid,jdbcType=BIGINT}, 
+      now(), now(), 
+      #{feedbackVersion,jdbcType=INTEGER}, 0, 0, 
+      #{feedbackTypeid,jdbcType=TINYINT}, #{feedbackContent,jdbcType=LONGVARBINARY})
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_feedbacks
+    where Feedback_ID = #{feedbackId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_feedbacks
+    where Feedback_ID = #{feedbackId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Feedbacks" >
+    insert into rb_feedbacks (Feedback_ID, Feedback_UserID, Feedback_DriveID, 
+      Feedback_CreateTime, Feedback_ModifyTime, 
+      Feedback_Version, Feedback_Status, Feedback_Deleted, 
+      Feedback_TypeID, Feedback_Content)
+    values (#{feedbackId,jdbcType=BIGINT}, #{feedbackUserid,jdbcType=BIGINT}, #{feedbackDriveid,jdbcType=BIGINT}, 
+      #{feedbackCreatetime,jdbcType=TIMESTAMP}, #{feedbackModifytime,jdbcType=TIMESTAMP}, 
+      #{feedbackVersion,jdbcType=INTEGER}, #{feedbackStatus,jdbcType=TINYINT}, #{feedbackDeleted,jdbcType=TINYINT}, 
+      #{feedbackTypeid,jdbcType=TINYINT}, #{feedbackContent,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Feedbacks" >
+    insert into rb_feedbacks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="feedbackId != null" >
+        Feedback_ID,
+      </if>
+      <if test="feedbackUserid != null" >
+        Feedback_UserID,
+      </if>
+      <if test="feedbackDriveid != null" >
+        Feedback_DriveID,
+      </if>
+      <if test="feedbackCreatetime != null" >
+        Feedback_CreateTime,
+      </if>
+      <if test="feedbackModifytime != null" >
+        Feedback_ModifyTime,
+      </if>
+      <if test="feedbackVersion != null" >
+        Feedback_Version,
+      </if>
+      <if test="feedbackStatus != null" >
+        Feedback_Status,
+      </if>
+      <if test="feedbackDeleted != null" >
+        Feedback_Deleted,
+      </if>
+      <if test="feedbackTypeid != null" >
+        Feedback_TypeID,
+      </if>
+      <if test="feedbackContent != null" >
+        Feedback_Content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="feedbackId != null" >
+        #{feedbackId,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackUserid != null" >
+        #{feedbackUserid,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackDriveid != null" >
+        #{feedbackDriveid,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackCreatetime != null" >
+        #{feedbackCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackModifytime != null" >
+        #{feedbackModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackVersion != null" >
+        #{feedbackVersion,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackStatus != null" >
+        #{feedbackStatus,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackDeleted != null" >
+        #{feedbackDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackTypeid != null" >
+        #{feedbackTypeid,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackContent != null" >
+        #{feedbackContent,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Feedbacks" >
+    update rb_feedbacks
+    <set >
+      <if test="feedbackUserid != null" >
+        Feedback_UserID = #{feedbackUserid,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackDriveid != null" >
+        Feedback_DriveID = #{feedbackDriveid,jdbcType=BIGINT},
+      </if>
+      <if test="feedbackCreatetime != null" >
+        Feedback_CreateTime = #{feedbackCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackModifytime != null" >
+        Feedback_ModifyTime = #{feedbackModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackVersion != null" >
+        Feedback_Version = #{feedbackVersion,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackStatus != null" >
+        Feedback_Status = #{feedbackStatus,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackDeleted != null" >
+        Feedback_Deleted = #{feedbackDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackTypeid != null" >
+        Feedback_TypeID = #{feedbackTypeid,jdbcType=TINYINT},
+      </if>
+      <if test="feedbackContent != null" >
+        Feedback_Content = #{feedbackContent,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where Feedback_ID = #{feedbackId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.Feedbacks" >
+    update rb_feedbacks
+    set Feedback_UserID = #{feedbackUserid,jdbcType=BIGINT},
+      Feedback_DriveID = #{feedbackDriveid,jdbcType=BIGINT},
+      Feedback_CreateTime = #{feedbackCreatetime,jdbcType=TIMESTAMP},
+      Feedback_ModifyTime = #{feedbackModifytime,jdbcType=TIMESTAMP},
+      Feedback_Version = #{feedbackVersion,jdbcType=INTEGER},
+      Feedback_Status = #{feedbackStatus,jdbcType=TINYINT},
+      Feedback_Deleted = #{feedbackDeleted,jdbcType=TINYINT},
+      Feedback_TypeID = #{feedbackTypeid,jdbcType=TINYINT},
+      Feedback_Content = #{feedbackContent,jdbcType=LONGVARBINARY}
+    where Feedback_ID = #{feedbackId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Feedbacks" >
+    update rb_feedbacks
+    set Feedback_UserID = #{feedbackUserid,jdbcType=BIGINT},
+      Feedback_DriveID = #{feedbackDriveid,jdbcType=BIGINT},
+      Feedback_CreateTime = #{feedbackCreatetime,jdbcType=TIMESTAMP},
+      Feedback_ModifyTime = #{feedbackModifytime,jdbcType=TIMESTAMP},
+      Feedback_Version = #{feedbackVersion,jdbcType=INTEGER},
+      Feedback_Status = #{feedbackStatus,jdbcType=TINYINT},
+      Feedback_Deleted = #{feedbackDeleted,jdbcType=TINYINT},
+      Feedback_TypeID = #{feedbackTypeid,jdbcType=TINYINT}
+    where Feedback_ID = #{feedbackId,jdbcType=BIGINT}
+  </update>
+</mapper>

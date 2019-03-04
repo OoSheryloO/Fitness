@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.ClicklistMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Clicklist" >
+    <id column="ClickList_ID" property="clicklistId" jdbcType="BIGINT" />
+    <result column="ClickList_ModifyTime" property="clicklistModifytime" jdbcType="TIMESTAMP" />
+    <result column="ClickList_CreateTime" property="clicklistCreatetime" jdbcType="TIMESTAMP" />
+    <result column="ClickList_Status" property="clicklistStatus" jdbcType="INTEGER" />
+    <result column="ClickList_Type" property="clicklistType" jdbcType="INTEGER" />
+    <result column="ClickList_BeLongID" property="clicklistBelongid" jdbcType="BIGINT" />
+    <result column="ClickList_MacAddress" property="clicklistMacaddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huban.pojo.Clicklist" extends="BaseResultMap" >
+    <result column="ClickList_IPAddress" property="clicklistIpaddress" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ClickList_ID, ClickList_ModifyTime, ClickList_CreateTime, ClickList_Status, ClickList_Type, 
+    ClickList_BeLongID, ClickList_MacAddress
+  </sql>
+  <sql id="Blob_Column_List" >
+    ClickList_IPAddress
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rb_clicklist
+    where ClickList_ID = #{clicklistId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_clicklist
+    where ClickList_ID = #{clicklistId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Clicklist" >
+    insert into rb_clicklist (ClickList_ID, ClickList_ModifyTime, 
+      ClickList_CreateTime, ClickList_Status, 
+      ClickList_Type, ClickList_BeLongID, ClickList_MacAddress, 
+      ClickList_IPAddress)
+    values (#{clicklistId,jdbcType=BIGINT}, #{clicklistModifytime,jdbcType=TIMESTAMP}, 
+      #{clicklistCreatetime,jdbcType=TIMESTAMP}, #{clicklistStatus,jdbcType=INTEGER}, 
+      #{clicklistType,jdbcType=INTEGER}, #{clicklistBelongid,jdbcType=BIGINT}, #{clicklistMacaddress,jdbcType=VARCHAR}, 
+      #{clicklistIpaddress,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Clicklist" >
+    insert into rb_clicklist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="clicklistId != null" >
+        ClickList_ID,
+      </if>
+      <if test="clicklistModifytime != null" >
+        ClickList_ModifyTime,
+      </if>
+      <if test="clicklistCreatetime != null" >
+        ClickList_CreateTime,
+      </if>
+      <if test="clicklistStatus != null" >
+        ClickList_Status,
+      </if>
+      <if test="clicklistType != null" >
+        ClickList_Type,
+      </if>
+      <if test="clicklistBelongid != null" >
+        ClickList_BeLongID,
+      </if>
+      <if test="clicklistMacaddress != null" >
+        ClickList_MacAddress,
+      </if>
+      <if test="clicklistIpaddress != null" >
+        ClickList_IPAddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="clicklistId != null" >
+        #{clicklistId,jdbcType=BIGINT},
+      </if>
+      <if test="clicklistModifytime != null" >
+        #{clicklistModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clicklistCreatetime != null" >
+        #{clicklistCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clicklistStatus != null" >
+        #{clicklistStatus,jdbcType=INTEGER},
+      </if>
+      <if test="clicklistType != null" >
+        #{clicklistType,jdbcType=INTEGER},
+      </if>
+      <if test="clicklistBelongid != null" >
+        #{clicklistBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="clicklistMacaddress != null" >
+        #{clicklistMacaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="clicklistIpaddress != null" >
+        #{clicklistIpaddress,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Clicklist" >
+    update rb_clicklist
+    <set >
+      <if test="clicklistModifytime != null" >
+        ClickList_ModifyTime = #{clicklistModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clicklistCreatetime != null" >
+        ClickList_CreateTime = #{clicklistCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clicklistStatus != null" >
+        ClickList_Status = #{clicklistStatus,jdbcType=INTEGER},
+      </if>
+      <if test="clicklistType != null" >
+        ClickList_Type = #{clicklistType,jdbcType=INTEGER},
+      </if>
+      <if test="clicklistBelongid != null" >
+        ClickList_BeLongID = #{clicklistBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="clicklistMacaddress != null" >
+        ClickList_MacAddress = #{clicklistMacaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="clicklistIpaddress != null" >
+        ClickList_IPAddress = #{clicklistIpaddress,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ClickList_ID = #{clicklistId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huban.pojo.Clicklist" >
+    update rb_clicklist
+    set ClickList_ModifyTime = #{clicklistModifytime,jdbcType=TIMESTAMP},
+      ClickList_CreateTime = #{clicklistCreatetime,jdbcType=TIMESTAMP},
+      ClickList_Status = #{clicklistStatus,jdbcType=INTEGER},
+      ClickList_Type = #{clicklistType,jdbcType=INTEGER},
+      ClickList_BeLongID = #{clicklistBelongid,jdbcType=BIGINT},
+      ClickList_MacAddress = #{clicklistMacaddress,jdbcType=VARCHAR},
+      ClickList_IPAddress = #{clicklistIpaddress,jdbcType=LONGVARCHAR}
+    where ClickList_ID = #{clicklistId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Clicklist" >
+    update rb_clicklist
+    set ClickList_ModifyTime = #{clicklistModifytime,jdbcType=TIMESTAMP},
+      ClickList_CreateTime = #{clicklistCreatetime,jdbcType=TIMESTAMP},
+      ClickList_Status = #{clicklistStatus,jdbcType=INTEGER},
+      ClickList_Type = #{clicklistType,jdbcType=INTEGER},
+      ClickList_BeLongID = #{clicklistBelongid,jdbcType=BIGINT},
+      ClickList_MacAddress = #{clicklistMacaddress,jdbcType=VARCHAR}
+    where ClickList_ID = #{clicklistId,jdbcType=BIGINT}
+  </update>
+</mapper>

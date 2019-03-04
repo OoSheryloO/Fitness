@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.OnlinesMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Onlines" >
+    <id column="OnLine_ID" property="onlineId" jdbcType="BIGINT" />
+    <result column="OnLine_UserID" property="onlineUserid" jdbcType="BIGINT" />
+    <result column="OnLine_Session" property="onlineSession" jdbcType="VARCHAR" />
+    <result column="OnLine_CreateTime" property="onlineCreatetime" jdbcType="TIMESTAMP" />
+    <result column="OnLine_ModifyTime" property="onlineModifytime" jdbcType="TIMESTAMP" />
+    <result column="OnLine_Version" property="onlineVersion" jdbcType="INTEGER" />
+    <result column="OnLine_Status" property="onlineStatus" jdbcType="TINYINT" />
+    <result column="OnLine_Deleted" property="onlineDeleted" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OnLine_ID, OnLine_UserID, OnLine_Session, OnLine_CreateTime, OnLine_ModifyTime, OnLine_Version, 
+    OnLine_Status, OnLine_Deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_onlines
+     <where>
+            OnLine_Deleted = 0
+            <if test="iD != null">
+                AND OnLine_ID = #{iD}
+            </if>
+            <if test="session != null">
+                AND OnLine_Session = #{session}
+            </if>
+            <if test="userID != null">
+                AND OnLine_UserID = #{userID}
+            </if>
+            <if test="status != null">
+                AND OnLine_Status = #{status}
+            </if>
+        </where>
+  </select>
+  <select id="queryList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_onlines
+    <where>
+            OnLine_Deleted = 0
+            <if test="iD != null">
+                AND OnLine_ID = #{iD}
+            </if>
+            <if test="session != null">
+                AND OnLine_Session = #{session}
+            </if>
+            <if test="userID != null">
+                AND OnLine_UserID = #{userID}
+            </if>
+            <if test="status != null">
+                AND OnLine_Status = #{status}
+            </if>
+        </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_onlines
+    where OnLine_ID = #{onlineId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Onlines" >
+    insert into rb_onlines (OnLine_ID, OnLine_UserID, OnLine_Session, 
+      OnLine_CreateTime, OnLine_ModifyTime, 
+      OnLine_Version, OnLine_Status, OnLine_Deleted
+      )
+    values (#{onlineId,jdbcType=BIGINT}, #{onlineUserid,jdbcType=BIGINT}, #{onlineSession,jdbcType=VARCHAR}, 
+      now(), now(), 
+      0, #{onlineStatus,jdbcType=TINYINT}, 0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Onlines" >
+    insert into rb_onlines
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="onlineId != null" >
+        OnLine_ID,
+      </if>
+      <if test="onlineUserid != null" >
+        OnLine_UserID,
+      </if>
+      <if test="onlineSession != null" >
+        OnLine_Session,
+      </if>
+      <if test="onlineCreatetime != null" >
+        OnLine_CreateTime,
+      </if>
+      <if test="onlineModifytime != null" >
+        OnLine_ModifyTime,
+      </if>
+      <if test="onlineVersion != null" >
+        OnLine_Version,
+      </if>
+      <if test="onlineStatus != null" >
+        OnLine_Status,
+      </if>
+      <if test="onlineDeleted != null" >
+        OnLine_Deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="onlineId != null" >
+        #{onlineId,jdbcType=BIGINT},
+      </if>
+      <if test="onlineUserid != null" >
+        #{onlineUserid,jdbcType=BIGINT},
+      </if>
+      <if test="onlineSession != null" >
+        #{onlineSession,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineCreatetime != null" >
+        #{onlineCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onlineModifytime != null" >
+        #{onlineModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onlineVersion != null" >
+        #{onlineVersion,jdbcType=INTEGER},
+      </if>
+      <if test="onlineStatus != null" >
+        #{onlineStatus,jdbcType=TINYINT},
+      </if>
+      <if test="onlineDeleted != null" >
+        #{onlineDeleted,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOnline" parameterType="com.huban.pojo.Onlines" >
+    update rb_onlines
+    <set >
+      <if test="onlineUserid != null" >
+        OnLine_UserID = #{onlineUserid,jdbcType=BIGINT},
+      </if>
+      <if test="onlineSession != null" >
+        OnLine_Session = #{onlineSession,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineCreatetime != null" >
+        OnLine_CreateTime = #{onlineCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onlineModifytime != null" >
+        OnLine_ModifyTime = now(),
+      </if>
+      <if test="onlineVersion != null" >
+        OnLine_Version = OnLine_Version+1,
+      </if>
+      <if test="onlineStatus != null" >
+        OnLine_Status = #{onlineStatus,jdbcType=TINYINT},
+      </if>
+      <if test="onlineDeleted != null" >
+        OnLine_Deleted = #{onlineDeleted,jdbcType=TINYINT},
+      </if>
+    </set>
+    WHERE OnLine_ID = #{onlineId} AND OnLine_Deleted = 0
+ 
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Onlines" >
+    update rb_onlines
+    set OnLine_UserID = #{onlineUserid,jdbcType=BIGINT},
+      OnLine_Session = #{onlineSession,jdbcType=VARCHAR},
+      OnLine_CreateTime = #{onlineCreatetime,jdbcType=TIMESTAMP},
+      OnLine_ModifyTime =now(),
+      OnLine_Version = #{onlineVersion,jdbcType=INTEGER},
+      OnLine_Status = #{onlineStatus,jdbcType=TINYINT},
+      OnLine_Deleted = #{onlineDeleted,jdbcType=TINYINT}
+    where OnLine_ID = #{onlineId,jdbcType=BIGINT}
+  </update>
+</mapper>

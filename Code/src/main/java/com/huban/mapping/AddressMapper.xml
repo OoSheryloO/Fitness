@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.AddressMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Address" >
+    <result column="Address_Id" property="addressId" jdbcType="BIGINT" />
+    <result column="Address_UserId" property="addressUserid" jdbcType="BIGINT" />
+    <result column="Address_UserName" property="addressUsername" jdbcType="VARCHAR" />
+    <result column="Address_UserPhone" property="addressUserphone" jdbcType="VARCHAR" />
+    <result column="Address_UserRegion" property="addressUserregion" jdbcType="VARCHAR" />
+    <result column="Address_CreateTime" property="addressCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Address_ModifyTime" property="addressModifytime" jdbcType="TIMESTAMP" />
+    <result column="Address_Status" property="addressStatus" jdbcType="INTEGER" />
+    <result column="Address_Delete" property="addressDelete" jdbcType="INTEGER" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    Address_Id, Address_UserId, Address_UserName, Address_UserPhone, Address_UserRegion, 
+    Address_CreateTime, Address_ModifyTime, Address_Status, Address_Delete
+  </sql>
+  <insert id="insert" parameterType="com.huban.pojo.Address" >
+    insert into rb_address (Address_Id, Address_UserId, Address_UserName, 
+      Address_UserPhone, Address_UserRegion, Address_CreateTime, 
+      Address_ModifyTime, Address_Status, Address_Delete
+      )
+    values (#{addressId,jdbcType=BIGINT}, #{addressUserid,jdbcType=BIGINT}, #{addressUsername,jdbcType=VARCHAR}, 
+      #{addressUserphone,jdbcType=VARCHAR}, #{addressUserregion,jdbcType=VARCHAR}, now(), 
+      now(), #{addressStatus,jdbcType=INTEGER}, 0
+      )
+  </insert>
+  <!-- 自定义sql -->
+  <select id="queryAll" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rb_address
+    where Address_UserId = #{userId,jdbcType=BIGINT}
+    AND Address_Delete = 0
+    order by Address_Status DESC,Address_ModifyTime DESC
+    limit #{start},#{size}
+  </select>
+ <update id="updateByAddressId" parameterType="com.huban.pojo.Address" >
+    update rb_address
+    <set >
+      <if test="addressUsername != null" >
+        Address_UserName = #{addressUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="addressUserphone != null" >
+        Address_UserPhone = #{addressUserphone,jdbcType=VARCHAR},
+      </if>
+      <if test="addressUserregion != null" >
+        Address_UserRegion = #{addressUserregion,jdbcType=VARCHAR},
+      </if>
+        Address_ModifyTime = now()
+    </set>
+    where Address_Id = #{addressId,jdbcType=VARCHAR}
+  </update>
+   <update id="deleteAddress" parameterType="java.lang.String" >
+    update rb_address
+    <set>
+      Address_Delete = 1
+    </set>
+    where Address_Id = #{addressId,jdbcType=VARCHAR}
+  </update>
+  <update id="addDefault" parameterType="java.lang.String" >
+    update rb_address
+    <set >
+    	Address_Status = 1001
+    </set>
+    where Address_Id = #{addressId,jdbcType=VARCHAR}
+  </update>
+  <update id="cleanDefault" parameterType="java.lang.Long">
+  	update rb_address
+  	<set>
+  		Address_Status = 0
+  	</set>
+  	WHERE Address_UserId = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  
+  <insert id="insertSelective" parameterType="com.huban.pojo.Address" >
+    insert into rb_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        Address_Id,
+      </if>
+      <if test="addressUserid != null" >
+        Address_UserId,
+      </if>
+      <if test="addressUsername != null" >
+        Address_UserName,
+      </if>
+      <if test="addressUserphone != null" >
+        Address_UserPhone,
+      </if>
+      <if test="addressUserregion != null" >
+        Address_UserRegion,
+      </if>
+      <if test="addressCreatetime != null" >
+        Address_CreateTime,
+      </if>
+      <if test="addressModifytime != null" >
+        Address_ModifyTime,
+      </if>
+      <if test="addressStatus != null" >
+        Address_Status,
+      </if>
+      <if test="addressDelete != null" >
+        Address_Delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="addressUserid != null" >
+        #{addressUserid,jdbcType=BIGINT},
+      </if>
+      <if test="addressUsername != null" >
+        #{addressUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="addressUserphone != null" >
+        #{addressUserphone,jdbcType=VARCHAR},
+      </if>
+      <if test="addressUserregion != null" >
+        #{addressUserregion,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCreatetime != null" >
+        #{addressCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addressModifytime != null" >
+        #{addressModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addressStatus != null" >
+        #{addressStatus,jdbcType=INTEGER},
+      </if>
+      <if test="addressDelete != null" >
+        #{addressDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.NoteMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Note" >
+    <id column="Note_Id" property="noteId" jdbcType="BIGINT" />
+    <result column="Note_UserId" property="noteUserid" jdbcType="BIGINT" />
+    <result column="Note_FromUserId" property="noteFromUserId" jdbcType="BIGINT" />
+    <result column="Note_Title" property="noteTitle" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="Note_Content" property="noteContent" typeHandler="com.huban.Utils.MyBlobTypeHandler"/>
+    <result column="Note_CreateTime" property="noteCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Note_ModifyTime" property="noteModifytime" jdbcType="TIMESTAMP" />
+    <result column="Note_LaudNumber" property="noteLaudnumber" jdbcType="VARCHAR" />
+    <result column="Note_CommentNumber" property="noteCommentnumber" jdbcType="VARCHAR" />
+    <result column="Note_Status" property="noteStatus" jdbcType="INTEGER" />
+    <result column="Note_Delete" property="noteDelete" jdbcType="INTEGER" />
+    <result column="Note_UserName" property="noteUserName" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+    <result column="Note_UserImg" property="noteUserImg" jdbcType="VARCHAR" />
+    <result column="Note_img1" property="noteimg1" jdbcType="VARCHAR" />
+    <result column="Note_img2" property="noteimg2" jdbcType="VARCHAR" />
+    <result column="Note_img3" property="noteimg3" jdbcType="VARCHAR" />
+    <result column="Note_TypeId" property="noteTypeid" jdbcType="BIGINT" />
+    <result column="Note_TypeId" property="noteTypeid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Note_Id, Note_UserId, Note_Title, Note_Content, Note_CreateTime, Note_ModifyTime, 
+    Note_LaudNumber, Note_CommentNumber, Note_Status, Note_Delete,Note_UserName, (SELECT User_HeadIcon FROM rb_user WHERE User_Id = Note_UserId LIMIT 1) AS Note_UserImg,
+    Note_img1,Note_img2,Note_img3,Note_FromUserId,Note_TypeId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_note
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+    AND Note_Delete = 0
+  </select>
+  <!-- 查询个人贴 -->
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_note
+    where Note_UserId = #{userId}
+    AND Note_Delete = 0
+    ORDER BY Note_ModifyTime DESC
+    limit #{start},#{size}
+  </select>
+  <select id="queryList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_note
+    WHERE Note_Delete = 0
+     <if test="bookId != null" >
+        AND Note_TypeId = #{bookId}
+      </if>
+    order by Note_ModifyTime desc
+    limit #{start},#{size}
+  </select>
+ <update id="delforum" parameterType="java.lang.Long" >
+    update rb_note
+    set
+      Note_Delete = 1
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </update> 
+  
+  <!-- 查询贴名 -->
+  <resultMap id="SelectNameResultMap" type="java.util.Map" >
+    <result column="Note_Title" property="noteTitle" typeHandler="com.huban.Utils.MyBlobTypeHandler" />
+  </resultMap>
+  <select id="selectnotename" resultMap="SelectNameResultMap" parameterType="java.lang.Long" >
+    select
+    Note_Title 
+    from rb_note
+    where Note_Id = #{noteId}
+    AND Note_Delete = 0
+  </select>
+  
+  <!-- 查询帖子通过ID -->
+  <select id="queryforumbyid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+     <include refid="Base_Column_List" /> 
+    from rb_note
+    where Note_Id = #{noteId}
+    AND Note_Delete = 0
+  </select>
+  
+    <!-- 查询帖子通过map -->
+  <select id="SearchNoteDetail" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+     <include refid="Base_Column_List" /> 
+     <if test="userId != null and type != null">
+     	,(SELECT Like_Status FROM rb_likestatus WHERE Like_Delete = 0 AND Colu_Id = Note_Id AND From_UserId = #{userId} AND like_Type = #{type} LIMIT 1) AS LikeStatus
+     </if>
+    from rb_note
+    where Note_Id = #{noteId}
+    AND Note_Delete = 0
+  </select>
+  
+   <!-- 查询userid通过ID -->
+  <select id="queryuseridbyid" resultType="java.lang.Long" parameterType="java.lang.Long" >
+    select
+     Note_UserId
+    from rb_note
+    where Note_Id = #{noteId}
+    AND Note_Delete = 0
+  </select>
+  
+  <select id="findnote"  parameterType="com.huban.pojo.Note" >
+    select 
+    count(1)
+    from rb_note
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from rb_note
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Note"  >
+    insert into rb_note (Note_Id, Note_UserId, Note_Title, 
+      Note_Content, Note_CreateTime, Note_ModifyTime, 
+      Note_LaudNumber, Note_CommentNumber, Note_Status, 
+      Note_Delete,Note_UserName,Note_UserImg,Note_TypeId)
+    values (#{noteId,jdbcType=BIGINT}, #{noteUserid,jdbcType=BIGINT}, #{noteTitle,jdbcType=VARCHAR}, 
+      #{noteContent,jdbcType=VARCHAR}, #{noteCreatetime,jdbcType=TIMESTAMP}, #{noteModifytime,jdbcType=TIMESTAMP}, 
+      #{noteLaudnumber,jdbcType=VARCHAR}, #{noteCommentnumber,jdbcType=VARCHAR}, #{noteStatus,jdbcType=INTEGER}, 
+      #{noteDelete,jdbcType=INTEGER},#{noteUserName },#{noteUserImg,jdbcType=VARCHAR},#{noteTypeid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Note" >
+    insert into rb_note
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noteId != null" >
+        Note_Id,
+      </if>
+      <if test="noteUserid != null" >
+        Note_UserId,
+      </if>
+      <if test="noteTitle != null" >
+        Note_Title,
+      </if>
+      <if test="noteContent != null" >
+        Note_Content,
+      </if>
+      <if test="noteCreatetime != null" >
+        Note_CreateTime,
+      </if>
+      <if test="noteModifytime != null" >
+        Note_ModifyTime,
+      </if>
+      <if test="noteLaudnumber != null" >
+        "Note_ LaudNumber",
+      </if>
+      <if test="noteCommentnumber != null" >
+        Note_CommentNumber,
+      </if>
+      <if test="noteStatus != null" >
+        Note_Status,
+      </if>
+      <if test="noteDelete != null" >
+        Note_Delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noteId != null" >
+        #{noteId,jdbcType=BIGINT},
+      </if>
+      <if test="noteUserid != null" >
+        #{noteUserid,jdbcType=BIGINT},
+      </if>
+      <if test="noteTitle != null" >
+        #{noteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="noteContent != null" >
+        #{noteContent,jdbcType=VARCHAR},
+      </if>
+      <if test="noteCreatetime != null" >
+        #{noteCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noteModifytime != null" >
+        #{noteModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noteLaudnumber != null" >
+        #{noteLaudnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="noteCommentnumber != null" >
+        #{noteCommentnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="noteStatus != null" >
+        #{noteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="noteDelete != null" >
+        #{noteDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+   <update id="addpraise" parameterType="com.huban.pojo.Note" >
+    update rb_note
+    set
+      Note_LaudNumber =Note_LaudNumber+1
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </update>
+   <update id="cutpraise" parameterType="com.huban.pojo.Note" >
+    update rb_note
+    set
+      Note_LaudNumber =Note_LaudNumber-1
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </update>
+  <update id="addcomnum" parameterType="java.lang.Long" >
+    update rb_note
+    set
+      Note_CommentNumber = Note_CommentNumber + 1
+    where Note_Id = #{noteId,jdbcType=BIGINT}
+  </update>
+</mapper>

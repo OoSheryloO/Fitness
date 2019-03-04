@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.CardMapper">
+	<!-- 返回的map -->
+	<resultMap id="card" type="com.kjyl.pojo.Card">
+		<result property="Id" column="Card_Id" />
+		<result property="UseId" column="Card_UseId" />
+		<result property="Title" column="Card_Title" />
+		<result property="Intro" column="Card_Intro" />
+		<result property="Price" column="Card_Price" />
+		<result property="Type" column="Card_Type" />
+		<result property="Memo" column="Card_Memo" />
+		<result property="Status" column="Card_Status" />
+		<result property="Delete" column="Card_Delete" />
+		<result property="CreateTime" column="Card_CreateTime" />
+		<result property="ModifyTime" column="Card_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Card_Id, Card_UseId, Card_Title, Card_Intro, Card_Price, Card_Type, Card_Memo, Card_Status, Card_Delete, Card_CreateTime, Card_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Card_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Card_UseId = #{UseId}
+		</if>
+		<if test="Title!= null">
+				 AND Card_Title = #{Title}
+		</if>
+		<if test="Intro!= null">
+				 AND Card_Intro = #{Intro}
+		</if>
+		<if test="Price!= null">
+				 AND Card_Price = #{Price}
+		</if>
+		<if test="Type!= null">
+				 AND Card_Type = #{Type}
+		</if>
+		<if test="Memo!= null">
+				 AND Card_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Card_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Card_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Card_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Card_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="card" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_card
+		<where>
+			Card_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="card" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_card
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_card
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+	
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Card"  useGeneratedKeys="true">
+		INSERT INTO fit_card( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Title},
+				#{Intro},
+				#{Price},
+				#{Type},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Card">
+		UPDATE fit_card SET Card_UseId = #{UseId}, Card_Title = #{Title}, Card_Intro = #{Intro}, Card_Price = #{Price}, Card_Type = #{Type}, Card_Memo = #{Memo}, Card_Status = #{Status}, Card_Delete = #{Delete}, Card_ModifyTime = now()
+		<where>
+			Card_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Card">
+		UPDATE fit_card SET Card_Status = 88 WHERE Card_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Card">
+		UPDATE fit_card SET Card_Status=  1 WHERE Card_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Card">
+		UPDATE fit_card SET Card_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Card">
+		UPDATE fit_card SET Card_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

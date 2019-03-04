@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.CourseMapper">
+	<!-- 返回的map -->
+	<resultMap id="course" type="com.kjyl.pojo.Course">
+		<result property="Id" column="Syllabus_Id" />
+		<result property="UseId" column="Syllabus_UseId" />
+		<result property="TouchId" column="Syllabus_TouchId" />
+		<result property="Memo" column="Syllabus_Memo" />
+		<result property="Status" column="Syllabus_Status" />
+		<result property="Delete" column="Syllabus_Delete" />
+		<result property="CreateTime" column="Syllabus_CreateTime" />
+		<result property="ModifyTime" column="Syllabus_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Syllabus_Id, Syllabus_UseId, Syllabus_TouchId, Syllabus_Memo, Syllabus_Status, Syllabus_Delete, Syllabus_CreateTime, Syllabus_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id!= null">
+				 AND Syllabus_Id = #{Id}
+		</if>
+		<if test="UseId!= null">
+				 AND Syllabus_UseId = #{UseId}
+		</if>
+		<if test="TouchId!= null">
+				 AND Syllabus_TouchId = #{TouchId}
+		</if>
+		<if test="Memo!= null">
+				 AND Syllabus_Memo = #{Memo}
+		</if>
+		<if test="Status!= null">
+				 AND Syllabus_Status = #{Status}
+		</if>
+		<if test="Delete!= null">
+				 AND Syllabus_Delete = #{Delete}
+		</if>
+		<if test="CreateTime!= null">
+				 AND Syllabus_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!= null">
+				 AND Syllabus_ModifyTime = #{ModifyTime}
+		</if>
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="course" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_course
+		<where>
+			Syllabus_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="course" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_course
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_course
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+	
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Course"  useGeneratedKeys="true">
+		INSERT INTO fit_course( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{TouchId},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Course">
+		UPDATE fit_course SET Syllabus_UseId = #{UseId}, Syllabus_TouchId = #{TouchId}, Syllabus_Memo = #{Memo}, Syllabus_Status = #{Status}, Syllabus_Delete = #{Delete}, Syllabus_ModifyTime = now()
+		<where>
+			Syllabus_Id= #{ID} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Course">
+		UPDATE fit_course SET Syllabus_Status = 88 WHERE Syllabus_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Course">
+		UPDATE fit_course SET Syllabus_Status=  1 WHERE Syllabus_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Course">
+		UPDATE fit_course SET Syllabus_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Course">
+		UPDATE fit_course SET Syllabus_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

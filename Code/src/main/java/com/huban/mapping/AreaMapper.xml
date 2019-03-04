@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.AreaMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Area" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="shortname" property="shortname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="merger_name" property="mergerName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="first" property="first" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, shortname, name, merger_name, level, pinyin, code, zip_code, first, lng, lat
+  </sql>
+  
+  <resultMap id="QuerySomeMessageResultMap" type="com.huban.construct.AreaRetrunModel" >
+    <result column="id" property="regionsId" jdbcType="INTEGER" />
+    <result column="pid" property="regionsParentId" jdbcType="INTEGER" />
+    <result column="name" property="regions" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="wheresql" >
+    where 1=1
+    	<if test="pid != null and pid != 0" >
+        	AND pid = #{pid,jdbcType=INTEGER}
+        </if>
+        <if test="level != null and level != 0" >
+        	AND level = #{level,jdbcType=INTEGER}
+        </if>
+        <if test="code != null and code != 0" >
+        	AND code = #{code,jdbcType=VARCHAR}
+        </if>
+        <if test="place != nul" >
+        	AND merger_name LIKE CONCAT('%',#{place},'%')
+      	</if>
+  </sql>
+  <select id="QuerySomeMessage" resultMap="QuerySomeMessageResultMap" parameterType="map">
+    select 
+   		id, pid, name, code
+    from rb_area
+    <include refid="wheresql" />
+    ORDER BY id<!-- pinyin --> ASC
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from rb_area
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from rb_area
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huban.pojo.Area" >
+    insert into rb_area (id, pid, shortname, 
+      name, merger_name, level, 
+      pinyin, code, zip_code, 
+      first, lng, lat)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{shortname,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{mergerName,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT}, 
+      #{pinyin,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{first,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Area" >
+    insert into rb_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="shortname != null" >
+        shortname,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="mergerName != null" >
+        merger_name,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="pinyin != null" >
+        pinyin,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="first != null" >
+        first,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="shortname != null" >
+        #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mergerName != null" >
+        #{mergerName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="pinyin != null" >
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="first != null" >
+        #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Area" >
+    update rb_area
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="shortname != null" >
+        shortname = #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mergerName != null" >
+        merger_name = #{mergerName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="pinyin != null" >
+        pinyin = #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="first != null" >
+        first = #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Area" >
+    update rb_area
+    set pid = #{pid,jdbcType=INTEGER},
+      shortname = #{shortname,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      merger_name = #{mergerName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      first = #{first,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

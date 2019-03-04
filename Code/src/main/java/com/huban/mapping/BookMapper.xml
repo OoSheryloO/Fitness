@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huban.dao.BookMapper" >
+  <resultMap id="BaseResultMap" type="com.huban.pojo.Book" >
+    <id column="Book_Id" property="bookId" jdbcType="BIGINT" /> 
+     <result column="Book_HeadIcon" property="bookHeadicon" jdbcType="VARCHAR" />
+    <result column="Book_Num" property="bookNum" jdbcType="VARCHAR" />
+    <result column="Book_Name" property="bookName" jdbcType="VARCHAR" />
+    <result column="Book_Author" property="bookAuthor" jdbcType="VARCHAR" />
+    <result column="Book_Press" property="bookPress" jdbcType="VARCHAR" />
+    <result column="Book_Count" property="bookCount" jdbcType="REAL" />
+    <result column="Book_CommentCount" property="bookCommentcount" jdbcType="BIGINT" />
+    <result column="Book_ReadNumber" property="bookReadnumber" jdbcType="INTEGER" />
+    <result column="Book_CreateTime" property="bookCreatetime" jdbcType="TIMESTAMP" />
+    <result column="Book_ModifyTime" property="bookModifytime" jdbcType="TIMESTAMP" />
+    <result column="Book_Status" property="bookStatus" jdbcType="INTEGER" />
+    <result column="Book_Delete" property="bookDelete" jdbcType="INTEGER" />
+    <result column="Book_comment" property="bookComment" jdbcType="VARCHAR" />
+    <result column="Book_Url" property="bookUrl" jdbcType="VARCHAR" />
+    <result column="Book_Readnum" property="bookReadnum" jdbcType="INTEGER" />
+    <result column="Book_Hot" property="bookHot" jdbcType="INTEGER" />
+    <result column="Book_Weight" property="bookWeight" jdbcType="INTEGER" />
+    <result column="Book_Money" property="bookMoney" jdbcType="VARCHAR" />
+    <result column="Book_Famous" property="bookFamous" jdbcType="INTEGER" />
+    <result column="Book_Child" property="bookChild" jdbcType="INTEGER" />
+    <result column="Book_Publisher" property="bookPublisher" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="queryBooks_Column_List" >
+    book_Id, book_HeadIcon, book_Name, book_Author, book_ReadNumber, book_Url, book_Readnum, book_Money,Book_commentCount
+  </sql>
+  <select id="queryBooks" resultMap="BaseResultMap" parameterType="map" >
+    select 
+     <include refid="queryBooks_Column_List" />
+    from rb_book
+    where 1=1
+    <if test="name !=''">
+     AND Book_Name like CONCAT(CONCAT('%', #{name, jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="type != 0">
+     AND Book_Famous = #{type,jdbcType=INTEGER}
+    </if>
+    <if test="Publisher = 0">
+    	AND Book_Publisher = 0
+    </if>
+     <if test="Publisher = 1">
+    	AND Book_Publisher >= 0
+    </if>
+    AND Book_Delete = 0 
+    order by Book_ModifyTime
+    limit #{start},#{size}
+  </select>
+  
+  <sql id="Base_Column_List" >
+    Book_Id, Book_HeadIcon, Book_Num, Book_Name, Book_Author, Book_Press, Book_Count, 
+    Book_CommentCount, Book_ReadNumber, Book_CreateTime, Book_ModifyTime, Book_Status, 
+    Book_Delete, Book_comment, Book_Url, Book_Readnum, Book_Hot, Book_Weight, Book_Money, 
+    Book_Famous, Book_Child, Book_Publisher
+  </sql>
+  <select id="queryBook" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+     <include refid="Base_Column_List" />
+    from rb_book
+    where Book_Id = #{bookId}
+    order by Book_Name
+  </select>
+  <select id="queryAuthorName" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+     Book_Id,book_Author,Book_Name,Book_HeadIcon
+    from rb_book
+    where Book_Id = #{bookId}
+  </select>
+  <update id="addcommentcount" parameterType="java.lang.Long">
+  UPDATE rb_book
+  SET Book_CommentCount = Book_CommentCount + 1
+  WHERE Book_Id = #{bookId}
+  </update>
+  <select id="ShowBookName" resultType="java.lang.String" parameterType="java.lang.Long" >
+    select 
+    	Book_Name
+    from rb_book
+    where Book_Id = #{bookId}
+  </select>
+  <select id="ShowBookMoney" resultType="java.lang.String" parameterType="java.lang.Long" >
+    select 
+    	Book_Money
+    from rb_book
+    where Book_Id = #{bookId}
+  </select>
+  
+  
+  <select id="shopQueryBook" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+     <include refid="Base_Column_List" />
+    from rb_book
+    where Book_Id = #{bookId}
+  </select>
+  
+  <!-- 查询对应book的作者 -->
+   <select id="queryAuthor" resultType="java.lang.String" parameterType="map" >
+   select 
+   a.Book_Author
+   from 
+   rb_book a,rb_Date b 
+   where b.Date_BelongId=#{userId} and a.Book_id=b.Date_BelongId 
+   ORDER BY Book_Name DESC
+   LIMIT #{start},#{size}
+  <!--  select 
+   a.Book_Author
+   from 
+   rb_book a,rb_bookpart b 
+   where b.bookpart_userId=#{userId} and a.Book_id=b.bookpart_bookId 
+   ORDER BY Book_Name ASC
+   LIMIT #{start},#{size} -->
+  </select>
+  
+  <!-- 阅读和购买数变 -->
+  <update id="changereadcount" parameterType="java.lang.Long">
+  UPDATE rb_book
+  SET Book_ReadNumber = Book_ReadNumber + 1
+  WHERE Book_Id = #{bookId}
+  </update>
+  <update id="changepaycount" parameterType="map">
+  UPDATE rb_book
+  SET Book_Readnum = Book_Readnum + #{num}
+  WHERE Book_Id = #{bookId}
+  </update>
+  <select id="queryreadnumber" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select 
+    	Book_ReadNumber
+    from rb_book
+    where Book_Id = #{bookId}
+  </select>
+  <insert id="AddNewMessage" parameterType="com.huban.pojo.Book" >
+     insert into rb_book (Book_Id, Book_HeadIcon, Book_Num, 
+      Book_Name, Book_Author, Book_Press, 
+      Book_Count, Book_CommentCount, Book_ReadNumber, 
+      Book_CreateTime, Book_ModifyTime, Book_Status, 
+      Book_Delete, Book_comment, Book_Url, 
+      Book_Readnum, Book_Hot, Book_Weight, 
+      Book_Money, Book_Famous, Book_Child, Book_Publisher
+      )
+    values (#{bookId,jdbcType=BIGINT}, #{bookHeadicon,jdbcType=VARCHAR}, #{bookNum,jdbcType=VARCHAR}, 
+      #{bookName,jdbcType=VARCHAR}, #{bookAuthor,jdbcType=VARCHAR}, #{bookPress,jdbcType=VARCHAR}, 
+      #{bookCount,jdbcType=REAL}, 0, 0, 
+      now(), now(), #{bookStatus,jdbcType=INTEGER}, 
+        0, #{bookComment,jdbcType=VARCHAR}, #{bookUrl,jdbcType=VARCHAR}, 
+      0, 0, 0, 
+      #{bookMoney,jdbcType=VARCHAR}, #{bookFamous,jdbcType=INTEGER}, #{bookChild,jdbcType=INTEGER}, 
+      #{bookPublisher,jdbcType=BIGINT})
+  </insert>
+  
+  <insert id="insert" parameterType="com.huban.pojo.Book" >
+     insert into rb_book (Book_Id, Book_HeadIcon, Book_Num, 
+      Book_Name, Book_Author, Book_Press, 
+      Book_Count, Book_CommentCount, Book_ReadNumber, 
+      Book_CreateTime, Book_ModifyTime, Book_Status, 
+      Book_Delete, Book_comment, Book_Url, 
+      Book_Readnum, Book_Hot, Book_Weight, 
+      Book_Money, Book_Famous, Book_Child, Book_Publisher
+      )
+    values (#{bookId,jdbcType=BIGINT}, #{bookHeadicon,jdbcType=VARCHAR}, #{bookNum,jdbcType=VARCHAR}, 
+      #{bookName,jdbcType=VARCHAR}, #{bookAuthor,jdbcType=VARCHAR}, #{bookPress,jdbcType=VARCHAR}, 
+      #{bookCount,jdbcType=REAL}, 0, #{bookReadnumber,jdbcType=INTEGER}, 
+      now(), now(), #{bookStatus,jdbcType=INTEGER}, 
+        0, 0, #{bookUrl,jdbcType=VARCHAR}, 
+      0, #{bookHot,jdbcType=INTEGER}, #{bookWeight,jdbcType=INTEGER}, 
+      #{bookMoney,jdbcType=VARCHAR}, #{bookFamous,jdbcType=INTEGER}, #{bookChild,jdbcType=INTEGER}, 
+      #{bookPublisher,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huban.pojo.Book" >
+    insert into rb_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        Book_Id,
+      </if>
+      <if test="bookHeadicon != null" >
+        Book_HeadIcon,
+      </if>
+      <if test="bookNum != null" >
+        Book_Num,
+      </if>
+      <if test="bookName != null" >
+        Book_Name,
+      </if>
+      <if test="bookAuthor != null" >
+        Book_Author,
+      </if>
+      <if test="bookPress != null" >
+        Book_Press,
+      </if>
+      <if test="bookCount != null" >
+        Book_Count,
+      </if>
+      <if test="bookCommentcount != null" >
+        Book_CommentCount,
+      </if>
+      <if test="bookReadnumber != null" >
+        Book_ReadNumber,
+      </if>
+      <if test="bookCreatetime != null" >
+        Book_CreateTime,
+      </if>
+      <if test="bookModifytime != null" >
+        Book_ModifyTime,
+      </if>
+      <if test="bookStatus != null" >
+        Book_Status,
+      </if>
+      <if test="bookDelete != null" >
+        Book_Delete,
+      </if>
+      <if test="bookComment != null" >
+        Book_comment,
+      </if>
+      <if test="bookUrl != null" >
+        Book_Url,
+      </if>
+      <if test="bookReadnum != null" >
+        Book_Readnum,
+      </if>
+      <if test="bookHot != null" >
+        Book_Hot,
+      </if>
+      <if test="bookWeight != null" >
+        Book_Weight,
+      </if>
+      <if test="bookMoney != null" >
+        Book_Money,
+      </if>
+      <if test="bookFamous != null" >
+        Book_Famous,
+      </if>
+      <if test="bookChild != null" >
+        Book_Child,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        #{bookId,jdbcType=BIGINT},
+      </if>
+      <if test="bookHeadicon != null" >
+        #{bookHeadicon,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNum != null" >
+        #{bookNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null" >
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookAuthor != null" >
+        #{bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPress != null" >
+        #{bookPress,jdbcType=VARCHAR},
+      </if>
+      <if test="bookCount != null" >
+        #{bookCount,jdbcType=REAL},
+      </if>
+      <if test="bookCommentcount != null" >
+        #{bookCommentcount,jdbcType=BIGINT},
+      </if>
+      <if test="bookReadnumber != null" >
+        #{bookReadnumber,jdbcType=INTEGER},
+      </if>
+      <if test="bookCreatetime != null" >
+        #{bookCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookModifytime != null" >
+        #{bookModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookStatus != null" >
+        #{bookStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bookDelete != null" >
+        #{bookDelete,jdbcType=INTEGER},
+      </if>
+      <if test="bookComment != null" >
+        #{bookComment,jdbcType=VARCHAR},
+      </if>
+      <if test="bookUrl != null" >
+        #{bookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bookReadnum != null" >
+        #{bookReadnum,jdbcType=INTEGER},
+      </if>
+      <if test="bookHot != null" >
+        #{bookHot,jdbcType=INTEGER},
+      </if>
+      <if test="bookWeight != null" >
+        #{bookWeight,jdbcType=INTEGER},
+      </if>
+      <if test="bookMoney != null" >
+        #{bookMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="bookFamous != null" >
+        #{bookFamous,jdbcType=INTEGER},
+      </if>
+      <if test="bookChild != null" >
+        #{bookChild,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huban.pojo.Book" >
+    update rb_book
+    <set >
+      <if test="bookHeadicon != null" >
+        Book_HeadIcon = #{bookHeadicon,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNum != null" >
+        Book_Num = #{bookNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null" >
+        Book_Name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookAuthor != null" >
+        Book_Author = #{bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPress != null" >
+        Book_Press = #{bookPress,jdbcType=VARCHAR},
+      </if>
+      <if test="bookCount != null" >
+        Book_Count = #{bookCount,jdbcType=REAL},
+      </if>
+      <if test="bookCommentcount != null" >
+        Book_CommentCount = #{bookCommentcount,jdbcType=BIGINT},
+      </if>
+      <if test="bookReadnumber != null" >
+        Book_ReadNumber = #{bookReadnumber,jdbcType=INTEGER},
+      </if>
+      <if test="bookCreatetime != null" >
+        Book_CreateTime = #{bookCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookModifytime != null" >
+        Book_ModifyTime = #{bookModifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookStatus != null" >
+        Book_Status = #{bookStatus,jdbcType=INTEGER},
+      </if>
+      <if test="bookDelete != null" >
+        Book_Delete = #{bookDelete,jdbcType=INTEGER},
+      </if>
+      <if test="bookComment != null" >
+        Book_comment = #{bookComment,jdbcType=VARCHAR},
+      </if>
+      <if test="bookUrl != null" >
+        Book_Url = #{bookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bookReadnum != null" >
+        Book_Readnum = #{bookReadnum,jdbcType=INTEGER},
+      </if>
+      <if test="bookHot != null" >
+        Book_Hot = #{bookHot,jdbcType=INTEGER},
+      </if>
+      <if test="bookWeight != null" >
+        Book_Weight = #{bookWeight,jdbcType=INTEGER},
+      </if>
+      <if test="bookMoney != null" >
+        Book_Money = #{bookMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="bookFamous != null" >
+        Book_Famous = #{bookFamous,jdbcType=INTEGER},
+      </if>
+      <if test="bookChild != null" >
+        Book_Child = #{bookChild,jdbcType=INTEGER},
+      </if>
+      <if test="bookPublisher != null" >
+        Book_Publisher = #{bookPublisher,jdbcType=BIGINT},
+      </if>
+    </set>
+    where Book_Id = #{bookId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huban.pojo.Book" >
+    update rb_book
+    set Book_HeadIcon = #{bookHeadicon,jdbcType=VARCHAR},
+      Book_Num = #{bookNum,jdbcType=VARCHAR},
+      Book_Name = #{bookName,jdbcType=VARCHAR},
+      Book_Author = #{bookAuthor,jdbcType=VARCHAR},
+      Book_Press = #{bookPress,jdbcType=VARCHAR},
+      Book_Count = #{bookCount,jdbcType=REAL},
+      Book_CommentCount = #{bookCommentcount,jdbcType=BIGINT},
+      Book_ReadNumber = #{bookReadnumber,jdbcType=INTEGER},
+      Book_CreateTime = #{bookCreatetime,jdbcType=TIMESTAMP},
+      Book_ModifyTime = #{bookModifytime,jdbcType=TIMESTAMP},
+      Book_Status = #{bookStatus,jdbcType=INTEGER},
+      Book_Delete = #{bookDelete,jdbcType=INTEGER},
+      Book_comment = #{bookComment,jdbcType=VARCHAR},
+      Book_Url = #{bookUrl,jdbcType=VARCHAR},
+      Book_Readnum = #{bookReadnum,jdbcType=INTEGER},
+      Book_Hot = #{bookHot,jdbcType=INTEGER},
+      Book_Weight = #{bookWeight,jdbcType=INTEGER},
+      Book_Money = #{bookMoney,jdbcType=VARCHAR},
+      Book_Famous = #{bookFamous,jdbcType=INTEGER},
+      Book_Child = #{bookChild,jdbcType=INTEGER},
+      Book_Publisher = #{bookPublisher,jdbcType=BIGINT}
+    where Book_Id = #{bookId,jdbcType=BIGINT}
+  </update>
+</mapper>

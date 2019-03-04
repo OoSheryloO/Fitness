@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huban.dao.CertificateMapper">
+<resultMap type="com.huban.pojo.Certificate" id="ClassResultMap">
+	<result property="id" column="certificate_id"/>
+	<result property="pkid" column="certificate_id"/>
+	<result property="name" column="certificate_name" />
+	<result property="type" column="certificate_type"/>
+	<result property="grade" column="certificate_grade" />
+	<result property="gradeid" column="certificate_gradeid"/>
+	<result property="createTime" column="certificate_createTime" />
+	<result property="modifyTime" column="certificate_modifyTime"/>
+	<result property="status" column="certificate_status" />
+	<result property="userid" column="certificate_userid"/>
+	<result property="level" column="certificate_level" />
+</resultMap>
+<sql id="sql">
+	rb_certificate.certificate_id,
+	rb_certificate.certificate_name,
+	rb_certificate.certificate_type,
+	rb_certificate.certificate_grade,
+	rb_certificate.certificate_gradeid,
+	rb_certificate.certificate_createTime,
+	rb_certificate.certificate_modifyTime,
+	rb_certificate.certificate_status,
+	rb_certificate.certificate_userid,
+	rb_certificate.certificate_level
+</sql>
+<sql id="where">
+      1=1
+	<if test="id!=null">
+		and certificate_id=#{id}
+	</if>
+	<if test="status!=null">
+		and certificate_status=#{status}
+	</if>
+	<if test="status==null">
+		and certificate_status=1
+	</if>
+	<if test="type!=null">
+		and certificate_type=#{type}
+	</if>
+	<if test="level!=null">
+		and certificate_level=#{level}
+	</if>
+	<if test="userid!=null">
+		and certificate_userid=#{userid}
+	</if>
+	<if test="gradeid!=null">
+		and certificate_gradeid=#{gradeid}
+	</if>
+	
+</sql>
+<sql id="sqlname">
+	rb_certificate
+</sql>
+<select id="getCertificateList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+	FROM 
+		<include refid="sqlname"></include>
+	<where>
+		<include refid="where"></include>
+	</where>
+		order by certificate_createTime desc
+	<if test="size != null and start !=null ">
+		  limit #{start},#{size}
+	</if>
+</select>
+<select id="getCertificateCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+	FROM 
+		<include refid="sqlname"></include>
+	<where>
+		<include refid="where"></include>
+	</where>
+	
+</select>
+<insert id="addCertificate" parameterType="com.huban.pojo.Certificate" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO 
+		<include refid="sqlname"></include> 
+		(
+			<include refid="sql"></include>
+		) VALUES (
+			#{id}, #{name},#{type},#{grade},#{gradeid}, now(),now(),#{status},#{userid},#{level}
+		)
+</insert>
+<delete id="deleteCertificate" parameterType="com.huban.pojo.Certificate">
+	 update  <include refid="sqlname"></include> set certificate_status=88
+			where
+				 certificate_id = #{id}
+</delete>
+</mapper>
+
