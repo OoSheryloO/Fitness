@@ -1,8 +1,7 @@
 package com.kjyl.dao;
 
-import java.util.*;
-import com.code.config.mybatis.MyMapper;
-import com.code.domain.Payrecord;
+import com.kjyl.config.MyMapper;
+import com.kjyl.pojo.Payrecord;
 
 /**
  * <p> Mapper Class</p>

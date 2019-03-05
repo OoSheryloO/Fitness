@@ -1,8 +1,7 @@
 package com.kjyl.dao;
 
-import java.util.*;
-import com.code.config.mybatis.MyMapper;
-import com.code.domain.Post;
+import com.kjyl.config.MyMapper;
+import com.kjyl.pojo.Post;
 
 /**
  * <p> Mapper Class</p>

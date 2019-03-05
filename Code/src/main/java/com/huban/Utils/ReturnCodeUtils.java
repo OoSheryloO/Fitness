@@ -1,13 +1,4 @@
-/**
- * 
- */
 package com.huban.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.huban.util.BaseUtil;
 
 /**
  * <p>Title: ReturnCodeUtils.java</p>

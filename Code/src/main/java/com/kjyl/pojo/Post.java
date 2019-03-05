@@ -16,6 +16,10 @@ import java.util.Date;
 @Setter
 @ApiModel(value = "Post")
 public class Post implements Serializable {
+	/** 
+	* @Fields field:field: {todo}() 
+	*/ 
+	private static final long serialVersionUID = 1L;
 
     public static final String COLUMN_Id = "Id";
 

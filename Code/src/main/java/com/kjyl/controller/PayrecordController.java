@@ -7,12 +7,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import com.code.domain.Payrecord;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.code.until.CommonStatus;
-import com.code.until.CommonUntil;
+
+import com.kjyl.pojo.Payrecord;
+import com.kjyl.service.PayrecordService;
+
+import com.kjyl.util.CodeInfo;
+import com.kjyl.util.DBParam;
+import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
  * <p> 控制器 Class</p>
@@ -25,69 +29,65 @@ public class PayrecordController extends BaseController {
 
     @GetMapping("/searchPayrecordPage")
     @ApiOperation(value = "获取列表")
-    public Map searchPayrecordPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchPayrecordPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
         if(status!=-1){
         	mapSearch.put("Status", status);
         }
-        PageInfo<Payrecord> page = this.ReadPayrecordService.SearchPage(mapSearch, pageNumber, pageSize);
-        mapResult.put("rows", page.getList());
-        mapResult.put("total", page.getTotal());
+        PageInfo<Payrecord> page = this.PayrecordService.SearchPage(mapSearch, pageNumber, pageSize);
+        mapResult.put(CodeInfo.sRowKey, page.getList());
+        mapResult.put(CodeInfo.sTotalKey, page.getTotal());
         return mapResult;
     }
 
     @PostMapping("/setPayrecordStatus")
     @ApiOperation(value = "设置状态")
-    public Map setPayrecordStatus(String data){
+    public Map<String, Object> setPayrecordStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
-        Map<String, Object> mapSearch = new HashMap<String, Object>();
-        Payrecord temp = JSON.parseObject(data,Payrecord.class);
+        Payrecord temp = JSON.parseObject(data, Payrecord.class);
         String[] ids = temp.getId().split(",");
-        for (String id : ids){
-            if(temp.getStatus() == Integer.parseInt(CommonStatus.Status.Ectivity.getId())){
+        for (String Id : ids){
+            if(temp.getStatus() == DBParam.RecordStatus.Delete.getCode()){
                 PayrecordService.RecoverBySpecial(Id);
             }else{
                 PayrecordService.RemoveBySpecial(Id);
             }
-            mapSearch.clear();
         }
-        mapResult.put("code", 0);
-        mapResult.put("message", "操作成功");
+        mapResult.put(CodeInfo.sRowKey, 0);
+        mapResult.put(CodeInfo.sMessageKey, "操作成功");
         return mapResult;
     }
 
     @GetMapping("/searchPayrecord/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map searchPayrecord(@PathVariable("id") String Id){
+    public Map<String, Object> searchPayrecord(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
-        Map<String, Object> mapSearch = new HashMap<String, Object>();
-        Payrecord temp = ReadPayrecordService.SearchBySpecial(Id);
+        Payrecord temp = PayrecordService.SearchBySpecial(Id);
         if(temp != null){
-        	mapResult.put("code", 0);
-        	mapResult.put("data", temp);
-        	mapResult.put("message", "获取成功");
+        	mapResult.put(CodeInfo.sRowKey, 0);
+        	mapResult.put(CodeInfo.sDataKey, temp);
+        	mapResult.put(CodeInfo.sMessageKey, "获取成功");
     	}else{
-    		mapResult.put("code", -1);
-    		mapResult.put("data", temp);
-    		mapResult.put("message", "获取失败");
+    		mapResult.put(CodeInfo.sRowKey, -1);
+    		mapResult.put(CodeInfo.sDataKey, temp);
+    		mapResult.put(CodeInfo.sMessageKey, "获取失败");
 		}
         return mapResult;
     }
 
-
     @PostMapping("/modifyPayrecord")
     @ApiOperation(value = "修改")
-    public Map modifyPayrecord(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyPayrecord(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Payrecord temp = JSON.parseObject(data, Payrecord.class);
-        Payrecord  obj = new Payrecord();
+        Payrecord obj = new Payrecord();
         boolean isNew = false;
         if("0".equals(temp.getId())){
             isNew=true;
         }else{
-            obj = ReadPayrecordService.SearchBySpecial(String.valueOf(temp.getId()));
+            obj = PayrecordService.SearchBySpecial(temp.getId());
             if(obj==null){
                 isNew=true;
             }
@@ -103,14 +103,14 @@ public class PayrecordController extends BaseController {
 
         Payrecord tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.getInstance().CreateNewId());
-            obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getId()));
+            obj.setId(String.valueOf(IdWorker.CreateNewId()));
+            obj.setStatus(DBParam.RecordStatus.Default.getCode());
             tempObj=PayrecordService.Insert(obj);
         }else{
             tempObj=PayrecordService.Modify(obj);
         }
-        mapResult.put("code", tempObj != null ? 0 : -1);
-        mapResult.put("message", tempObj != null ? "修改成功" : "修改失败");
+        mapResult.put(CodeInfo.sRowKey, tempObj != null ? 0 : -1);
+        mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");
         return mapResult;
     }
 

@@ -3,16 +3,19 @@ package com.kjyl.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import com.code.domain.Admin;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.code.until.CommonStatus;
-import com.code.until.CommonUntil;
+
+import com.kjyl.pojo.Admin;
+import com.kjyl.util.CodeInfo;
+import com.kjyl.util.DBParam;
+import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
  * <p> 控制器 Class</p>
@@ -25,53 +28,50 @@ public class AdminController extends BaseController {
 
     @GetMapping("/searchAdminPage")
     @ApiOperation(value = "获取列表")
-    public Map searchAdminPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchAdminPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
         if(status!=-1){
-        	mapSearch.put("Status", status);
+        	mapSearch.put("status", status);
         }
-        PageInfo<Admin> page = this.ReadAdminService.SearchPage(mapSearch, pageNumber, pageSize);
-        mapResult.put("rows", page.getList());
-        mapResult.put("total", page.getTotal());
+        PageInfo<Admin> page = this.AdminService.SearchPage(mapSearch, pageNumber, pageSize);
+        mapResult.put(CodeInfo.sRowKey, page.getList());
+        mapResult.put(CodeInfo.sTotalKey, page.getTotal());
         return mapResult;
     }
 
     @PostMapping("/setAdminStatus")
     @ApiOperation(value = "设置状态")
-    public Map setAdminStatus(String data){
+    public Map<String, Object> setAdminStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
-        Map<String, Object> mapSearch = new HashMap<String, Object>();
-        Admin temp = JSON.parseObject(data,Admin.class);
+        Admin temp = JSON.parseObject(data, Admin.class);
         String[] ids = temp.getId().split(",");
-        for (String id : ids){
-            if(temp.getStatus() == Integer.parseInt(CommonStatus.Status.Ectivity.getId())){
+        for (String Id : ids){
+            if(temp.getStatus() == DBParam.RecordStatus.Delete.getCode()){
                 AdminService.RecoverBySpecial(Id);
             }else{
                 AdminService.RemoveBySpecial(Id);
             }
-            mapSearch.clear();
         }
-        mapResult.put("code", 0);
-        mapResult.put("message", "操作成功");
+        mapResult.put(CodeInfo.sCodeKey, 0);
+        mapResult.put(CodeInfo.sMessageKey, "操作成功");
         return mapResult;
     }
 
     @GetMapping("/searchAdmin/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map searchAdmin(@PathVariable("id") String Id){
+    public Map<String, Object> searchAdmin(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
-        Map<String, Object> mapSearch = new HashMap<String, Object>();
-        Admin temp = ReadAdminService.SearchBySpecial(Id);
+        Admin temp = AdminService.SearchBySpecial(Id);
         if(temp != null){
-        	mapResult.put("code", 0);
-        	mapResult.put("data", temp);
-        	mapResult.put("message", "获取成功");
+        	mapResult.put(CodeInfo.sCodeKey, 0);
+        	mapResult.put(CodeInfo.sDataKey, temp);
+        	mapResult.put(CodeInfo.sMessageKey, "获取成功");
     	}else{
-    		mapResult.put("code", -1);
-    		mapResult.put("data", temp);
-    		mapResult.put("message", "获取失败");
+    		mapResult.put(CodeInfo.sCodeKey, -1);
+    		mapResult.put(CodeInfo.sDataKey, temp);
+    		mapResult.put(CodeInfo.sMessageKey, "获取失败");
 		}
         return mapResult;
     }
@@ -79,7 +79,7 @@ public class AdminController extends BaseController {
 
     @PostMapping("/modifyAdmin")
     @ApiOperation(value = "修改")
-    public Map modifyAdmin(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyAdmin(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Admin temp = JSON.parseObject(data, Admin.class);
         Admin  obj = new Admin();
@@ -87,7 +87,7 @@ public class AdminController extends BaseController {
         if("0".equals(temp.getId())){
             isNew=true;
         }else{
-            obj = ReadAdminService.SearchBySpecial(String.valueOf(temp.getId()));
+            obj = AdminService.SearchBySpecial(String.valueOf(temp.getId()));
             if(obj==null){
                 isNew=true;
             }
@@ -108,14 +108,14 @@ public class AdminController extends BaseController {
 
         Admin tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.getInstance().CreateNewId());
-            obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getId()));
+            obj.setId(String.valueOf(IdWorker.CreateNewId()));
+            obj.setStatus(DBParam.RecordStatus.Default.getCode());
             tempObj=AdminService.Insert(obj);
         }else{
             tempObj=AdminService.Modify(obj);
         }
-        mapResult.put("code", tempObj != null ? 0 : -1);
-        mapResult.put("message", tempObj != null ? "修改成功" : "修改失败");
+        mapResult.put(CodeInfo.sCodeKey, tempObj != null ? 0 : -1);
+        mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");
         return mapResult;
     }
 

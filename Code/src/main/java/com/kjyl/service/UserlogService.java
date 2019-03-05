@@ -8,7 +8,13 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Map;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import com.kjyl.pojo.Userlog;
 import com.kjyl.dao.UserlogMapper;
@@ -24,47 +30,67 @@ import com.kjyl.dao.UserlogMapper;
 public class UserlogService {
    
     @Autowired
-	private UserlogMapper WriteMapper;
-
-    @Autowired
-	private ReadUserlogMapper ReadMapper;
+	private UserlogMapper mapper;
 
 	@CachePut(key="#p0.Id")  
-	@CacheEvict(value = "ReadUserlogCache", allEntries = true)
+	@CacheEvict(value = "UserlogCache", allEntries = true)
 	public Userlog Insert(Userlog obj){
-		WriteMapper.Insert(obj);
-		return ReadMapper.SearchBySpecial(obj.getId());
+		mapper.Insert(obj);
+		return mapper.SearchBySpecial(obj.getId());
 	}
 
 	@CachePut(key="#p0.Id")  
-	@CacheEvict(value = "ReadUserlogCache", allEntries = true)
+	@CacheEvict(value = "UserlogCache", allEntries = true)
 	public Userlog Modify(Userlog obj){
-		WriteMapper.Modify(obj);
-		return ReadMapper.SearchBySpecial(obj.getId());
+		mapper.Modify(obj);
+		return mapper.SearchBySpecial(obj.getId());
 	}
 
 	@CachePut(key="#p0")  
-	@CacheEvict(value = "ReadUserlogCache", allEntries = true)
+	@CacheEvict(value = "UserlogCache", allEntries = true)
 	public Userlog RemoveBySpecial(String Id){
-		WriteMapper.RemoveBySpecial(Id);
-		return ReadMapper.SearchBySpecial(Id);
+		mapper.RemoveBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
 	}
 
 	@CachePut(key="#p0")  
-	@CacheEvict(value = "ReadUserlogCache", allEntries = true)
+	@CacheEvict(value = "UserlogCache", allEntries = true)
 	public Userlog RecoverBySpecial(String Id){
-		WriteMapper.RecoverBySpecial(Id);
-		return ReadMapper.SearchBySpecial(Id);
+		mapper.RecoverBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
 	}
 
-	@CacheEvict(value = {"ReadUserlogCache", "UserlogCache"},allEntries = true)
+	@CacheEvict(value = {"UserlogCache", "UserlogCache"},allEntries = true)
 	public int RemoveByCondition(Map<String,Object> mapSearch){
-		return WriteMapper.RemoveByCondition(mapSearch);
+		return mapper.RemoveByCondition(mapSearch);
 	}
 
-	@CacheEvict(value = {"ReadUserlogCache", "UserlogCache"},allEntries = true)
+	@CacheEvict(value = {"UserlogCache", "UserlogCache"},allEntries = true)
 	public int RecoverByCondition(Map<String,Object> mapSearch){
-		return WriteMapper.RecoverByCondition(mapSearch);
+		return mapper.RecoverByCondition(mapSearch);
+	}
+	
+	@Cacheable(value = "UserlogCache", key="'Userlog_'+#p0") 
+	public Userlog SearchBySpecial(String Id){
+		return mapper.SearchBySpecial(Id);
+	}
+
+	@Cacheable(keyGenerator = "keyGenerator")
+	public List<Userlog> SearchByCondition(Map<String,Object> mapSearch){
+		return mapper.SearchByCondition(mapSearch);
+	}
+
+	@Cacheable(keyGenerator = "keyGenerator")
+	public int SearchData(Map<String,Object> mapSearch){
+		return mapper.SearchData(mapSearch);
+	}
+
+	@Cacheable(keyGenerator = "keyGenerator")
+	public PageInfo<Userlog> SearchPage(Map<String,Object> mapSearch, int pageNum, int pageSize){
+		Page<Userlog> page = PageHelper.startPage(pageNum, pageSize);
+		page.setOrderBy("Userlog_CreateTime desc");
+		mapper.SearchByCondition(mapSearch);
+		return page.toPageInfo();
 	}
 
 }

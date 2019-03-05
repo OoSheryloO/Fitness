@@ -13,7 +13,7 @@ public class SerializeUtil {
         ObjectOutputStream oos = null;
         ByteArrayOutputStream baos = null;
         try {
-//序列化
+        	//序列化
             baos = new ByteArrayOutputStream();
             oos = new ObjectOutputStream(baos);
             oos.writeObject(object);
@@ -28,7 +28,7 @@ public class SerializeUtil {
     public static Object unserialize(byte[] bytes) {
         ByteArrayInputStream bais = null;
         try {
-//反序列化
+        	//反序列化
             bais = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bais);
             return ois.readObject();

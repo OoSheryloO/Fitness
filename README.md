@@ -1,7 +1,7 @@
-#  #
+# 阅读银行 #
 
 ## 包名 ##
-com.kjyl.fitness
+cc.whohelp.readbank 
 
 ## 注意事项 ##
 在这个文件里面记录开发过程中需要用到的账号信息

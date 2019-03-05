@@ -1,6 +1,5 @@
 ﻿package com.kjyl.controller;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -34,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 
 public class AuthenticationController implements HandlerInterceptor {
 
@@ -201,7 +199,8 @@ public class AuthenticationController implements HandlerInterceptor {
 			}else {
 				onLineQuery.put(Onlines.attributeOnLineSession, token);
                 onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-                List<Onlines> onLineList = onLineService.queryList(onLineQuery);
+                
+/*3.5 onLine表未建List<Onlines> onLineList = onLineService.queryList(onLineQuery);
                 if (onLineList.size() < 1) {
                 	Object temp= UserController.CheckUserIsExist(userService,Long.parseLong(userId),request);
                   if (!(temp instanceof  User)) {
@@ -216,7 +215,7 @@ public class AuthenticationController implements HandlerInterceptor {
 					}else {
 						request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
 					}
-				}
+				}*/
 			}
         	return flag;
         } else {//需要验证
@@ -265,9 +264,9 @@ public class AuthenticationController implements HandlerInterceptor {
                                 onLineQuery.put(Onlines.attributeOnLineSession, token);
                                 onLineQuery.put(Onlines.attributeOnLineUserID, Long.parseLong(UID));
                                 onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-                                List<Onlines> onLineList = onLineService.queryList(onLineQuery);
+/*3.5 onLine表未建				List<Onlines> onLineList = onLineService.queryList(onLineQuery);*/
 
-                                Boolean isSessionAuthPass=true;//默认表示Session通过
+                                Boolean isSessionAuthPass = true;//默认表示Session通过
 //                                try{
 //                                    String userString = jsonObject.getString("user");
 //                                    if(userString!=null && !userString.equals("")){
@@ -276,18 +275,20 @@ public class AuthenticationController implements HandlerInterceptor {
 //                                }catch (Exception e){
 //                                    e.printStackTrace();
 //                                }
-                                if (onLineList.size() > 0) {
+                                
+/*3.5 onLine表未建					if (onLineList.size() > 0) {
                                 	if( Long.parseLong(UID) != onLineList.get(0).getOnlineUserid().longValue()){
                                 		Object temp= UserController.CheckUserIsExist(userService,Long.parseLong(UID),request);
                                       if (!(temp instanceof  User)) {
                                               request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
                                           return false;
                                       }
-                                        isSessionAuthPass=false;
+                                        isSessionAuthPass = false;
                                     }
 								}else {
 									request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-								}
+								}*/
+                                
                                     //如果Session数据库存在,且url里面带上了user值,经比较他们的userId不同,则提示用户无法验证通过
 //                                    if(user!=null && user.getUserId()>0 && user.getUserId().longValue()!=onLineList.get(0).getOnlineUserid().longValue()){
 ////                            System.out.println(user.getUserId());
@@ -302,10 +303,12 @@ public class AuthenticationController implements HandlerInterceptor {
 //                                            return false;
 //                                        }
 //                                    }
+                                
+/*3.5 onLine表未建
                                 if (onLineList == null || onLineList.size() == 0 || isSessionAuthPass==false) {
                                         request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
                                     return false;
-                                }
+                                }*/
 //                            }else {
 //                                try {
 //                                    String userString = jsonObject.getString("user");

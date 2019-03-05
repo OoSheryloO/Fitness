@@ -1,9 +1,5 @@
 package com.huban.util;
 
-
-
-
-
 import com.huban.pojo.User;
 import com.huban.service.UserService;
 import java.util.Date;

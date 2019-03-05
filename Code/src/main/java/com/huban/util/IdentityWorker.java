@@ -70,4 +70,5 @@ public class IdentityWorker {
     protected long timeGenerate() {
         return System.currentTimeMillis();
     }
+    
 }

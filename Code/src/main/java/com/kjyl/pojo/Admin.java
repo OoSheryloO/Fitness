@@ -17,7 +17,12 @@ import java.util.Date;
 @ApiModel(value = "Admin")
 public class Admin implements Serializable {
 
-    public static final String COLUMN_Id = "Id";
+    /** 
+	* @Fields field:field: {todo}() 
+	*/ 
+	private static final long serialVersionUID = 1L;
+
+	public static final String COLUMN_Id = "Id";
 
     public static final String COLUMN_Name = "Name";
 
