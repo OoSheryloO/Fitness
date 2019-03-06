@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Picture")
 public class PictureController extends BaseController {
 
-    @GetMapping("/searchPicturePage")
+//    @GetMapping("/searchPicturePage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchPicturePage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class PictureController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setPictureStatus")
+//    @PostMapping("/setPictureStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setPictureStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class PictureController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchPicture/{id}")
+//    @GetMapping("/searchPicture/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchPicture(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class PictureController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyPicture")
+//    @PostMapping("/modifyPicture")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyPicture(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

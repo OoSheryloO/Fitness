@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Opinion")
 public class OpinionController extends BaseController {
 
-    @GetMapping("/searchOpinionPage")
+//    @GetMapping("/searchOpinionPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchOpinionPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +43,7 @@ public class OpinionController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setOpinionStatus")
+//    @PostMapping("/setOpinionStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setOpinionStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +61,7 @@ public class OpinionController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchOpinion/{id}")
+//    @GetMapping("/searchOpinion/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchOpinion(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +78,7 @@ public class OpinionController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyOpinion")
+//    @PostMapping("/modifyOpinion")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyOpinion(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

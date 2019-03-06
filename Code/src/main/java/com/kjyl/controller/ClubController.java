@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Club")
 public class ClubController extends BaseController {
 
-    @GetMapping("/searchClubPage")
+//    @GetMapping("/searchClubPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchClubPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class ClubController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setClubStatus")
+//    @PostMapping("/setClubStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setClubStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class ClubController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchClub/{id}")
+//    @GetMapping("/searchClub/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchClub(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class ClubController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyClub")
+//    @PostMapping("/modifyClub")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyClub(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

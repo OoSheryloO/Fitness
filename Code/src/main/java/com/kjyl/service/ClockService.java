@@ -2,10 +2,10 @@ package com.kjyl.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+//import org.springframework.cache.annotation.CacheConfig;
+//import org.springframework.cache.annotation.CacheEvict;
+//import org.springframework.cache.annotation.CachePut;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,67 +25,67 @@ import com.kjyl.dao.ClockMapper;
  * @version 1.00
  */
 @Service
-@CacheConfig(cacheNames="ClockCache") 
+//@CacheConfig(cacheNames="ClockCache") 
 @Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor=Exception.class)
 public class ClockService {
    
     @Autowired
 	private ClockMapper mapper;
 
-	@CachePut(key="#p0.Id")  
-	@CacheEvict(value = "ClockCache", allEntries = true)
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ClockCache", allEntries = true)
 	public Clock Insert(Clock obj){
 		mapper.Insert(obj);
 		return mapper.SearchBySpecial(obj.getId());
 	}
 
-	@CachePut(key="#p0.Id")  
-	@CacheEvict(value = "ClockCache", allEntries = true)
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ClockCache", allEntries = true)
 	public Clock Modify(Clock obj){
 		mapper.Modify(obj);
 		return mapper.SearchBySpecial(obj.getId());
 	}
 
-	@CachePut(key="#p0")  
-	@CacheEvict(value = "ClockCache", allEntries = true)
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ClockCache", allEntries = true)
 	public Clock RemoveBySpecial(String Id){
 		mapper.RemoveBySpecial(Id);
 		return mapper.SearchBySpecial(Id);
 	}
 
-	@CachePut(key="#p0")  
-	@CacheEvict(value = "ClockCache", allEntries = true)
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ClockCache", allEntries = true)
 	public Clock RecoverBySpecial(String Id){
 		mapper.RecoverBySpecial(Id);
 		return mapper.SearchBySpecial(Id);
 	}
 
-	@CacheEvict(value = {"ClockCache", "ClockCache"},allEntries = true)
+//	@CacheEvict(value = {"ClockCache", "ClockCache"},allEntries = true)
 	public int RemoveByCondition(Map<String,Object> mapSearch){
 		return mapper.RemoveByCondition(mapSearch);
 	}
 
-	@CacheEvict(value = {"ClockCache", "ClockCache"},allEntries = true)
+//	@CacheEvict(value = {"ClockCache", "ClockCache"},allEntries = true)
 	public int RecoverByCondition(Map<String,Object> mapSearch){
 		return mapper.RecoverByCondition(mapSearch);
 	}
 	
-	@Cacheable(value = "ClockCache", key="'Clock_'+#p0") 
+//	@Cacheable(value = "ClockCache", key="'Clock_'+#p0") 
 	public Clock SearchBySpecial(String Id){
 		return mapper.SearchBySpecial(Id);
 	}
 
-	@Cacheable(keyGenerator = "keyGenerator")
+//	@Cacheable(keyGenerator = "keyGenerator")
 	public List<Clock> SearchByCondition(Map<String,Object> mapSearch){
 		return mapper.SearchByCondition(mapSearch);
 	}
 
-	@Cacheable(keyGenerator = "keyGenerator")
+//	@Cacheable(keyGenerator = "keyGenerator")
 	public int SearchData(Map<String,Object> mapSearch){
 		return mapper.SearchData(mapSearch);
 	}
 
-	@Cacheable(keyGenerator = "keyGenerator")
+//	@Cacheable(keyGenerator = "keyGenerator")
 	public PageInfo<Clock> SearchPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
 		Page<Clock> page = PageHelper.startPage(pageNum, pageSize);
 		page.setOrderBy("Clock_CreateTime desc");

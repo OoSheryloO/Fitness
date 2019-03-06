@@ -66,7 +66,7 @@
 		<!-- 自动扫描xml -->
         <list>
             <!-- 扫描mapper.xml  格式  com/bonc/framework/模块名/数据库名称+mapper/*/*.xml -->
-            <value>classpath:com/huban/mapping/*.xml</value>
+            <value>classpath:com/kjyl/mapping/*.xml</value>
         </list>
     </property>
 	</bean>

@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Fitdata")
 public class FitdataController extends BaseController {
 
-    @GetMapping("/searchFitdataPage")
+//    @GetMapping("/searchFitdataPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchFitdataPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class FitdataController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setFitdataStatus")
+//    @PostMapping("/setFitdataStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setFitdataStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class FitdataController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchFitdata/{id}")
+//    @GetMapping("/searchFitdata/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchFitdata(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class FitdataController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyFitdata")
+//    @PostMapping("/modifyFitdata")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyFitdata(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

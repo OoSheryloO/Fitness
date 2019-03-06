@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Event")
 public class EventController extends BaseController {
 
-    @GetMapping("/searchEventPage")
+//    @GetMapping("/searchEventPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchEventPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class EventController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setEventStatus")
+//    @PostMapping("/setEventStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setEventStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class EventController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchEvent/{id}")
+//    @GetMapping("/searchEvent/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchEvent(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class EventController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyEvent")
+//    @PostMapping("/modifyEvent")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyEvent(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

@@ -27,7 +27,8 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Card")
 public class CardController extends BaseController {
 
-    @GetMapping("/searchCardPage")
+//    @GetMapping("/searchCardPage")
+	
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchCardPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +43,7 @@ public class CardController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setCardStatus")
+//    @PostMapping("/setCardStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setCardStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +61,7 @@ public class CardController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchCard/{id}")
+//    @GetMapping("/searchCard/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchCard(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +78,7 @@ public class CardController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyCard")
+//    @PostMapping("/modifyCard")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyCard(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

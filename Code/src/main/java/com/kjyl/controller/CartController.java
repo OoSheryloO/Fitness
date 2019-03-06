@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Cart")
 public class CartController extends BaseController {
 
-    @GetMapping("/searchCartPage")
+//    @GetMapping("/searchCartPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchCartPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class CartController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setCartStatus")
+//    @PostMapping("/setCartStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setCartStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class CartController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchCart/{id}")
+//    @GetMapping("/searchCart/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchCart(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class CartController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyCart")
+//    @PostMapping("/modifyCart")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyCart(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +29,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Verifyrecord")
 public class VerifyrecordController extends BaseController {
 
-    @GetMapping("/searchVerifyrecordPage")
+//    @GetMapping("/searchVerifyrecordPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchVerifyrecordPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +44,7 @@ public class VerifyrecordController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setVerifyrecordStatus")
+//    @PostMapping("/setVerifyrecordStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setVerifyrecordStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +62,7 @@ public class VerifyrecordController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchVerifyrecord/{id}")
+//    @GetMapping("/searchVerifyrecord/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchVerifyrecord(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +79,7 @@ public class VerifyrecordController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyVerifyrecord")
+//    @PostMapping("/modifyVerifyrecord")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyVerifyrecord(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

@@ -27,7 +27,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RequestMapping("/Payrecord")
 public class PayrecordController extends BaseController {
 
-    @GetMapping("/searchPayrecordPage")
+//    @GetMapping("/searchPayrecordPage")
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchPayrecordPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class PayrecordController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/setPayrecordStatus")
+//    @PostMapping("/setPayrecordStatus")
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setPayrecordStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class PayrecordController extends BaseController {
         return mapResult;
     }
 
-    @GetMapping("/searchPayrecord/{id}")
+//    @GetMapping("/searchPayrecord/{id}")
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchPayrecord(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class PayrecordController extends BaseController {
         return mapResult;
     }
 
-    @PostMapping("/modifyPayrecord")
+//    @PostMapping("/modifyPayrecord")
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyPayrecord(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

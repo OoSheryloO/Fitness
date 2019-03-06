@@ -1,21 +1,8 @@
-﻿package com.kjyl.controller;
+package com.kjyl.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.huban.pojo.User;
-import com.huban.service.AccessActiveService;
-import com.huban.service.ErrorsLogService;
-import com.huban.service.OnLineService;
-import com.huban.service.UserService;
-import com.huban.Utils.ErrorStatus;
-import com.huban.Utils.ConstantUtils;
-import com.huban.pojo.Errorlogs;
-import com.huban.pojo.Onlines;
-import com.huban.util.BaseUtil;
-import com.huban.util.HostUtil;
-import com.huban.util.IdWorker;
-import com.huban.util.SmBaseUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -33,6 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+
+import com.kjyl.pojo.User;
+import com.kjyl.util.BaseUtil;
+import com.kjyl.util.HostUtil;
 
 public class AuthenticationController implements HandlerInterceptor {
 
@@ -64,10 +56,7 @@ public class AuthenticationController implements HandlerInterceptor {
         this.backWhiteList = backWhiteList;
     }
     
-    
-
     //  预处理
-
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
 //		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 //		Map<String, String> map = HostUtil.getHeadersInfo(request);
@@ -197,10 +186,10 @@ public class AuthenticationController implements HandlerInterceptor {
         	if (null == userId || "".equals(userId) || "0" == userId || "0".equals(userId) || "-1" == userId || "-1".equals(userId)) {
 				flag = true;
 			}else {
-				onLineQuery.put(Onlines.attributeOnLineSession, token);
+/*3.5 onLine表未建 onLineQuery.put(Onlines.attributeOnLineSession, token);
                 onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
                 
-/*3.5 onLine表未建List<Onlines> onLineList = onLineService.queryList(onLineQuery);
+ 				List<Onlines> onLineList = onLineService.queryList(onLineQuery);
                 if (onLineList.size() < 1) {
                 	Object temp= UserController.CheckUserIsExist(userService,Long.parseLong(userId),request);
                   if (!(temp instanceof  User)) {
@@ -220,7 +209,7 @@ public class AuthenticationController implements HandlerInterceptor {
         	return flag;
         } else {//需要验证
             if (token == null || token.equals("")) {
-                    request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
+                request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
                 return false;
             } else {
                 if (param == null || param.equals("")) {
@@ -253,18 +242,18 @@ public class AuthenticationController implements HandlerInterceptor {
 											UID = jsonObject.getString(BaseUtil.userIdKey);
 											if (UID == null) {
 												User pjUser = JSON.parseObject(jsonObject.getString(User.sUserClass), User.class);
-												if (pjUser.getUserId() != null) {
-													UID = pjUser.getUserId().toString();
+												if (pjUser.getId() != null) {
+													UID = pjUser.getId().toString();
 												}
 											}
 										}
 									}
                             	}
                                 //  内存中不存在,去数据库查询用户的在线状态
-                                onLineQuery.put(Onlines.attributeOnLineSession, token);
+/*3.5 onLine表未建                             onLineQuery.put(Onlines.attributeOnLineSession, token);
                                 onLineQuery.put(Onlines.attributeOnLineUserID, Long.parseLong(UID));
                                 onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-/*3.5 onLine表未建				List<Onlines> onLineList = onLineService.queryList(onLineQuery);*/
+								List<Onlines> onLineList = onLineService.queryList(onLineQuery);*/
 
                                 Boolean isSessionAuthPass = true;//默认表示Session通过
 //                                try{

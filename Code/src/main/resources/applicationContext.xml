@@ -13,8 +13,6 @@
    		<bean></bean>
     </context:annotation-config>   -->
     
-  
-    
 	<!-- 验证码配置 -->
 	<!-- 
 	kaptcha.border  是否有边框  默认为true  我们可以自己设置yes，no  
