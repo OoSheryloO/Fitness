@@ -27,14 +27,14 @@ public class ResultUtil {
 			result.put(BaseUtil.dataKey, JSON.toJSON(data));
 		}
 		result.put(BaseUtil.messageKey, message);
-		result.put(BaseUtil.newRetureKey, code);
+		result.put(BaseUtil.codeKey, code);
 		return result;
 	}
 	
 	public Map<String, Object> FalseData(String message, int code) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(BaseUtil.messageKey, message);
-		result.put(BaseUtil.newRetureKey, code);
+		result.put(BaseUtil.codeKey, code);
 		return result;
 	}
     

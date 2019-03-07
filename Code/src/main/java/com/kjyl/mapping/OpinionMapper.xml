@@ -46,7 +46,7 @@
 				 AND Opinion_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Opinion_Delete = #{Delete}
+				 AND Opinion_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Opinion_CreateTime = #{CreateTime}
@@ -97,17 +97,44 @@
 				#{Content},
 				#{Memo},
 				#{Type},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Opinion">
-		UPDATE fit_opinion SET Opinion_UseId = #{UseId}, Opinion_ObjectId = #{ObjectId}, Opinion_Title = #{Title}, Opinion_Content = #{Content}, Opinion_Memo = #{Memo}, Opinion_Type = #{Type}, Opinion_Status = #{Status}, Opinion_Delete = #{Delete}, Opinion_ModifyTime = now()
+		UPDATE fit_opinion 
+		  <set> 
+			<if test="UseId != null ">
+				Opinion_UseId = #{UseId},
+			</if>
+			<if test="ObjectId != null ">
+				Opinion_ObjectId = #{ObjectId},
+			</if>
+			<if test="Title != null ">
+				Opinion_Title = #{Title},
+			</if>
+			<if test="Content != null ">
+				Opinion_Content = #{Content},
+			</if>
+			<if test="Memo != null ">
+				Opinion_Memo = #{Memo},
+			</if>
+			<if test="Type != null ">
+				Opinion_Type = #{Type},
+			</if>
+			<if test="Status != null ">
+				Opinion_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Opinion_Delete = #{Delete},
+			</if>
+				Opinion_ModifyTime = now()
+		  </set>
 		<where>
-			Opinion_Id= #{ID} 
+			Opinion_Id= #{Id} 
 		</where>
 	</update>
 

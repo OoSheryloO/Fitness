@@ -48,7 +48,7 @@ public class Errorlog implements Serializable {
     private String UseId;
 
     @ApiModelProperty(value = "日志类型")
-    private String TypeId;
+    private Integer TypeId;
 
     @ApiModelProperty(value = "操作说明")
     private String Note;

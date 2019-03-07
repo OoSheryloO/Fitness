@@ -106,7 +106,7 @@
 				 AND FitData_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND FitData_Delete = #{Delete}
+				 AND FitData_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND FitData_CreateTime = #{CreateTime}
@@ -172,17 +172,89 @@
 				#{LeftShank},
 				#{RightShank},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Fitdata">
-		UPDATE fit_fitdata SET FitData_UseId = #{UseId}, FitData_Date = #{Date}, FitData_Height = #{Height}, FitData_Weight = #{Weight}, FitData_BMI = #{BMI}, FitData_BodyFat = #{BodyFat}, FitData_FatRate = #{FatRate}, FitData_MetabolicRate = #{MetabolicRate}, FitData_WHR = #{WHR}, FitData_Humidity = #{Humidity}, FitData_MuscleMass = #{MuscleMass}, FitData_UpperArm = #{UpperArm}, FitData_UnderArm = #{UnderArm}, FitData_Bust = #{Bust}, FitData_Waist = #{Waist}, FitData_Hipline = #{Hipline}, FitData_LeftThigh = #{LeftThigh}, FitData_RightThigh = #{RightThigh}, FitData_LeftShank = #{LeftShank}, FitData_RightShank = #{RightShank}, FitData_Memo = #{Memo}, FitData_Status = #{Status}, FitData_Delete = #{Delete}, FitData_ModifyTime = now()
+		UPDATE fit_fitdata 
+		  <set> 
+			<if test="UseId != null ">
+				FitData_UseId = #{UseId},
+			</if>
+			<if test="Date != null ">
+				FitData_Date = #{Date},
+			</if>
+			<if test="Height != null ">
+				FitData_Height = #{Height},
+			</if>
+			<if test="Weight != null ">
+				FitData_Weight = #{Weight},
+			</if>
+			<if test="BMI != null ">
+				FitData_BMI = #{BMI},
+			</if>
+			<if test="BodyFat != null ">
+				FitData_BodyFat = #{BodyFat},
+			</if>
+			<if test="FatRate != null ">
+				FitData_FatRate = #{FatRate},
+			</if>
+			<if test="MetabolicRate != null ">
+				FitData_MetabolicRate = #{MetabolicRate},
+			</if>
+			<if test="WHR != null ">
+				FitData_WHR = #{WHR},
+			</if>
+			<if test="Humidity != null ">
+				FitData_Humidity = #{Humidity},
+			</if>
+			<if test="MuscleMass != null ">
+				FitData_MuscleMass = #{MuscleMass},
+			</if>
+			<if test="UpperArm != null ">
+				FitData_UpperArm = #{UpperArm},
+			</if>
+			<if test="UnderArm != null ">
+				FitData_UnderArm = #{UnderArm},
+			</if>
+			<if test="Bust != null ">
+				FitData_Bust = #{Bust},
+			</if>
+			<if test="Waist != null ">
+				FitData_Waist = #{Waist},
+			</if>
+			<if test="Hipline != null ">
+				FitData_Hipline = #{Hipline},
+			</if>
+			<if test="LeftThigh != null ">
+				FitData_LeftThigh = #{LeftThigh},
+			</if>
+			<if test="RightThigh != null ">
+				FitData_RightThigh = #{RightThigh},
+			</if>
+			<if test="LeftShank != null ">
+				FitData_LeftShank = #{LeftShank},
+			</if>
+			<if test="RightShank != null ">
+				FitData_RightShank = #{RightShank},
+			</if>
+			<if test="Memo != null ">
+				FitData_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				FitData_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				FitData_Delete = #{Delete},
+			</if>
+				FitData_ModifyTime = now()
+		  </set>
 		<where>
-			FitData_Id= #{ID} 
+			FitData_Id= #{Id} 
 		</where>
 	</update>
 

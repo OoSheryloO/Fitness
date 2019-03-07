@@ -50,7 +50,7 @@
 				 AND Club_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Club_Delete = #{Delete}
+				 AND Club_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Club_CreateTime = #{CreateTime}
@@ -102,17 +102,47 @@
 				#{Site},
 				#{Tel},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Club">
-		UPDATE fit_club SET Club_UseId = #{UseId}, Club_Title = #{Title}, Club_Theme = #{Theme}, Club_Intro = #{Intro}, Club_Site = #{Site}, Club_Tel = #{Tel}, Club_Memo = #{Memo}, Club_Status = #{Status}, Club_Delete = #{Delete}, Club_ModifyTime = now()
+		UPDATE fit_club 
+		  <set> 
+			<if test="UseId != null ">
+				Club_UseId = #{UseId},
+			</if>
+			<if test="Title != null ">
+				Club_Title = #{Title},
+			</if>
+			<if test="Theme != null ">
+				Club_Theme = #{Theme},
+			</if>
+			<if test="Intro != null ">
+				Club_Intro = #{Intro},
+			</if>
+			<if test="Site != null ">
+				Club_Site = #{Site},
+			</if>
+			<if test="Tel != null ">
+				Club_Tel = #{Tel},
+			</if>
+			<if test="Memo != null ">
+				Club_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Club_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Club_Delete = #{Delete},
+			</if>
+				Club_ModifyTime = now()
+		  </set>
 		<where>
-			Club_Id= #{ID} 
+			Club_Id= #{Id} 
 		</where>
 	</update>
 

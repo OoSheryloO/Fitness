@@ -34,7 +34,7 @@
 				 AND Syllabus_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Syllabus_Delete = #{Delete}
+				 AND Syllabus_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Syllabus_CreateTime = #{CreateTime}
@@ -82,17 +82,35 @@
 				#{UseId},
 				#{TouchId},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Course">
-		UPDATE fit_course SET Syllabus_UseId = #{UseId}, Syllabus_TouchId = #{TouchId}, Syllabus_Memo = #{Memo}, Syllabus_Status = #{Status}, Syllabus_Delete = #{Delete}, Syllabus_ModifyTime = now()
+		UPDATE fit_course 
+		  <set> 
+			<if test="UseId != null ">
+				Syllabus_UseId = #{UseId},
+			</if>
+			<if test="TouchId != null ">
+				Syllabus_TouchId = #{TouchId},
+			</if>
+			<if test="Memo != null ">
+				Syllabus_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Syllabus_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Syllabus_Delete = #{Delete},
+			</if>
+				Syllabus_ModifyTime = now()
+		  </set>
 		<where>
-			Syllabus_Id= #{ID} 
+			Syllabus_Id= #{Id} 
 		</where>
 	</update>
 

@@ -46,7 +46,7 @@
 				 AND Card_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Card_Delete = #{Delete}
+				 AND Card_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Card_CreateTime = #{CreateTime}
@@ -98,17 +98,44 @@
 				#{Price},
 				#{Type},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Card">
-		UPDATE fit_card SET Card_UseId = #{UseId}, Card_Title = #{Title}, Card_Intro = #{Intro}, Card_Price = #{Price}, Card_Type = #{Type}, Card_Memo = #{Memo}, Card_Status = #{Status}, Card_Delete = #{Delete}, Card_ModifyTime = now()
+		UPDATE fit_card 
+		  <set> 
+			<if test="UseId != null ">
+				Card_UseId = #{UseId},
+			</if>
+			<if test="Title != null ">
+				Card_Title = #{Title},
+			</if>
+			<if test="Intro != null ">
+				Card_Intro = #{Intro},
+			</if>
+			<if test="Price != null ">
+				Card_Price = #{Price},
+			</if>
+			<if test="Type != null ">
+				Card_Type = #{Type},
+			</if>
+			<if test="Memo != null ">
+				Card_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Card_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Card_Delete = #{Delete},
+			</if>
+				Card_ModifyTime = now()
+		  </set>
 		<where>
-			Card_Id= #{ID} 
+			Card_Id= #{Id} 
 		</where>
 	</update>
 

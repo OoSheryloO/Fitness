@@ -42,7 +42,7 @@
 				 AND ErrorLog_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND ErrorLog_Delete = #{Delete}
+				 AND ErrorLog_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND ErrorLog_CreateTime = #{CreateTime}
@@ -92,17 +92,41 @@
 				#{Note},
 				#{Version},
 				#{Device},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Errorlog">
-		UPDATE fit_errorlog SET ErrorLog_UseId = #{UseId}, ErrorLog_TypeId = #{TypeId}, ErrorLog_Note = #{Note}, ErrorLog_Version = #{Version}, ErrorLog_Device = #{Device}, ErrorLog_Status = #{Status}, ErrorLog_Delete = #{Delete}, ErrorLog_ModifyTime = now()
+		UPDATE fit_errorlog 
+		  <set> 
+			<if test="UseId != null ">
+				ErrorLog_UseId = #{UseId},
+			</if>
+			<if test="TypeId != null ">
+				ErrorLog_TypeId = #{TypeId},
+			</if>
+			<if test="Note != null ">
+				ErrorLog_Note = #{Note},
+			</if>
+			<if test="Version != null ">
+				ErrorLog_Version = #{Version},
+			</if>
+			<if test="Device != null ">
+				ErrorLog_Device = #{Device},
+			</if>
+			<if test="Status != null ">
+				ErrorLog_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				ErrorLog_Delete = #{Delete},
+			</if>
+				ErrorLog_ModifyTime = now()
+		  </set>
 		<where>
-			ErrorLog_Id= #{ID} 
+			ErrorLog_Id= #{Id} 
 		</where>
 	</update>
 

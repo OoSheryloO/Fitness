@@ -42,7 +42,7 @@
 				 AND PayRecord_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND PayRecord_Delete = #{Delete}
+				 AND PayRecord_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND PayRecord_CreateTime = #{CreateTime}
@@ -92,17 +92,41 @@
 				#{Site},
 				#{Type},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Payrecord">
-		UPDATE fit_payrecord SET PayRecord_UseId = #{UseId}, PayRecord_TouchId = #{TouchId}, PayRecord_Site = #{Site}, PayRecord_Type = #{Type}, PayRecord_Memo = #{Memo}, PayRecord_Status = #{Status}, PayRecord_Delete = #{Delete}, PayRecord_ModifyTime = now()
+		UPDATE fit_payrecord 
+		  <set> 
+			<if test="UseId != null ">
+				PayRecord_UseId = #{UseId},
+			</if>
+			<if test="TouchId != null ">
+				PayRecord_TouchId = #{TouchId},
+			</if>
+			<if test="Site != null ">
+				PayRecord_Site = #{Site},
+			</if>
+			<if test="Type != null ">
+				PayRecord_Type = #{Type},
+			</if>
+			<if test="Memo != null ">
+				PayRecord_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				PayRecord_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				PayRecord_Delete = #{Delete},
+			</if>
+				PayRecord_ModifyTime = now()
+		  </set>
 		<where>
-			PayRecord_Id= #{ID} 
+			PayRecord_Id= #{Id} 
 		</where>
 	</update>
 

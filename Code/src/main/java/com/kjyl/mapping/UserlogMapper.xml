@@ -39,7 +39,7 @@
 				 AND UserLog_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND UserLog_Delete = #{Delete}
+				 AND UserLog_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND UserLog_CreateTime = #{CreateTime}
@@ -87,18 +87,39 @@
 				#{UseId},
 				#{TypeId},
 				#{Note},
-				#{Version},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Userlog">
-		UPDATE fit_userlog SET UserLog_UseId = #{UseId}, UserLog_TypeId = #{TypeId}, UserLog_Note = #{Note}, UserLog_Version = #{Version}, UserLog_Status = #{Status}, UserLog_Delete = #{Delete}, UserLog_ModifyTime = now()
+		UPDATE fit_userlog 
+		  <set> 
+			<if test="UseId != null ">
+				UserLog_UseId = #{UseId},
+			</if>
+			<if test="TypeId != null ">
+				UserLog_TypeId = #{TypeId},
+			</if>
+			<if test="Note != null ">
+				UserLog_Note = #{Note},
+			</if>
+			<if test="Version != null ">
+				UserLog_Version = #{Version},
+			</if>
+			<if test="Status != null ">
+				UserLog_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				UserLog_Delete = #{Delete},
+			</if>
+				UserLog_ModifyTime = now()
+		  </set>
 		<where>
-			UserLog_Id= #{ID} 
+			UserLog_Id= #{Id} 
 		</where>
 	</update>
 

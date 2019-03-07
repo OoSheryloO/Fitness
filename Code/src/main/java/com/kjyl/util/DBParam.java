@@ -37,7 +37,6 @@ public class DBParam {
 	}
 
 
-
 	public static final String sUIDKey = "UID";//用户ID
 	public static final String sDBIDKey = "DBID";//其他唯一ID
 	public static final String sUseIDKey = "UseID";//其他用处ID 注意是Use 不是 User
@@ -102,22 +101,6 @@ public class DBParam {
 	public static final String sLimitKey = "Limit";
 	
 	public static final String sStartKey = "start";
-	public static final String sSizeKey = "size";
-
-	// constant 常量
-	// public static final int iTeacherIdentityKey = 1;
-	public static final int iTeacher_IdentityKey = 1;
-	public static final int iAgent_IdentityKey = 3;
-	public static final int iStudentIdentityKey = 2;
-	public static final int iStudent_IdentityKey = 2;
-	
-	//总行活动分辨标示
-	public static final String sHead_QuerterKey = "0000";
-	
-	
-	//Default Constant 初始化/默认常量
-	public static final int iDefaultPageKey = 1;
-	public static final int iDefaultSizeKey = 5;
 	
 	
 	

@@ -50,7 +50,7 @@
 				 AND Discuss_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Discuss_Delete = #{Delete}
+				 AND Discuss_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Discuss_CreateTime = #{CreateTime}
@@ -100,19 +100,49 @@
 				#{ParentId},
 				#{Title},
 				#{Content},
-				#{LikeCount},
-				#{Review},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Discuss">
-		UPDATE fit_discuss SET Discuss_UseId = #{UseId}, Discuss_TopicId = #{TopicId}, Discuss_ParentId = #{ParentId}, Discuss_Title = #{Title}, Discuss_Content = #{Content}, Discuss_LikeCount = #{LikeCount}, Discuss_Review = #{Review}, Discuss_Status = #{Status}, Discuss_Delete = #{Delete}, Discuss_ModifyTime = now()
+		UPDATE fit_discuss 
+		  <set> 
+			<if test="UseId != null ">
+				Discuss_UseId = #{UseId},
+			</if>
+			<if test="TopicId != null ">
+				Discuss_TopicId = #{TopicId},
+			</if>
+			<if test="ParentId != null ">
+				Discuss_ParentId = #{ParentId},
+			</if>
+			<if test="Title != null ">
+				Discuss_Title = #{Title},
+			</if>
+			<if test="Content != null ">
+				Discuss_Content = #{Content},
+			</if>
+			<if test="LikeCount != null ">
+				Discuss_LikeCount = #{LikeCount},
+			</if>
+			<if test="Review != null ">
+				Discuss_Review = #{Review},
+			</if>
+			<if test="Status != null ">
+				Discuss_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Discuss_Delete = #{Delete},
+			</if>
+				Discuss_ModifyTime = now()
+		  </set>
 		<where>
-			Discuss_Id= #{ID} 
+			Discuss_Id= #{Id} 
 		</where>
 	</update>
 

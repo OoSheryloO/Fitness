@@ -34,9 +34,8 @@ public class VerifyrecordService {
 
 //	@CachePut(key="#p0.Id")  
 //	@CacheEvict(value = "VerifyrecordCache", allEntries = true)
-	public Verifyrecord Insert(Verifyrecord obj){
-		mapper.Insert(obj);
-		return mapper.SearchBySpecial(obj.getId());
+	public int Insert(Verifyrecord obj){
+		return mapper.Insert(obj);
 	}
 
 //	@CachePut(key="#p0.Id")  

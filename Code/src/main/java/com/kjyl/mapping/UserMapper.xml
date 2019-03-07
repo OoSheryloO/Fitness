@@ -70,7 +70,7 @@
 				 AND User_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND User_Delete = #{Delete}
+				 AND User_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND User_CreateTime = #{CreateTime}
@@ -127,17 +127,62 @@
 				#{PayPassword},
 				#{City},
 				#{FitClub},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.User">
-		UPDATE fit_user SET User_HeadIcon = #{HeadIcon}, User_Name = #{Name}, User_Sex = #{Sex}, User_Phone = #{Phone}, User_QQ = #{QQ}, User_MicroBlog = #{MicroBlog}, User_QRCode = #{QRCode}, User_WeChatOpenID = #{WeChatOpenID}, User_Password = #{Password}, User_PayPassword = #{PayPassword}, User_City = #{City}, User_FitClub = #{FitClub}, User_Status = #{Status}, User_Delete = #{Delete}, User_ModifyTime = now()
+		UPDATE fit_user 
+		  <set> 
+			<if test="HeadIcon != null ">
+				User_HeadIcon = #{HeadIcon},
+			</if>
+			<if test="Name != null ">
+				User_Name = #{Name},
+			</if>
+			<if test="Sex != null ">
+				User_Sex = #{Sex},
+			</if>
+			<if test="Phone != null ">
+				User_Phone = #{Phone},
+			</if>
+			<if test="QQ != null ">
+				User_QQ = #{QQ},
+			</if>
+			<if test="MicroBlog != null ">
+				User_MicroBlog = #{MicroBlog},
+			</if>
+			<if test="QRCode != null ">
+				User_QRCode = #{QRCode},
+			</if>
+			<if test="WeChatOpenID != null ">
+				User_WeChatOpenID = #{WeChatOpenID},
+			</if>
+			<if test="Password != null ">
+				User_Password = #{Password},
+			</if>
+			<if test="PayPassword != null ">
+				User_PayPassword = #{PayPassword},
+			</if>
+			<if test="City != null ">
+				User_City = #{City},
+			</if>
+			<if test="FitClub != null ">
+				User_FitClub = #{FitClub},
+			</if>
+			<if test="Status != null ">
+				User_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				User_Delete = #{Delete},
+			</if>
+				User_ModifyTime = now()
+		  </set>
 		<where>
-			User_Id= #{ID} 
+			User_Id= #{Id} 
 		</where>
 	</update>
 

@@ -117,17 +117,56 @@
 				#{Memo},
 				#{ParentId},
 				#{AreaId},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Admin">
-		UPDATE fit_admin SET Admin_Name = #{Name}, Admin_PassWord = #{PassWord}, Admin_NickName = #{NickName}, Admin_Image = #{Image}, Admin_Phone = #{Phone}, Admin_Level = #{Level}, Admin_Version = #{Version}, Admin_Memo = #{Memo}, Admin_ParentId = #{ParentId}, Admin_AreaId = #{AreaId}, Admin_Status = #{Status}, Admin_Delete = #{Delete}, Admin_ModifyTime = now()
+		UPDATE fit_admin 
+		  <set> 
+			<if test="Name != null ">
+				Admin_Name = #{Name},
+			</if>
+			<if test="PassWord != null ">
+				Admin_PassWord = #{PassWord},
+			</if>
+			<if test="NickName != null ">
+				Admin_NickName = #{NickName},
+			</if>
+			<if test="Image != null ">
+				Admin_Image = #{Image},
+			</if>
+			<if test="Phone != null ">
+				Admin_Phone = #{Phone},
+			</if>
+			<if test="Level != null ">
+				Admin_Level = #{Level},
+			</if>
+			<if test="Version != null ">
+				Admin_Version = #{Version},
+			</if>
+			<if test="Memo != null ">
+				Admin_Memo = #{Memo},
+			</if>
+			<if test="ParentId != null ">
+				Admin_ParentId = #{ParentId},
+			</if>
+			<if test="AreaId != null ">
+				Admin_AreaId = #{AreaId},
+			</if>
+			<if test="Status != null ">
+				Admin_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Admin_Delete = #{Delete},
+			</if>
+				Admin_ModifyTime = now()
+		  </set>
 		<where>
-			Admin_Id= #{ID} 
+			Admin_Id= #{Id} 
 		</where>
 	</update>
 

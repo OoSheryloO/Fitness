@@ -26,7 +26,7 @@
 				 AND Clock_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Clock_Delete = #{Delete}
+				 AND Clock_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Clock_CreateTime = #{CreateTime}
@@ -72,17 +72,29 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Clock">
-		UPDATE fit_clock SET Clock_UseId = #{UseId}, Clock_Status = #{Status}, Clock_Delete = #{Delete}, Clock_ModifyTime = now()
+		UPDATE fit_clock 
+		  <set> 
+			<if test="UseId != null ">
+				Clock_UseId = #{UseId},
+			</if>
+			<if test="Status != null ">
+				Clock_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Clock_Delete = #{Delete},
+			</if>
+				Clock_ModifyTime = now()
+		  </set>
 		<where>
-			Clock_Id= #{ID} 
+			Clock_Id= #{Id} 
 		</where>
 	</update>
 

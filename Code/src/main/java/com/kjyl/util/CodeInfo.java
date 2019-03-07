@@ -16,6 +16,7 @@ public class CodeInfo {//http请求的头部不区分大小写，method区分大
 /** info：总共*/		public static final String sTotalKey	= "total";
 /** info：代码*/		public static final String sCodeKey 	= "code";
 /** info：数据*/		public static final String sDataKey		= "data";
+/** info：信息*/		public static final String sTokenKey  = "token";
 /** info：信息*/		public static final String sMessageKey  = "message";
 	
 	/**
@@ -29,7 +30,7 @@ public class CodeInfo {//http请求的头部不区分大小写，method区分大
 		},
 		OK {
 			public int getCode() {
-				return 60000;
+				return 200;
 			}
 		};
 		public abstract int getCode();

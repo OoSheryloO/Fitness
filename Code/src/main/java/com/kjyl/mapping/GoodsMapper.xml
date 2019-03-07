@@ -50,7 +50,7 @@
 				 AND Goods_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Goods_Delete = #{Delete}
+				 AND Goods_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Goods_CreateTime = #{CreateTime}
@@ -102,17 +102,47 @@
 				#{HeadIcon},
 				#{Type},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Goods">
-		UPDATE fit_goods SET Goods_UseId = #{UseId}, Goods_Title = #{Title}, Goods_Intro = #{Intro}, Goods_Price = #{Price}, Goods_HeadIcon = #{HeadIcon}, Goods_Type = #{Type}, Goods_Memo = #{Memo}, Goods_Status = #{Status}, Goods_Delete = #{Delete}, Goods_ModifyTime = now()
+		UPDATE fit_goods 
+		  <set> 
+			<if test="UseId != null ">
+				Goods_UseId = #{UseId},
+			</if>
+			<if test="Title != null ">
+				Goods_Title = #{Title},
+			</if>
+			<if test="Intro != null ">
+				Goods_Intro = #{Intro},
+			</if>
+			<if test="Price != null ">
+				Goods_Price = #{Price},
+			</if>
+			<if test="HeadIcon != null ">
+				Goods_HeadIcon = #{HeadIcon},
+			</if>
+			<if test="Type != null ">
+				Goods_Type = #{Type},
+			</if>
+			<if test="Memo != null ">
+				Goods_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Goods_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Goods_Delete = #{Delete},
+			</if>
+				Goods_ModifyTime = now()
+		  </set>
 		<where>
-			Goods_Id= #{ID} 
+			Goods_Id= #{Id} 
 		</where>
 	</update>
 

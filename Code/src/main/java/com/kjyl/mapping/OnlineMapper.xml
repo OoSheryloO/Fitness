@@ -41,7 +41,7 @@
 				 AND Online_Status = #{Status}
 		</if>
 		<if test="Delete != null">
-				 AND Online_Delete = #{Delete}
+				 AND Online_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime != null">
 				 AND Online_CreateTime = #{CreateTime}
@@ -89,10 +89,10 @@
 				#{Id},
 				#{UseId},
 				#{Session},
-				#{Version},
+				DEFAULT,
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
@@ -101,22 +101,22 @@
 	<update id="Modify" parameterType="com.kjyl.pojo.Online">
 		UPDATE fit_online 
 		  <set> 
-			<if test="Online_UseId != null "
+			<if test="UseId != null ">
 				Online_UseId = #{UseId},
 			</if>
-			<if test="Online_Session != null "
+			<if test="Session != null ">
 				Online_Session = #{Session},
 			</if>
-			<if test="Online_Version != null "
+			<if test="Version != null ">
 				Online_Version = #{Version},
 			</if>
-			<if test="Online_Memo != null "
+			<if test="Memo != null ">
 				Online_Memo = #{Memo},
 			</if>
-			<if test="Online_Status != null "
+			<if test="Status != null ">
 				Online_Status = #{Status},
 			</if>
-			<if test="Online_Delete != null "
+			<if test="Delete != null ">
 				Online_Delete = #{Delete},
 			</if>
 				Online_ModifyTime = now()

@@ -66,7 +66,7 @@
 				 AND Picture_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Picture_Delete = #{Delete}
+				 AND Picture_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Picture_CreateTime = #{CreateTime}
@@ -121,18 +121,60 @@
 				#{Url},
 				#{RedirectUrl},
 				#{Sort},
-				#{Version},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Picture">
-		UPDATE fit_picture SET Picture_UseId = #{UseId}, Picture_TypeId = #{TypeId}, Picture_Identity = #{Identity}, Picture_Purpose = #{Purpose}, Picture_BelongId = #{BelongId}, Picture_Title = #{Title}, Picture_Content = #{Content}, Picture_Url = #{Url}, Picture_RedirectUrl = #{RedirectUrl}, Picture_Sort = #{Sort}, Picture_Version = #{Version}, Picture_Status = #{Status}, Picture_Delete = #{Delete}, Picture_ModifyTime = now()
+		UPDATE fit_picture 
+		  <set> 
+			<if test="UseId != null ">
+				Picture_UseId = #{UseId},
+			</if>
+			<if test="TypeId != null ">
+				Picture_TypeId = #{TypeId},
+			</if>
+			<if test="Identity != null ">
+				Picture_Identity = #{Identity},
+			</if>
+			<if test="Purpose != null ">
+				Picture_Purpose = #{Purpose},
+			</if>
+			<if test="BelongId != null ">
+				Picture_BelongId = #{BelongId},
+			</if>
+			<if test="Title != null ">
+				Picture_Title = #{Title},
+			</if>
+			<if test="Content != null ">
+				Picture_Content = #{Content},
+			</if>
+			<if test="Url != null ">
+				Picture_Url = #{Url},
+			</if>
+			<if test="RedirectUrl != null ">
+				Picture_RedirectUrl = #{RedirectUrl},
+			</if>
+			<if test="Sort != null ">
+				Picture_Sort = #{Sort},
+			</if>
+			<if test="Version != null ">
+				Picture_Version = #{Version},
+			</if>
+			<if test="Status != null ">
+				Picture_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Picture_Delete = #{Delete},
+			</if>
+				Picture_ModifyTime = now()
+		  </set>
 		<where>
-			Picture_Id= #{ID} 
+			Picture_Id= #{Id} 
 		</where>
 	</update>
 

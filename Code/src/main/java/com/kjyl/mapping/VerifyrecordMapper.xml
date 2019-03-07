@@ -46,7 +46,7 @@
 				 AND VerifyRecord_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND VerifyRecord_Delete = #{Delete}
+				 AND VerifyRecord_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND VerifyRecord_CreateTime = #{CreateTime}
@@ -96,18 +96,45 @@
 				#{CheckNumber},
 				#{DisableTime},
 				#{EnableTime},
-				#{Version},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Verifyrecord">
-		UPDATE fit_verifyrecord SET VerifyRecord_UseId = #{UseId}, VerifyRecord_Phone = #{Phone}, VerifyRecord_CheckNumber = #{CheckNumber}, VerifyRecord_DisableTime = #{DisableTime}, VerifyRecord_EnableTime = #{EnableTime}, VerifyRecord_Version = #{Version}, VerifyRecord_Status = #{Status}, VerifyRecord_Delete = #{Delete}, VerifyRecord_ModifyTime = now()
+		UPDATE fit_verifyrecord 
+		  <set> 
+			<if test="UseId != null ">
+				VerifyRecord_UseId = #{UseId},
+			</if>
+			<if test="Phone != null ">
+				VerifyRecord_Phone = #{Phone},
+			</if>
+			<if test="CheckNumber != null ">
+				VerifyRecord_CheckNumber = #{CheckNumber},
+			</if>
+			<if test="DisableTime != null ">
+				VerifyRecord_DisableTime = #{DisableTime},
+			</if>
+			<if test="EnableTime != null ">
+				VerifyRecord_EnableTime = #{EnableTime},
+			</if>
+			<if test="Version != null ">
+				VerifyRecord_Version = #{Version},
+			</if>
+			<if test="Status != null ">
+				VerifyRecord_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				VerifyRecord_Delete = #{Delete},
+			</if>
+				VerifyRecord_ModifyTime = now()
+		  </set>
 		<where>
-			VerifyRecord_Id= #{ID} 
+			VerifyRecord_Id= #{Id} 
 		</where>
 	</update>
 

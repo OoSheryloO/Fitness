@@ -108,13 +108,13 @@ public class VerifyrecordController extends BaseController {
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-        Verifyrecord tempObj=null;
+        Verifyrecord tempObj = null;
         if(isNew){
             obj.setId(String.valueOf(IdWorker.CreateNewId()));
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj=VerifyrecordService.Insert(obj);
+//            tempObj = VerifyrecordService.Insert(obj);
         }else{
-            tempObj=VerifyrecordService.Modify(obj);
+            tempObj = VerifyrecordService.Modify(obj);
         }
         mapResult.put(CodeInfo.sRowKey, tempObj != null ? 0 : -1);
         mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");

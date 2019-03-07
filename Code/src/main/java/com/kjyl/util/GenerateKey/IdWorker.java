@@ -63,14 +63,11 @@ public class IdWorker {
         }
 //        this.workerId = workerId;
 //        this.datacenterId = datacenterId;
-
         long timestamp = timeGen();
- 
         if (timestamp < lastTimestamp) {
           //  LOG.error(String.format("clock is moving backwards.  Rejecting requests until %d.", lastTimestamp));
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
- 
         if (lastTimestamp == timestamp) {
             sequence = (sequence + 1) & sequenceMask;
             if (sequence == 0) {
@@ -79,9 +76,7 @@ public class IdWorker {
         } else {
             sequence = 0L;
         }
- 
         lastTimestamp = timestamp;
- 
         return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift) | (workerId << workerIdShift) | sequence;
     }
  
@@ -97,9 +92,14 @@ public class IdWorker {
         return System.currentTimeMillis();
     }
     
-    public static long CreateNewId(){
+    public static long CreateLongNewId(){
         return new IdWorker(1, new Random().nextInt(31)).nextId();
        }
+    
+    public static String CreateStringNewId(){
+        return String.valueOf(new IdWorker(1, new Random().nextInt(31)).nextId());
+       }
+    
      public static String Random() {
          return getRandomString(8);
        }

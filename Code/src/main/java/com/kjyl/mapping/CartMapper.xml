@@ -34,7 +34,7 @@
 				 AND Cart_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Cart_Delete = #{Delete}
+				 AND Cart_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Cart_CreateTime = #{CreateTime}
@@ -82,17 +82,35 @@
 				#{UseId},
 				#{TouchId},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Cart">
-		UPDATE fit_cart SET Cart_UseId = #{UseId}, Cart_TouchId = #{TouchId}, Cart_Memo = #{Memo}, Cart_Status = #{Status}, Cart_Delete = #{Delete}, Cart_ModifyTime = now()
+		UPDATE fit_cart 
+		  <set> 
+			<if test="UseId != null ">
+				Cart_UseId = #{UseId},
+			</if>
+			<if test="TouchId != null ">
+				Cart_TouchId = #{TouchId},
+			</if>
+			<if test="Memo != null ">
+				Cart_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Cart_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Cart_Delete = #{Delete},
+			</if>
+				Cart_ModifyTime = now()
+		  </set>
 		<where>
-			Cart_Id= #{ID} 
+			Cart_Id= #{Id} 
 		</where>
 	</update>
 

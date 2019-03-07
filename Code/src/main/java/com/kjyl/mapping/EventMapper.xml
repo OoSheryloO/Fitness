@@ -62,7 +62,7 @@
 				 AND Event_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Event_Delete = #{Delete}
+				 AND Event_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Event_CreateTime = #{CreateTime}
@@ -117,17 +117,56 @@
 				#{StartApply},
 				#{EndApply},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Event">
-		UPDATE fit_event SET Event_UseId = #{UseId}, Event_TouchId = #{TouchId}, Event_Title = #{Title}, Event_Intro = #{Intro}, Event_Site = #{Site}, Event_StartTime = #{StartTime}, Event_EndTime = #{EndTime}, Event_StartApply = #{StartApply}, Event_EndApply = #{EndApply}, Event_Memo = #{Memo}, Event_Status = #{Status}, Event_Delete = #{Delete}, Event_ModifyTime = now()
+		UPDATE fit_event 
+		  <set> 
+			<if test="UseId != null ">
+				Event_UseId = #{UseId},
+			</if>
+			<if test="TouchId != null ">
+				Event_TouchId = #{TouchId},
+			</if>
+			<if test="Title != null ">
+				Event_Title = #{Title},
+			</if>
+			<if test="Intro != null ">
+				Event_Intro = #{Intro},
+			</if>
+			<if test="Site != null ">
+				Event_Site = #{Site},
+			</if>
+			<if test="StartTime != null ">
+				Event_StartTime = #{StartTime},
+			</if>
+			<if test="EndTime != null ">
+				Event_EndTime = #{EndTime},
+			</if>
+			<if test="StartApply != null ">
+				Event_StartApply = #{StartApply},
+			</if>
+			<if test="EndApply != null ">
+				Event_EndApply = #{EndApply},
+			</if>
+			<if test="Memo != null ">
+				Event_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Event_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Event_Delete = #{Delete},
+			</if>
+				Event_ModifyTime = now()
+		  </set>
 		<where>
-			Event_Id= #{ID} 
+			Event_Id= #{Id} 
 		</where>
 	</update>
 

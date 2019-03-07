@@ -38,7 +38,7 @@
 				 AND Status_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Status_Delete = #{Delete}
+				 AND Status_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Status_CreateTime = #{CreateTime}
@@ -87,17 +87,38 @@
 				#{ObjectId},
 				#{Like},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Status">
-		UPDATE fit_status SET Status_UseId = #{UseId}, Status_ObjectId = #{ObjectId}, Status_Like = #{Like}, Status_Memo = #{Memo}, Status_Status = #{Status}, Status_Delete = #{Delete}, Status_ModifyTime = now()
+		UPDATE fit_status 
+		  <set> 
+			<if test="UseId != null ">
+				Status_UseId = #{UseId},
+			</if>
+			<if test="ObjectId != null ">
+				Status_ObjectId = #{ObjectId},
+			</if>
+			<if test="Like != null ">
+				Status_Like = #{Like},
+			</if>
+			<if test="Memo != null ">
+				Status_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Status_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Status_Delete = #{Delete},
+			</if>
+				Status_ModifyTime = now()
+		  </set>
 		<where>
-			Status_Id= #{ID} 
+			Status_Id= #{Id} 
 		</where>
 	</update>
 

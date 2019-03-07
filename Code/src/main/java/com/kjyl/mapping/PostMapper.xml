@@ -46,7 +46,7 @@
 				 AND Post_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Post_Delete = #{Delete}
+				 AND Post_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Post_CreateTime = #{CreateTime}
@@ -95,19 +95,46 @@
 				#{TopicId},
 				#{Title},
 				#{Content},
-				#{LikeCount},
-				#{Review},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Post">
-		UPDATE fit_post SET Post_UseId = #{UseId}, Post_TopicId = #{TopicId}, Post_Title = #{Title}, Post_Content = #{Content}, Post_LikeCount = #{LikeCount}, Post_Review = #{Review}, Post_Status = #{Status}, Post_Delete = #{Delete}, Post_ModifyTime = now()
+		UPDATE fit_post 
+		  <set> 
+			<if test="UseId != null ">
+				Post_UseId = #{UseId},
+			</if>
+			<if test="TopicId != null ">
+				Post_TopicId = #{TopicId},
+			</if>
+			<if test="Title != null ">
+				Post_Title = #{Title},
+			</if>
+			<if test="Content != null ">
+				Post_Content = #{Content},
+			</if>
+			<if test="LikeCount != null ">
+				Post_LikeCount = #{LikeCount},
+			</if>
+			<if test="Review != null ">
+				Post_Review = #{Review},
+			</if>
+			<if test="Status != null ">
+				Post_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Post_Delete = #{Delete},
+			</if>
+				Post_ModifyTime = now()
+		  </set>
 		<where>
-			Post_Id= #{ID} 
+			Post_Id= #{Id} 
 		</where>
 	</update>
 

@@ -34,7 +34,7 @@
 				 AND Apply_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Apply_Delete = #{Delete}
+				 AND Apply_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Apply_CreateTime = #{CreateTime}
@@ -82,17 +82,35 @@
 				#{UseId},
 				#{TouchId},
 				#{Memo},
-				#{Status},
-				#{Delete},
+				DEFAULT,
+				DEFAULT,
 				now(),
 				now()
 				)
 	</insert>
 		
 	<update id="Modify" parameterType="com.kjyl.pojo.Apply">
-		UPDATE fit_apply SET Apply_UseId = #{UseId}, Apply_TouchId = #{TouchId}, Apply_Memo = #{Memo}, Apply_Status = #{Status}, Apply_Delete = #{Delete}, Apply_ModifyTime = now()
+		UPDATE fit_apply 
+		  <set> 
+			<if test="UseId != null ">
+				Apply_UseId = #{UseId},
+			</if>
+			<if test="TouchId != null ">
+				Apply_TouchId = #{TouchId},
+			</if>
+			<if test="Memo != null ">
+				Apply_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Apply_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Apply_Delete = #{Delete},
+			</if>
+				Apply_ModifyTime = now()
+		  </set>
 		<where>
-			Apply_Id= #{ID} 
+			Apply_Id= #{Id} 
 		</where>
 	</update>
 
