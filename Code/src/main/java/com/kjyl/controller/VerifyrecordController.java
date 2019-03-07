@@ -30,6 +30,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 public class VerifyrecordController extends BaseController {
 
 //    @GetMapping("/searchVerifyrecordPage")
+	@RequestMapping(value="/searchVerifyrecordPage", method=RequestMethod.GET)
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchVerifyrecordPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -45,6 +46,7 @@ public class VerifyrecordController extends BaseController {
     }
 
 //    @PostMapping("/setVerifyrecordStatus")
+	@RequestMapping(value="/setVerifyrecordStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setVerifyrecordStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -63,6 +65,7 @@ public class VerifyrecordController extends BaseController {
     }
 
 //    @GetMapping("/searchVerifyrecord/{id}")
+	@RequestMapping(value="/searchVerifyrecord/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchVerifyrecord(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -80,6 +83,7 @@ public class VerifyrecordController extends BaseController {
     }
 
 //    @PostMapping("/modifyVerifyrecord")
+	@RequestMapping(value="/modifyVerifyrecord", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyVerifyrecord(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

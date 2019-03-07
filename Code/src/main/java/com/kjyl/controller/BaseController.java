@@ -32,6 +32,7 @@ import com.kjyl.service.EventService;
 import com.kjyl.service.FitdataService;
 import com.kjyl.service.GoodsService;
 import com.kjyl.service.InfoService;
+import com.kjyl.service.OnlineService;
 import com.kjyl.service.OpinionService;
 import com.kjyl.service.PayrecordService;
 import com.kjyl.service.PictureService;
@@ -95,6 +96,8 @@ public class BaseController {
     public UserService UserService;
     @Autowired
     public VerifyrecordService VerifyrecordService;
+    @Autowired
+    public OnlineService OnlineService;
     
         @ExceptionHandler
         public boolean exp(HttpServletRequest request, HttpServletResponse response, Exception ex) throws ServletException, IOException {

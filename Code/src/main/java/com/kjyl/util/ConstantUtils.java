@@ -861,38 +861,30 @@ public class ConstantUtils {
      */
     public enum TradeType {
         Payment { // 付钱
-
             public int getCode() {
                 return 0;
             }
         },
-
         Collect { // 收钱
-
             public int getCode() {
                 return 1;
             }
         },
         Credit {    //  充值
-
             public int getCode() {
                 return 3;
             }
         },
-
         Withdraw {    //  提现
-
             public int getCode() {
                 return 4;
             }
         },
         Other {    //  其他
-
             public int getCode() {
                 return 5;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -901,19 +893,15 @@ public class ConstantUtils {
      */
     public enum AddressType {
         History {   //  历史地址
-
             public int getCode() {
                 return 0;
             }
         },
-
         Favorite {  //  常用地址
-
             public int getCode() {
                 return 1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -922,19 +910,15 @@ public class ConstantUtils {
      */
     public enum AddressStatus {
         Ordinary {    //  普通地址
-
             public int getCode() {
                 return 0;
             }
         },
-
         Default {    //  默认地址
-
             public int getCode() {
                 return 1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -943,19 +927,15 @@ public class ConstantUtils {
      */
     public enum VitaeStatus {
         Close {    //  关闭状态
-
             public int getCode() {
                 return 0;
             }
         },
-
         Open {    //  启用状态
-
             public int getCode() {
                 return 1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -964,38 +944,30 @@ public class ConstantUtils {
      */
     public enum DeviceType {
         Android { //  安卓设备
-
             public int getCode() {
                 return 0;
             }
         },
-
         iOS { //  苹果设备
-
             public int getCode() {
                 return 1;
             }
         },
-
         Desktop { //  笔记本
-
             public int getCode() {
                 return 2;
             }
         },
         Server { //  服务器
-
             public int getCode() {
                 return 3;
             }
         },
         All { //  所有设备
-
             public int getCode() {
                 return -1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1004,19 +976,15 @@ public class ConstantUtils {
      */
     public enum SessionStatus {
         OffLine {    //  离线
-
             public int getCode() {
                 return 0;
             }
         },
-
         OnLine {    //  在线
-
             public int getCode() {
                 return 1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1029,28 +997,21 @@ public class ConstantUtils {
                 return 0;
             }
         },
-
         Specified { //  指定人
-
             public int getCode() {
                 return 1;
             }
         },
-
         Receive { //  接单了
-
             public int getCode() {
                 return 2;
             }
         },
-
         Complete { //   完成
-
             public int getCode() {
                 return 3;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1059,14 +1020,11 @@ public class ConstantUtils {
      */
     public enum PushStatus {
         Close {    //  关闭
-
             public int getCode() {
                 return 1;
             }
         },
-
         Open {    //  开启
-
             public int getCode() {
                 return 0;
             }
@@ -1080,26 +1038,20 @@ public class ConstantUtils {
      */
     public enum WorkType {
         Permanent { //  全职
-
             public int getCode() {
                 return 0;
             }
         },
-
         Parttime {  //  兼职
-
             public int getCode() {
                 return 1;
             }
         },
-
         Internship {    //  实习
-
             public int getCode() {
                 return 2;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1108,138 +1060,101 @@ public class ConstantUtils {
      */
     public enum OrderType {
         Sender {    //  发单: 他人可以接单
-
             public int getCode() {
                 return 0;
             }
         },
-
         SenderReceive {   //  接单: 完成别人需求
 
             public int getCode() {
                 return 1;
             }
         },
-
         Appobyte {   //  指定:指定他人接单
-
             public int getCode() {
                 return 2;
             }
         },
-
         AppobyteReceive {   //  接单: 完成别人需求
-
             public int getCode() {
                 return 3;
             }
         };
-
         public abstract int getCode();
     }
 
     //  订单状态
     public enum OrderStatus {
         Publish { // 发布:等待接单
-
             public int getCode() {
                 return 0;
             }
         },
-
         Reject { // 拒绝:他人委托给我,我拒绝接受
-
             public int getCode() {
                 return 1;
             }
         },
-
         Doing { // 接单:正在完成,正在做订单
-
             public int getCode() {
                 return 2;
             }
         },
-
         Retreat { //  退单: 用户接单了又要取消接单
-
             public int getCode() {
                 return 3;
             }
         },
-
         Finish { // 完成:接单人确认完成订单还没付款,双方未评价
-
             public int getCode() {
                 return 4;
             }
         },
-
         Refund { // 退款:退回金额
-
             public int getCode() {
                 return 6;
             }
         },
-
-
         Cancel { //  取消:删除订单
-
             public int getCode() {
                 return 8;
             }
         },
-
         Expire { // 过期:时间过期
-
             public int getCode() {
                 return 9;
             }
         },
-
         Complaint { // 投诉:违法投诉
-
             public int getCode() {
                 return 10;
             }
         },
-
         Payment { // 付款完成:发单人未评价,接单人未评价
-
             public int getCode() {
                 return 5;
             }
         },
-
         PayMentNotComment { // 评价:发单人未评价 对方已评价
-
             public int getCode() {
                 return 11;
             }
         },
-
         Comment { // 评价:发单人已经评价 接单人未评价
-
             public int getCode() {
                 return 7;
             }
         },
-
         ReceiveComomit { // 接单人评价,发单人未付款
-
             public int getCode() {
                 return 12;
             }
         },
-
-
         FinishComomit { // 全部完成评价
-
             public int getCode() {
                 return 13;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1248,19 +1163,15 @@ public class ConstantUtils {
      */
     public enum CloseStatus {
         End {    //  关闭
-
             public int getCode() {
                 return 1;
             }
         },
-
         Start {    //  进行中
-
             public int getCode() {
                 return 0;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1269,19 +1180,15 @@ public class ConstantUtils {
      */
     public enum SpareType {
         Free {    //   空闲的可以接单
-
             public int getCode() {
                 return 0;
             }
         },
-
         Busy {   //  忙碌的无法接受他人委托
-
             public int getCode() {
                 return 1;
             }
         };
-
         public abstract int getCode();
     }
 
@@ -1291,57 +1198,44 @@ public class ConstantUtils {
      */
     public enum ReportStatus {
         Send { // 刚提交投诉信息
-
             public int getCode() {
                 return 0;
             }
         },
-
         Check { // 正在审核
-
             public int getCode() {
                 return 1;
             }
         },
-
         Pass { // 审核通过
-
             public int getCode() {
                 return 2;
             }
         },
-
         Fail { // 审核未能通过
-
             public int getCode() {
                 return 3;
             }
         };
-
         public abstract int getCode();
     }
 
     public enum FeedbackStatus {
         Commit { // 刚提交投诉信息
-
             public int getCode() {
                 return 0;
             }
         },
         Pass { // 采纳
-
             public int getCode() {
                 return 1;
             }
         },
-
         Fail { // 不采纳
-
             public int getCode() {
                 return 2;
             }
         };
-
         public abstract int getCode();
     }
     /**
@@ -1349,21 +1243,16 @@ public class ConstantUtils {
      */
     public enum MessageType {
         System {    //   系统通知
-
             public int getCode() {
                 return 0;
             }
         },
-
         Activity {   //  活动通知
-
             public int getCode() {
                 return 1;
             }
         },
-
         Order {   //  订单通知
-
             public int getCode() {
                 return 2;
             }
@@ -1377,14 +1266,12 @@ public class ConstantUtils {
      */
     public enum PollState {
         Poll {    //   轮询中
-
             public int getCode() {
                 return 0;
             }
         },
 
         ClosePoll {   //  关闭轮询
-
             public int getCode() {
                 return 1;
             }

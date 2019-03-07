@@ -43,7 +43,7 @@ public class Info implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "资讯ID")
+    @ApiModelProperty(value = "在线")
     private String Id;
 
     @ApiModelProperty(value = "用户编号")

@@ -62,7 +62,7 @@
 				 AND Admin_Status = #{Status}
 		</if>
 		<if test="Delete!= null">
-				 AND Admin_Delete = #{Delete}
+				 AND Admin_Delete &gt; #{Delete}
 		</if>
 		<if test="CreateTime!= null">
 				 AND Admin_CreateTime = #{CreateTime}

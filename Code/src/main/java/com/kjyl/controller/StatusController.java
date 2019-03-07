@@ -28,6 +28,7 @@ import com.kjyl.util.GenerateKey.IdWorker;
 public class StatusController extends BaseController {
 
 //    @GetMapping("/searchStatusPage")
+	@RequestMapping(value="/searchStatusPage", method=RequestMethod.GET)
     @ApiOperation(value = "获取列表")
     public Map<String, Object> searchStatusPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -43,6 +44,7 @@ public class StatusController extends BaseController {
     }
 
 //    @PostMapping("/setStatusStatus")
+	@RequestMapping(value="/setStatusStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setStatusStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -61,6 +63,7 @@ public class StatusController extends BaseController {
     }
 
 //    @GetMapping("/searchStatus/{id}")
+	@RequestMapping(value="/searchStatus/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchStatus(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -78,6 +81,7 @@ public class StatusController extends BaseController {
     }
 
 //    @PostMapping("/modifyStatus")
+	@RequestMapping(value="/modifyStatus", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyStatus(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

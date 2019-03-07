@@ -3,6 +3,7 @@ package com.kjyl.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import com.kjyl.service.ErrorlogService;
 
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
@@ -26,6 +28,51 @@ import com.kjyl.util.GenerateKey.IdWorker;
 @RestController
 @RequestMapping("/Errorlog")
 public class ErrorlogController extends BaseController {
+	
+//  未知错误
+    @RequestMapping(value = "/Interface/Unknown")
+    public
+    @ResponseBody
+    Map<String, Object> unknownMethod() {
+        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        return errorDetail.otherError(CodeInfo.ErrorMessageType.UnKownError,null);
+    }
+
+    //  参数错误
+    @RequestMapping(value = "/Interface/Parameter")
+    public
+    @ResponseBody
+    Map<String, Object> parameterMethod() {
+        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        return errorDetail.otherError(CodeInfo.ErrorMessageType.Parameter, null);
+    }
+
+    //  认证失败
+    @RequestMapping(value = "/Interface/Authorized")
+    public
+    @ResponseBody
+    Map<String, Object> authorizedMethod() {
+        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        return errorDetail.otherError(CodeInfo.ErrorMessageType.Authorized, null);
+    }
+
+    //  用户不存在
+    @RequestMapping(value = "/Interface/UserNoExist")
+    public
+    @ResponseBody
+    Map<String, Object> userNoExistMethod() {
+        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        return errorDetail.otherError(CodeInfo.ErrorMessageType.UserNoExist,null);
+    }
+    
+    //  认证失败
+    @RequestMapping(value = "/Interface/JsonError")
+    public
+    @ResponseBody
+    Map<String, Object> jsonErrorMethod(HttpServletRequest request) {
+        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        return errorDetail.otherError(CodeInfo.ErrorMessageType.JsonParseError,request);
+    }
 
 //    @GetMapping("/searchErrorlogPage")
     @ApiOperation(value = "获取列表")

@@ -23,16 +23,16 @@
             <bean id="authenticationInterceptor" class="com.kjyl.controller.AuthenticationController">
                 <property name="passList">静态资源不拦截跳过token验证(适用于游客和用户查看资源)
                     <list>
-                     	<value>/Error/Interface/Unknown</value>
-                        <value>/Error/Interface/Parameter</value>
-                        <value>/Error/Interface/Authorized</value>
-                        <value>/Error/Interface/JsonError</value>
-                        <value>/Error/Interface/UserNoExist</value>
-                        <value>/Error/Interface/UnknownV2</value>
-                        <value>/Error/Interface/ParameterV2</value>
-                        <value>/Error/Interface/AuthorizedV2</value>
-                        <value>/Error/Interface/JsonErrorV2</value>
-                        <value>/Error/Interface/UserNoExistV2</value>
+                     	<value>/Errorlog/Interface/Unknown</value>
+                        <value>/Errorlog/Interface/Parameter</value>
+                        <value>/Errorlog/Interface/Authorized</value>
+                        <value>/Errorlog/Interface/JsonError</value>
+                        <value>/Errorlog/Interface/UserNoExist</value>
+                        <value>/Errorlog/Interface/UnknownV2</value>
+                        <value>/Errorlog/Interface/ParameterV2</value>
+                        <value>/Errorlog/Interface/AuthorizedV2</value>
+                        <value>/Errorlog/Interface/JsonErrorV2</value>
+                        <value>/Errorlog/Interface/UserNoExistV2</value>
                         
                     </list>
                 </property>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.OnlineMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
+	<!-- 返回的map -->
+	<resultMap id="online" type="com.kjyl.pojo.Online">
+		<result property="Id" column="Online_Id" />
+		<result property="UseId" column="Online_UseId" />
+		<result property="Session" column="Online_Session" />
+		<result property="Version" column="Online_Version" />
+		<result property="Memo" column="Online_Memo" />
+		<result property="Status" column="Online_Status" />
+		<result property="Delete" column="Online_Delete" />
+		<result property="CreateTime" column="Online_CreateTime" />
+		<result property="ModifyTime" column="Online_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Online_Id, Online_UseId, Online_Session, Online_Version, Online_Memo, Online_Status, Online_Delete, Online_CreateTime, Online_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id != null">
+				 AND Online_Id = #{Id}
+		</if>
+		<if test="UseId != null">
+				 AND Online_UseId = #{UseId}
+		</if>
+		<if test="Session != null">
+				 AND Online_Session = #{Session}
+		</if>
+		<if test="Version != null">
+				 AND Online_Version = #{Version}
+		</if>
+		<if test="Memo != null">
+				 AND Online_Memo = #{Memo}
+		</if>
+		<if test="Status != null">
+				 AND Online_Status = #{Status}
+		</if>
+		<if test="Delete != null">
+				 AND Online_Delete = #{Delete}
+		</if>
+		<if test="CreateTime != null">
+				 AND Online_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null">
+				 AND Online_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="online" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_online
+		<where>
+			Online_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="online" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_online
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_online
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Online"  useGeneratedKeys="true">
+		INSERT INTO fit_online( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{Session},
+				#{Version},
+				#{Memo},
+				#{Status},
+				#{Delete},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Online">
+		UPDATE fit_online 
+		  <set> 
+			<if test="Online_UseId != null "
+				Online_UseId = #{UseId},
+			</if>
+			<if test="Online_Session != null "
+				Online_Session = #{Session},
+			</if>
+			<if test="Online_Version != null "
+				Online_Version = #{Version},
+			</if>
+			<if test="Online_Memo != null "
+				Online_Memo = #{Memo},
+			</if>
+			<if test="Online_Status != null "
+				Online_Status = #{Status},
+			</if>
+			<if test="Online_Delete != null "
+				Online_Delete = #{Delete},
+			</if>
+				Online_ModifyTime = now()
+		  </set>
+		<where>
+			Online_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Online">
+		UPDATE fit_online SET Online_Status = 88 WHERE Online_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Online">
+		UPDATE fit_online SET Online_Status=  1 WHERE Online_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Online">
+		UPDATE fit_online SET Online_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Online">
+		UPDATE fit_online SET Online_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

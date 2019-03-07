@@ -43,6 +43,7 @@ public class AdminController extends BaseController {
     }
 
 //    @PostMapping("/setAdminStatus")
+	@RequestMapping(value="/setAdminStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setAdminStatus(String data){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -61,6 +62,7 @@ public class AdminController extends BaseController {
     }
 
 //    @GetMapping("/searchAdmin/{id}")
+	@RequestMapping(value="/searchAdmin/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchAdmin(@PathVariable("id") String Id){
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -79,6 +81,7 @@ public class AdminController extends BaseController {
 
 
 //    @PostMapping("/modifyAdmin")
+	@RequestMapping(value="/modifyAdmin", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyAdmin(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();

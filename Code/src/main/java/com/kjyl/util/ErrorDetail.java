@@ -322,7 +322,7 @@ public class ErrorDetail {
     }
 
     
-    public static String ErrorMessage(ConstantUtils.ErrorMessageType emType){
+    public static String ErrorMessage(CodeInfo.ErrorMessageType emType){
         String ErrorMessageString="";
         if(emType.getCode()==ConstantUtils.ErrorMessageType.AccountStop.getCode()){
             ErrorMessageString="该帐号已经被系统停用";
