@@ -16,38 +16,43 @@ import com.kjyl.service.UserlogService;
 
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
  * <p> 控制器 Class</p>
  * @author sheryl 自动构建脚本
  */
-@Api("Userlog")
+@Api(value="Userlog", description="")
 @RestController
 @RequestMapping("/Userlog")
 public class UserlogController extends BaseController {
 
 //    @GetMapping("/searchUserlogPage")
+	@ApiOperation(value = "获取列表", notes= "", httpMethod = "GET")
 	@RequestMapping(value="/searchUserlogPage", method=RequestMethod.GET)
-    @ApiOperation(value = "获取列表")
-    public Map<String, Object> searchUserlogPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+//  @ApiImplicitParam(name = "data", value = "data描述", required = true, dataType = "UserInfo", paramType = "query")
+//  @ApiImplicitParams({
+//    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
+//	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
+//  })
+    public Map<String, Object> searchUserlogPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
-        if(status!=-1){
-        	mapSearch.put("Status", status);
+        if(status != null && status != -1){
+        	mapSearch.put(Userlog.COLUMN_Status, status);
         }
         PageInfo<Userlog> page = this.UserlogService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setUserlogStatus")
-	@RequestMapping(value="/setUserlogStatus", method=RequestMethod.POST)
+    @RequestMapping(value="/setUserlogStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setUserlogStatus(String data){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Userlog temp = JSON.parseObject(data, Userlog.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -57,46 +62,36 @@ public class UserlogController extends BaseController {
                 UserlogService.RemoveBySpecial(Id);
             }
         }
-        mapResult.put(CodeInfo.sRowKey, 0);
-        mapResult.put(CodeInfo.sMessageKey, "操作成功");
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchUserlog/{id}")
-	@RequestMapping(value="/searchUserlog/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/searchUserlog/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchUserlog(@PathVariable("id") String Id){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Userlog temp = UserlogService.SearchBySpecial(Id);
         if(temp != null){
-        	mapResult.put(CodeInfo.sRowKey, 0);
-        	mapResult.put(CodeInfo.sDataKey, temp);
-        	mapResult.put(CodeInfo.sMessageKey, "获取成功");
+        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		mapResult.put(CodeInfo.sRowKey, -1);
-    		mapResult.put(CodeInfo.sDataKey, temp);
-    		mapResult.put(CodeInfo.sMessageKey, "获取失败");
+    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
-        return mapResult;
     }
 
 //    @PostMapping("/modifyUserlog")
-	@RequestMapping(value="/modifyUserlog", method=RequestMethod.POST)
+    @RequestMapping(value="/modifyUserlog", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyUserlog(String data, HttpServletRequest request) {
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Userlog temp = JSON.parseObject(data, Userlog.class);
         Userlog obj = new Userlog();
         boolean isNew = false;
         if("0".equals(temp.getId())){
-            isNew=true;
+            isNew = true;
         }else{
             obj = UserlogService.SearchBySpecial(temp.getId());
-            if(obj==null){
-                isNew=true;
+            if(obj == null){
+                isNew = true;
             }
         }
-
         obj.setUseId(temp.getUseId());
         obj.setTypeId(temp.getTypeId());
         obj.setNote(temp.getNote());
@@ -104,17 +99,19 @@ public class UserlogController extends BaseController {
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-        Userlog tempObj=null;
+        Userlog tempObj = null;
         if(isNew){
-            obj.setId(String.valueOf(IdWorker.CreateNewId()));
+            obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj=UserlogService.Insert(obj);
+            tempObj = UserlogService.Insert(obj);
         }else{
-            tempObj=UserlogService.Modify(obj);
+            tempObj = UserlogService.Modify(obj);
         }
-        mapResult.put(CodeInfo.sRowKey, tempObj != null ? 0 : -1);
-        mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");
-        return mapResult;
+        if (tempObj != null) {
+			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+		} else {
+			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+		}
     }
 
 }

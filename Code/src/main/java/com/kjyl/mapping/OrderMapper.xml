@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.OrderMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
+	<!-- 返回的map -->
+	<resultMap id="order" type="com.kjyl.pojo.Order">
+		<result property="Id" column="Order_Id" />
+		<result property="UseId" column="Order_UseId" />
+		<result property="LogicId" column="Order_LogicId" />
+		<result property="Goods" column="Order_Goods" />
+		<result property="Prize" column="Order_Prize" />
+		<result property="Site" column="Order_Site" />
+		<result property="Type" column="Order_Type" />
+		<result property="Memo" column="Order_Memo" />
+		<result property="Status" column="Order_Status" />
+		<result property="Delete" column="Order_Delete" />
+		<result property="CreateTime" column="Order_CreateTime" />
+		<result property="ModifyTime" column="Order_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Order_Id, Order_UseId, Order_LogicId, Order_Goods, Order_Prize, Order_Site, Order_Type, Order_Memo, Order_Status, Order_Delete, Order_CreateTime, Order_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id != null ">
+			 AND Order_Id = #{Id}
+		</if>
+		<if test="UseId != null ">
+			 AND Order_UseId = #{UseId}
+		</if>
+		<if test="LogicId != null ">
+			 AND Order_LogicId = #{LogicId}
+		</if>
+		<if test="Goods != null ">
+			 AND Order_Goods = #{Goods}
+		</if>
+		<if test="Prize != null ">
+			 AND Order_Prize = #{Prize}
+		</if>
+		<if test="Site != null ">
+			 AND Order_Site = #{Site}
+		</if>
+		<if test="Type != null ">
+			 AND Order_Type = #{Type}
+		</if>
+		<if test="Memo != null ">
+			 AND Order_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Order_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Order_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Order_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Order_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="order" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_order
+		<where>
+			Order_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据model 查找-->
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="order" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_order
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_order
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Order"  useGeneratedKeys="true">
+		INSERT INTO fit_order( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{LogicId},
+				#{Goods},
+				#{Prize},
+				#{Site},
+				#{Type},
+				#{Memo},
+				Default,
+				Default,
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Order">
+		UPDATE fit_order 
+		  <set> 
+			<if test="UseId != null ">
+				Order_UseId = #{UseId},
+			</if>
+			<if test="LogicId != null ">
+				Order_LogicId = #{LogicId},
+			</if>
+			<if test="Goods != null ">
+				Order_Goods = #{Goods},
+			</if>
+			<if test="Prize != null ">
+				Order_Prize = #{Prize},
+			</if>
+			<if test="Site != null ">
+				Order_Site = #{Site},
+			</if>
+			<if test="Type != null ">
+				Order_Type = #{Type},
+			</if>
+			<if test="Memo != null ">
+				Order_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Order_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Order_Delete = #{Delete},
+			</if>
+				Order_ModifyTime = now()
+		  </set>
+		<where>
+			Order_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Order">
+		UPDATE fit_order SET Order_Status = 88 WHERE Order_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Order">
+		UPDATE fit_order SET Order_Status=  1 WHERE Order_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Order">
+		UPDATE fit_order SET Order_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Order">
+		UPDATE fit_order SET Order_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

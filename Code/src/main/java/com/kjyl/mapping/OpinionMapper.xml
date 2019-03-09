@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.OpinionMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="opinion" type="com.kjyl.pojo.Opinion">
 		<result property="Id" column="Opinion_Id" />
 		<result property="UseId" column="Opinion_UseId" />
-		<result property="ObjectId" column="Opinion_ObjectId" />
+		<result property="LogicId" column="Opinion_LogicId" />
+		<result property="Phone" column="Opinion_Phone" />
 		<result property="Title" column="Opinion_Title" />
 		<result property="Content" column="Opinion_Content" />
 		<result property="Memo" column="Opinion_Memo" />
@@ -17,43 +21,47 @@
 		<result property="ModifyTime" column="Opinion_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Opinion_Id, Opinion_UseId, Opinion_ObjectId, Opinion_Title, Opinion_Content, Opinion_Memo, Opinion_Type, Opinion_Status, Opinion_Delete, Opinion_CreateTime, Opinion_ModifyTime
+		Opinion_Id, Opinion_UseId, Opinion_LogicId, Opinion_Phone, Opinion_Title, Opinion_Content, Opinion_Memo, Opinion_Type, Opinion_Status, Opinion_Delete, Opinion_CreateTime, Opinion_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Opinion_Id = #{Id}
+		<if test="Id != null ">
+			 AND Opinion_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Opinion_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Opinion_UseId = #{UseId}
 		</if>
-		<if test="ObjectId!= null">
-				 AND Opinion_ObjectId = #{ObjectId}
+		<if test="LogicId != null ">
+			 AND Opinion_LogicId = #{LogicId}
 		</if>
-		<if test="Title!= null">
-				 AND Opinion_Title = #{Title}
+		<if test="Phone != null ">
+			 AND Opinion_Phone = #{Phone}
 		</if>
-		<if test="Content!= null">
-				 AND Opinion_Content = #{Content}
+		<if test="Title != null ">
+			 AND Opinion_Title = #{Title}
 		</if>
-		<if test="Memo!= null">
-				 AND Opinion_Memo = #{Memo}
+		<if test="Content != null ">
+			 AND Opinion_Content = #{Content}
 		</if>
-		<if test="Type!= null">
-				 AND Opinion_Type = #{Type}
+		<if test="Memo != null ">
+			 AND Opinion_Memo = #{Memo}
 		</if>
-		<if test="Status!= null">
-				 AND Opinion_Status = #{Status}
+		<if test="Type != null ">
+			 AND Opinion_Type = #{Type}
 		</if>
-		<if test="Delete!= null">
-				 AND Opinion_Delete &gt; #{Delete}
+		<if test="Status != null ">
+			 AND Opinion_Status = #{Status}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Opinion_CreateTime = #{CreateTime}
+		<if test="Delete != null ">
+			 AND Opinion_Delete &lt; #{Delete}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Opinion_ModifyTime = #{ModifyTime}
+		<if test="CreateTime != null ">
+			 AND Opinion_CreateTime = #{CreateTime}
 		</if>
+		<if test="ModifyTime != null ">
+			 AND Opinion_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -65,6 +73,8 @@
 			Opinion_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="opinion" parameterType="java.util.Map">
@@ -92,13 +102,14 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{ObjectId},
+				#{LogicId},
+				#{Phone},
 				#{Title},
 				#{Content},
 				#{Memo},
 				#{Type},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -110,8 +121,11 @@
 			<if test="UseId != null ">
 				Opinion_UseId = #{UseId},
 			</if>
-			<if test="ObjectId != null ">
-				Opinion_ObjectId = #{ObjectId},
+			<if test="LogicId != null ">
+				Opinion_LogicId = #{LogicId},
+			</if>
+			<if test="Phone != null ">
+				Opinion_Phone = #{Phone},
 			</if>
 			<if test="Title != null ">
 				Opinion_Title = #{Title},

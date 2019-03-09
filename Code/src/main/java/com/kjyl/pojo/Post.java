@@ -31,9 +31,11 @@ public class Post implements Serializable {
 
     public static final String COLUMN_Content = "Content";
 
-    public static final String COLUMN_LikeCount = "LikeCount";
+    public static final String COLUMN_Like = "Like";
 
     public static final String COLUMN_Review = "Review";
+
+    public static final String COLUMN_Collect = "Collect";
 
     public static final String COLUMN_Status = "Status";
 
@@ -43,13 +45,13 @@ public class Post implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "帖子ID")
+    @ApiModelProperty(value = "帖子-打卡")
     private String Id;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
-    @ApiModelProperty(value = "主题ID")
+    @ApiModelProperty(value = "逻辑Id")
     private String TopicId;
 
     @ApiModelProperty(value = "评论标题")
@@ -59,10 +61,13 @@ public class Post implements Serializable {
     private String Content;
 
     @ApiModelProperty(value = "点赞数")
-    private Integer LikeCount;
+    private Integer Like;
 
     @ApiModelProperty(value = "评论数")
     private Integer Review;
+
+    @ApiModelProperty(value = "收藏数")
+    private Integer Collect;
 
     @ApiModelProperty(value = "状态")
     private Integer Status;
@@ -76,7 +81,7 @@ public class Post implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','帖子ID']['UseId','用户ID']['TopicId','主题ID']['Title','评论标题']['Content','内容']['LikeCount','点赞数']['Review','评论数']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','帖子-打卡']['UseId','使用Id']['TopicId','逻辑Id']['Title','评论标题']['Content','内容']['Like','点赞数']['Review','评论数']['Collect','收藏数']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String PostField;
 }

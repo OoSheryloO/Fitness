@@ -16,38 +16,43 @@ import com.kjyl.service.EventService;
 
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
  * <p> 控制器 Class</p>
  * @author sheryl 自动构建脚本
  */
-@Api("Event")
+@Api(value="Event", description="")
 @RestController
 @RequestMapping("/Event")
 public class EventController extends BaseController {
 
 //    @GetMapping("/searchEventPage")
+	@ApiOperation(value = "获取列表", notes= "", httpMethod = "GET")
 	@RequestMapping(value="/searchEventPage", method=RequestMethod.GET)
-    @ApiOperation(value = "获取列表")
-    public Map<String, Object> searchEventPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+//  @ApiImplicitParam(name = "data", value = "data描述", required = true, dataType = "UserInfo", paramType = "query")
+//  @ApiImplicitParams({
+//    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
+//	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
+//  })
+    public Map<String, Object> searchEventPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
-        if(status!=-1){
-        	mapSearch.put("Status", status);
+        if(status != null && status != -1){
+        	mapSearch.put(Event.COLUMN_Status, status);
         }
         PageInfo<Event> page = this.EventService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setEventStatus")
-	@RequestMapping(value="/setEventStatus", method=RequestMethod.POST)
+    @RequestMapping(value="/setEventStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setEventStatus(String data){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Event temp = JSON.parseObject(data, Event.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -57,48 +62,38 @@ public class EventController extends BaseController {
                 EventService.RemoveBySpecial(Id);
             }
         }
-        mapResult.put(CodeInfo.sRowKey, 0);
-        mapResult.put(CodeInfo.sMessageKey, "操作成功");
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchEvent/{id}")
-	@RequestMapping(value="/searchEvent/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/searchEvent/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchEvent(@PathVariable("id") String Id){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Event temp = EventService.SearchBySpecial(Id);
         if(temp != null){
-        	mapResult.put(CodeInfo.sRowKey, 0);
-        	mapResult.put(CodeInfo.sDataKey, temp);
-        	mapResult.put(CodeInfo.sMessageKey, "获取成功");
+        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		mapResult.put(CodeInfo.sRowKey, -1);
-    		mapResult.put(CodeInfo.sDataKey, temp);
-    		mapResult.put(CodeInfo.sMessageKey, "获取失败");
+    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
-        return mapResult;
     }
 
 //    @PostMapping("/modifyEvent")
-	@RequestMapping(value="/modifyEvent", method=RequestMethod.POST)
+    @RequestMapping(value="/modifyEvent", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyEvent(String data, HttpServletRequest request) {
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Event temp = JSON.parseObject(data, Event.class);
         Event obj = new Event();
         boolean isNew = false;
         if("0".equals(temp.getId())){
-            isNew=true;
+            isNew = true;
         }else{
             obj = EventService.SearchBySpecial(temp.getId());
-            if(obj==null){
-                isNew=true;
+            if(obj == null){
+                isNew = true;
             }
         }
-
         obj.setUseId(temp.getUseId());
-        obj.setTouchId(temp.getTouchId());
+        obj.setLogicId(temp.getLogicId());
         obj.setTitle(temp.getTitle());
         obj.setIntro(temp.getIntro());
         obj.setSite(temp.getSite());
@@ -110,17 +105,19 @@ public class EventController extends BaseController {
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-        Event tempObj=null;
+        Event tempObj = null;
         if(isNew){
-            obj.setId(String.valueOf(IdWorker.CreateNewId()));
+            obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj=EventService.Insert(obj);
+            tempObj = EventService.Insert(obj);
         }else{
-            tempObj=EventService.Modify(obj);
+            tempObj = EventService.Modify(obj);
         }
-        mapResult.put(CodeInfo.sRowKey, tempObj != null ? 0 : -1);
-        mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");
-        return mapResult;
+        if (tempObj != null) {
+			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+		} else {
+			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+		}
     }
 
 }

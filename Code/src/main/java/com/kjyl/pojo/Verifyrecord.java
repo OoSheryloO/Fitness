@@ -43,10 +43,10 @@ public class Verifyrecord implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "记录编号")
+    @ApiModelProperty(value = "短信")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "登录手机")
@@ -76,7 +76,7 @@ public class Verifyrecord implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','记录编号']['UseId','用户编号']['Phone','登录手机']['CheckNumber','验证码']['DisableTime','禁用开始']['EnableTime','禁用结束']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','短信']['UseId','使用Id']['Phone','登录手机']['CheckNumber','验证码']['DisableTime','禁用开始']['EnableTime','禁用结束']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String VerifyrecordField;
 }

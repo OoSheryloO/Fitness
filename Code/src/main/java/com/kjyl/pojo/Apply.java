@@ -25,7 +25,7 @@ public class Apply implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_TouchId = "TouchId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -37,14 +37,14 @@ public class Apply implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "报名ID")
+    @ApiModelProperty(value = "用户-报名")
     private String Id;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "逻辑Id")
     private String UseId;
 
-    @ApiModelProperty(value = "活动ID")
-    private String TouchId;
+    @ApiModelProperty(value = "活动Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "备注")
     private String Memo;
@@ -61,7 +61,7 @@ public class Apply implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','报名ID']['UseId','用户ID']['TouchId','活动ID']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','用户-报名']['UseId','逻辑Id']['LogicId','活动Id']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String ApplyField;
 }

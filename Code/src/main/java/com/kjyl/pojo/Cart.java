@@ -25,7 +25,7 @@ public class Cart implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_TouchId = "TouchId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -37,14 +37,14 @@ public class Cart implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "购物车ID")
+    @ApiModelProperty(value = "购物车 用户-商品")
     private String Id;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
-    @ApiModelProperty(value = "商品ID")
-    private String TouchId;
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "备注")
     private String Memo;
@@ -61,7 +61,7 @@ public class Cart implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','购物车ID']['UseId','用户ID']['TouchId','商品ID']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','购物车 用户-商品']['UseId','使用Id']['LogicId','逻辑Id']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String CartField;
 }

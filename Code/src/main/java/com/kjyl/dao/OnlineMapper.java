@@ -1,6 +1,6 @@
 package com.kjyl.dao;
 
-import com.kjyl.config.MyMapper;
+import com.kjyl.config.Mybaties.MyMapper;
 import com.kjyl.pojo.Online;
 
 /**

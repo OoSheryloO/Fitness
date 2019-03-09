@@ -2,11 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.ApplyMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="apply" type="com.kjyl.pojo.Apply">
 		<result property="Id" column="Apply_Id" />
 		<result property="UseId" column="Apply_UseId" />
-		<result property="TouchId" column="Apply_TouchId" />
+		<result property="LogicId" column="Apply_LogicId" />
 		<result property="Memo" column="Apply_Memo" />
 		<result property="Status" column="Apply_Status" />
 		<result property="Delete" column="Apply_Delete" />
@@ -14,34 +17,35 @@
 		<result property="ModifyTime" column="Apply_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Apply_Id, Apply_UseId, Apply_TouchId, Apply_Memo, Apply_Status, Apply_Delete, Apply_CreateTime, Apply_ModifyTime
+		Apply_Id, Apply_UseId, Apply_LogicId, Apply_Memo, Apply_Status, Apply_Delete, Apply_CreateTime, Apply_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Apply_Id = #{Id}
+		<if test="Id != null ">
+			 AND Apply_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Apply_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Apply_UseId = #{UseId}
 		</if>
-		<if test="TouchId!= null">
-				 AND Apply_TouchId = #{TouchId}
+		<if test="LogicId != null ">
+			 AND Apply_LogicId = #{LogicId}
 		</if>
-		<if test="Memo!= null">
-				 AND Apply_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND Apply_Memo = #{Memo}
 		</if>
-		<if test="Status!= null">
-				 AND Apply_Status = #{Status}
+		<if test="Status != null ">
+			 AND Apply_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Apply_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Apply_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Apply_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Apply_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Apply_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Apply_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -53,6 +57,8 @@
 			Apply_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="apply" parameterType="java.util.Map">
@@ -80,10 +86,10 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TouchId},
+				#{LogicId},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -95,8 +101,8 @@
 			<if test="UseId != null ">
 				Apply_UseId = #{UseId},
 			</if>
-			<if test="TouchId != null ">
-				Apply_TouchId = #{TouchId},
+			<if test="LogicId != null ">
+				Apply_LogicId = #{LogicId},
 			</if>
 			<if test="Memo != null ">
 				Apply_Memo = #{Memo},

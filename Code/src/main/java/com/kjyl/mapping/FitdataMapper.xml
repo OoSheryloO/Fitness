@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.FitdataMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="fitdata" type="com.kjyl.pojo.Fitdata">
 		<result property="Id" column="FitData_Id" />
@@ -36,84 +39,85 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND FitData_Id = #{Id}
+		<if test="Id != null ">
+			 AND FitData_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND FitData_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND FitData_UseId = #{UseId}
 		</if>
-		<if test="Date!= null">
-				 AND FitData_Date = #{Date}
+		<if test="Date != null ">
+			 AND FitData_Date = #{Date}
 		</if>
-		<if test="Height!= null">
-				 AND FitData_Height = #{Height}
+		<if test="Height != null ">
+			 AND FitData_Height = #{Height}
 		</if>
-		<if test="Weight!= null">
-				 AND FitData_Weight = #{Weight}
+		<if test="Weight != null ">
+			 AND FitData_Weight = #{Weight}
 		</if>
-		<if test="BMI!= null">
-				 AND FitData_BMI = #{BMI}
+		<if test="BMI != null ">
+			 AND FitData_BMI = #{BMI}
 		</if>
-		<if test="BodyFat!= null">
-				 AND FitData_BodyFat = #{BodyFat}
+		<if test="BodyFat != null ">
+			 AND FitData_BodyFat = #{BodyFat}
 		</if>
-		<if test="FatRate!= null">
-				 AND FitData_FatRate = #{FatRate}
+		<if test="FatRate != null ">
+			 AND FitData_FatRate = #{FatRate}
 		</if>
-		<if test="MetabolicRate!= null">
-				 AND FitData_MetabolicRate = #{MetabolicRate}
+		<if test="MetabolicRate != null ">
+			 AND FitData_MetabolicRate = #{MetabolicRate}
 		</if>
-		<if test="WHR!= null">
-				 AND FitData_WHR = #{WHR}
+		<if test="WHR != null ">
+			 AND FitData_WHR = #{WHR}
 		</if>
-		<if test="Humidity!= null">
-				 AND FitData_Humidity = #{Humidity}
+		<if test="Humidity != null ">
+			 AND FitData_Humidity = #{Humidity}
 		</if>
-		<if test="MuscleMass!= null">
-				 AND FitData_MuscleMass = #{MuscleMass}
+		<if test="MuscleMass != null ">
+			 AND FitData_MuscleMass = #{MuscleMass}
 		</if>
-		<if test="UpperArm!= null">
-				 AND FitData_UpperArm = #{UpperArm}
+		<if test="UpperArm != null ">
+			 AND FitData_UpperArm = #{UpperArm}
 		</if>
-		<if test="UnderArm!= null">
-				 AND FitData_UnderArm = #{UnderArm}
+		<if test="UnderArm != null ">
+			 AND FitData_UnderArm = #{UnderArm}
 		</if>
-		<if test="Bust!= null">
-				 AND FitData_Bust = #{Bust}
+		<if test="Bust != null ">
+			 AND FitData_Bust = #{Bust}
 		</if>
-		<if test="Waist!= null">
-				 AND FitData_Waist = #{Waist}
+		<if test="Waist != null ">
+			 AND FitData_Waist = #{Waist}
 		</if>
-		<if test="Hipline!= null">
-				 AND FitData_Hipline = #{Hipline}
+		<if test="Hipline != null ">
+			 AND FitData_Hipline = #{Hipline}
 		</if>
-		<if test="LeftThigh!= null">
-				 AND FitData_LeftThigh = #{LeftThigh}
+		<if test="LeftThigh != null ">
+			 AND FitData_LeftThigh = #{LeftThigh}
 		</if>
-		<if test="RightThigh!= null">
-				 AND FitData_RightThigh = #{RightThigh}
+		<if test="RightThigh != null ">
+			 AND FitData_RightThigh = #{RightThigh}
 		</if>
-		<if test="LeftShank!= null">
-				 AND FitData_LeftShank = #{LeftShank}
+		<if test="LeftShank != null ">
+			 AND FitData_LeftShank = #{LeftShank}
 		</if>
-		<if test="RightShank!= null">
-				 AND FitData_RightShank = #{RightShank}
+		<if test="RightShank != null ">
+			 AND FitData_RightShank = #{RightShank}
 		</if>
-		<if test="Memo!= null">
-				 AND FitData_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND FitData_Memo = #{Memo}
 		</if>
-		<if test="Status!= null">
-				 AND FitData_Status = #{Status}
+		<if test="Status != null ">
+			 AND FitData_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND FitData_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND FitData_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND FitData_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND FitData_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND FitData_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND FitData_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -125,6 +129,8 @@
 			FitData_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="fitdata" parameterType="java.util.Map">
@@ -172,8 +178,8 @@
 				#{LeftShank},
 				#{RightShank},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)

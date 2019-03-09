@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.ClubcardMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
+	<!-- 返回的map -->
+	<resultMap id="clubcard" type="com.kjyl.pojo.Clubcard">
+		<result property="Id" column="Relation_Id" />
+		<result property="UseId" column="Relation_UseId" />
+		<result property="LogicId" column="Relation_LogicId" />
+		<result property="Memo" column="Relation_Memo" />
+		<result property="Status" column="Relation_Status" />
+		<result property="Delete" column="Relation_Delete" />
+		<result property="CreateTime" column="Relation_CreateTime" />
+		<result property="ModifyTime" column="Relation_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Relation_Id, Relation_UseId, Relation_LogicId, Relation_Memo, Relation_Status, Relation_Delete, Relation_CreateTime, Relation_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id != null ">
+			 AND Relation_Id = #{Id}
+		</if>
+		<if test="UseId != null ">
+			 AND Relation_UseId = #{UseId}
+		</if>
+		<if test="LogicId != null ">
+			 AND Relation_LogicId = #{LogicId}
+		</if>
+		<if test="Memo != null ">
+			 AND Relation_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Relation_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Relation_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Relation_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Relation_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="clubcard" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_clubcard
+		<where>
+			Relation_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据model 查找-->
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="clubcard" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_clubcard
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_clubcard
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Clubcard"  useGeneratedKeys="true">
+		INSERT INTO fit_clubcard( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{LogicId},
+				#{Memo},
+				Default,
+				Default,
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Clubcard">
+		UPDATE fit_clubcard 
+		  <set> 
+			<if test="UseId != null ">
+				Relation_UseId = #{UseId},
+			</if>
+			<if test="LogicId != null ">
+				Relation_LogicId = #{LogicId},
+			</if>
+			<if test="Memo != null ">
+				Relation_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Relation_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Relation_Delete = #{Delete},
+			</if>
+				Relation_ModifyTime = now()
+		  </set>
+		<where>
+			Relation_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Clubcard">
+		UPDATE fit_clubcard SET Relation_Status = 88 WHERE Relation_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Clubcard">
+		UPDATE fit_clubcard SET Relation_Status=  1 WHERE Relation_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Clubcard">
+		UPDATE fit_clubcard SET Relation_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Clubcard">
+		UPDATE fit_clubcard SET Relation_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

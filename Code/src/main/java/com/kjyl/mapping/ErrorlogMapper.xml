@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.ErrorlogMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="errorlog" type="com.kjyl.pojo.Errorlog">
 		<result property="Id" column="ErrorLog_Id" />
@@ -20,38 +23,39 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND ErrorLog_Id = #{Id}
+		<if test="Id != null ">
+			 AND ErrorLog_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND ErrorLog_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND ErrorLog_UseId = #{UseId}
 		</if>
-		<if test="TypeId!= null">
-				 AND ErrorLog_TypeId = #{TypeId}
+		<if test="TypeId != null ">
+			 AND ErrorLog_TypeId = #{TypeId}
 		</if>
-		<if test="Note!= null">
-				 AND ErrorLog_Note = #{Note}
+		<if test="Note != null ">
+			 AND ErrorLog_Note = #{Note}
 		</if>
-		<if test="Version!= null">
-				 AND ErrorLog_Version = #{Version}
+		<if test="Version != null ">
+			 AND ErrorLog_Version = #{Version}
 		</if>
-		<if test="Device!= null">
-				 AND ErrorLog_Device = #{Device}
+		<if test="Device != null ">
+			 AND ErrorLog_Device = #{Device}
 		</if>
-		<if test="Status!= null">
-				 AND ErrorLog_Status = #{Status}
+		<if test="Status != null ">
+			 AND ErrorLog_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND ErrorLog_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND ErrorLog_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND ErrorLog_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND ErrorLog_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND ErrorLog_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND ErrorLog_ModifyTime = #{ModifyTime}
 		</if>
-	</sql>
 
+	</sql>
+	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="errorlog" parameterType="long">
 		SELECT
@@ -61,6 +65,8 @@
 			ErrorLog_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="errorlog" parameterType="java.util.Map">
@@ -90,10 +96,10 @@
 				#{UseId},
 				#{TypeId},
 				#{Note},
-				#{Version},
+				Default,
 				#{Device},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)

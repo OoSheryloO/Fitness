@@ -25,7 +25,9 @@ public class Opinion implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_ObjectId = "ObjectId";
+    public static final String COLUMN_LogicId = "LogicId";
+
+    public static final String COLUMN_Phone = "Phone";
 
     public static final String COLUMN_Title = "Title";
 
@@ -43,14 +45,17 @@ public class Opinion implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "意见ID")
+    @ApiModelProperty(value = "意见-对象")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
-    @ApiModelProperty(value = "对象ID")
-    private String ObjectId;
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
+
+    @ApiModelProperty(value = "手机号")
+    private String Phone;
 
     @ApiModelProperty(value = "标题")
     private String Title;
@@ -76,7 +81,7 @@ public class Opinion implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','意见ID']['UseId','用户编号']['ObjectId','对象ID']['Title','标题']['Content','内容']['Memo','备注']['Type','类型']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','意见-对象']['UseId','使用Id']['LogicId','逻辑Id']['Phone','手机号']['Title','标题']['Content','内容']['Memo','备注']['Type','类型']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String OpinionField;
 }

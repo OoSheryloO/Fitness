@@ -2,46 +2,78 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.CourseMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="course" type="com.kjyl.pojo.Course">
-		<result property="Id" column="Syllabus_Id" />
-		<result property="UseId" column="Syllabus_UseId" />
-		<result property="TouchId" column="Syllabus_TouchId" />
-		<result property="Memo" column="Syllabus_Memo" />
-		<result property="Status" column="Syllabus_Status" />
-		<result property="Delete" column="Syllabus_Delete" />
-		<result property="CreateTime" column="Syllabus_CreateTime" />
-		<result property="ModifyTime" column="Syllabus_ModifyTime" />
+		<result property="Id" column="Course_Id" />
+		<result property="UseId" column="Course_UseId" />
+		<result property="Title" column="Course_Title" />
+		<result property="Info" column="Course_Info" />
+		<result property="StartTime" column="Course_StartTime" />
+		<result property="EndTime" column="Course_EndTime" />
+		<result property="ApplyTime" column="Course_ApplyTime" />
+		<result property="Apply" column="Course_Apply" />
+		<result property="Price" column="Course_Price" />
+		<result property="Site" column="Course_Site" />
+		<result property="Memo" column="Course_Memo" />
+		<result property="Status" column="Course_Status" />
+		<result property="Delete" column="Course_Delete" />
+		<result property="CreateTime" column="Course_CreateTime" />
+		<result property="ModifyTime" column="Course_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Syllabus_Id, Syllabus_UseId, Syllabus_TouchId, Syllabus_Memo, Syllabus_Status, Syllabus_Delete, Syllabus_CreateTime, Syllabus_ModifyTime
+		Course_Id, Course_UseId, Course_Title, Course_Info, Course_StartTime, Course_EndTime, Course_ApplyTime, Course_Apply, Course_Price, Course_Site, Course_Memo, Course_Status, Course_Delete, Course_CreateTime, Course_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Syllabus_Id = #{Id}
+		<if test="Id != null ">
+			 AND Course_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Syllabus_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Course_UseId = #{UseId}
 		</if>
-		<if test="TouchId!= null">
-				 AND Syllabus_TouchId = #{TouchId}
+		<if test="Title != null ">
+			 AND Course_Title = #{Title}
 		</if>
-		<if test="Memo!= null">
-				 AND Syllabus_Memo = #{Memo}
+		<if test="Info != null ">
+			 AND Course_Info = #{Info}
 		</if>
-		<if test="Status!= null">
-				 AND Syllabus_Status = #{Status}
+		<if test="StartTime != null ">
+			 AND Course_StartTime = #{StartTime}
 		</if>
-		<if test="Delete!= null">
-				 AND Syllabus_Delete &gt; #{Delete}
+		<if test="EndTime != null ">
+			 AND Course_EndTime = #{EndTime}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Syllabus_CreateTime = #{CreateTime}
+		<if test="ApplyTime != null ">
+			 AND Course_ApplyTime = #{ApplyTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Syllabus_ModifyTime = #{ModifyTime}
+		<if test="Apply != null ">
+			 AND Course_Apply = #{Apply}
 		</if>
+		<if test="Price != null ">
+			 AND Course_Price = #{Price}
+		</if>
+		<if test="Site != null ">
+			 AND Course_Site = #{Site}
+		</if>
+		<if test="Memo != null ">
+			 AND Course_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Course_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Course_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Course_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Course_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -50,9 +82,11 @@
 		<include refid="sql"></include>
 			FROM fit_course
 		<where>
-			Syllabus_Id = #{_parameter} 
+			Course_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="course" parameterType="java.util.Map">
@@ -73,17 +107,24 @@
 				<include refid="where"></include>
 			</where>
 	</select>
-	
+
 	<!-- 插入数据 -->
 	<insert id="Insert" parameterType="com.kjyl.pojo.Course"  useGeneratedKeys="true">
 		INSERT INTO fit_course( <include refid="sql"></include> )
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TouchId},
+				#{Title},
+				#{Info},
+				#{StartTime},
+				#{EndTime},
+				#{ApplyTime},
+				#{Apply},
+				#{Price},
+				#{Site},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -93,40 +134,61 @@
 		UPDATE fit_course 
 		  <set> 
 			<if test="UseId != null ">
-				Syllabus_UseId = #{UseId},
+				Course_UseId = #{UseId},
 			</if>
-			<if test="TouchId != null ">
-				Syllabus_TouchId = #{TouchId},
+			<if test="Title != null ">
+				Course_Title = #{Title},
+			</if>
+			<if test="Info != null ">
+				Course_Info = #{Info},
+			</if>
+			<if test="StartTime != null ">
+				Course_StartTime = #{StartTime},
+			</if>
+			<if test="EndTime != null ">
+				Course_EndTime = #{EndTime},
+			</if>
+			<if test="ApplyTime != null ">
+				Course_ApplyTime = #{ApplyTime},
+			</if>
+			<if test="Apply != null ">
+				Course_Apply = #{Apply},
+			</if>
+			<if test="Price != null ">
+				Course_Price = #{Price},
+			</if>
+			<if test="Site != null ">
+				Course_Site = #{Site},
 			</if>
 			<if test="Memo != null ">
-				Syllabus_Memo = #{Memo},
+				Course_Memo = #{Memo},
 			</if>
 			<if test="Status != null ">
-				Syllabus_Status = #{Status},
+				Course_Status = #{Status},
 			</if>
 			<if test="Delete != null ">
-				Syllabus_Delete = #{Delete},
+				Course_Delete = #{Delete},
 			</if>
-				Syllabus_ModifyTime = now()
+				Course_ModifyTime = now()
 		  </set>
 		<where>
-			Syllabus_Id= #{Id} 
+			Course_Id= #{Id} 
 		</where>
 	</update>
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Course">
-		UPDATE fit_course SET Syllabus_Status = 88 WHERE Syllabus_Id = #{_parameter} 
+		UPDATE fit_course SET Course_Status = 88 WHERE Course_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Course">
-		UPDATE fit_course SET Syllabus_Status=  1 WHERE Syllabus_Id = #{_parameter} 
+		UPDATE fit_course SET Course_Status=  1 WHERE Course_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Course">
-		UPDATE fit_course SET Syllabus_Status = 88 
+		UPDATE fit_course SET Course_Status = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -134,7 +196,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Course">
-		UPDATE fit_course SET Syllabus_Status = 1 
+		UPDATE fit_course SET Course_Status = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

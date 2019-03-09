@@ -31,6 +31,29 @@ public class OnlineService {
    
     @Autowired
 	private OnlineMapper mapper;
+    
+//	@Cacheable(value = "OnlineCache", key="'Online_'+#p0") 
+	public Online SearchBySpecial(String Id){
+		return mapper.SearchBySpecial(Id);
+	}
+
+//	@Cacheable(keyGenerator = "keyGenerator")
+	public List<Online> SearchByCondition(Map<String, Object> mapSearch){
+		return mapper.SearchByCondition(mapSearch);
+	}
+
+//	@Cacheable(keyGenerator = "keyGenerator")
+	public int SearchData(Map<String, Object> mapSearch){
+		return mapper.SearchData(mapSearch);
+	}
+
+//	@Cacheable(keyGenerator = "keyGenerator")
+	public PageInfo<Online> SearchPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
+		Page<Online> page = PageHelper.startPage(pageNum, pageSize);
+		page.setOrderBy("Online_CreateTime DESC");
+		mapper.SearchByCondition(mapSearch);
+		return page.toPageInfo();
+	}
 
 //	@CachePut(key="#p0.Id")  
 //	@CacheEvict(value = "ReadOnlineCache", allEntries = true)
@@ -68,29 +91,6 @@ public class OnlineService {
 //	@CacheEvict(value = {"ReadOnlineCache", "OnlineCache"},allEntries = true)
 	public int RecoverByCondition(Map<String, Object> mapSearch){
 		return mapper.RecoverByCondition(mapSearch);
-	}
-	
-//	@Cacheable(value = "OnlineCache", key="'Online_'+#p0") 
-	public Online SearchBySpecial(String Id){
-		return mapper.SearchBySpecial(Id);
-	}
-
-//	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Online> SearchByCondition(Map<String, Object> mapSearch){
-		return mapper.SearchByCondition(mapSearch);
-	}
-
-//	@Cacheable(keyGenerator = "keyGenerator")
-	public int SearchData(Map<String, Object> mapSearch){
-		return mapper.SearchData(mapSearch);
-	}
-
-//	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Online> SearchPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
-		Page<Online> page = PageHelper.startPage(pageNum, pageSize);
-		page.setOrderBy("Online_CreateTime desc");
-		mapper.SearchByCondition(mapSearch);
-		return page.toPageInfo();
 	}
 
 }

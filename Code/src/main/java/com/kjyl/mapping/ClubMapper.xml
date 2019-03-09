@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.ClubMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="club" type="com.kjyl.pojo.Club">
 		<result property="Id" column="Club_Id" />
@@ -10,7 +13,9 @@
 		<result property="Theme" column="Club_Theme" />
 		<result property="Intro" column="Club_Intro" />
 		<result property="Site" column="Club_Site" />
+		<result property="Location" column="Club_Location" />
 		<result property="Tel" column="Club_Tel" />
+		<result property="OpenTime" column="Club_OpenTime" />
 		<result property="Memo" column="Club_Memo" />
 		<result property="Status" column="Club_Status" />
 		<result property="Delete" column="Club_Delete" />
@@ -18,46 +23,53 @@
 		<result property="ModifyTime" column="Club_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Club_Id, Club_UseId, Club_Title, Club_Theme, Club_Intro, Club_Site, Club_Tel, Club_Memo, Club_Status, Club_Delete, Club_CreateTime, Club_ModifyTime
+		Club_Id, Club_UseId, Club_Title, Club_Theme, Club_Intro, Club_Site, Club_Location, Club_Tel, Club_OpenTime, Club_Memo, Club_Status, Club_Delete, Club_CreateTime, Club_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Club_Id = #{Id}
+		<if test="Id != null ">
+			 AND Club_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Club_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Club_UseId = #{UseId}
 		</if>
-		<if test="Title!= null">
-				 AND Club_Title = #{Title}
+		<if test="Title != null ">
+			 AND Club_Title = #{Title}
 		</if>
-		<if test="Theme!= null">
-				 AND Club_Theme = #{Theme}
+		<if test="Theme != null ">
+			 AND Club_Theme = #{Theme}
 		</if>
-		<if test="Intro!= null">
-				 AND Club_Intro = #{Intro}
+		<if test="Intro != null ">
+			 AND Club_Intro = #{Intro}
 		</if>
-		<if test="Site!= null">
-				 AND Club_Site = #{Site}
+		<if test="Site != null ">
+			 AND Club_Site = #{Site}
 		</if>
-		<if test="Tel!= null">
-				 AND Club_Tel = #{Tel}
+		<if test="Location != null ">
+			 AND Club_Location = #{Location}
 		</if>
-		<if test="Memo!= null">
-				 AND Club_Memo = #{Memo}
+		<if test="Tel != null ">
+			 AND Club_Tel = #{Tel}
 		</if>
-		<if test="Status!= null">
-				 AND Club_Status = #{Status}
+		<if test="OpenTime != null ">
+			 AND Club_OpenTime = #{OpenTime}
 		</if>
-		<if test="Delete!= null">
-				 AND Club_Delete &gt; #{Delete}
+		<if test="Memo != null ">
+			 AND Club_Memo = #{Memo}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Club_CreateTime = #{CreateTime}
+		<if test="Status != null ">
+			 AND Club_Status = #{Status}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Club_ModifyTime = #{ModifyTime}
+		<if test="Delete != null ">
+			 AND Club_Delete &lt; #{Delete}
 		</if>
+		<if test="CreateTime != null ">
+			 AND Club_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Club_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -69,6 +81,8 @@
 			Club_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="club" parameterType="java.util.Map">
@@ -100,10 +114,12 @@
 				#{Theme},
 				#{Intro},
 				#{Site},
+				#{Location},
 				#{Tel},
+				#{OpenTime},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -127,8 +143,14 @@
 			<if test="Site != null ">
 				Club_Site = #{Site},
 			</if>
+			<if test="Location != null ">
+				Club_Location = #{Location},
+			</if>
 			<if test="Tel != null ">
 				Club_Tel = #{Tel},
+			</if>
+			<if test="OpenTime != null ">
+				Club_OpenTime = #{OpenTime},
 			</if>
 			<if test="Memo != null ">
 				Club_Memo = #{Memo},

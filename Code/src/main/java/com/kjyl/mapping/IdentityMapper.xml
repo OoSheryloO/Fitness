@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.IdentityMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
+	<!-- 返回的map -->
+	<resultMap id="identity" type="com.kjyl.pojo.Identity">
+		<result property="Id" column="Identity_Id" />
+		<result property="Name" column="Identity_Name" />
+		<result property="CardFront" column="Identity_CardFront" />
+		<result property="CardVerso" column="Identity_CardVerso" />
+		<result property="CardNumber" column="Identity_CardNumber" />
+		<result property="Star" column="Identity_Star" />
+		<result property="Level" column="Identity_Level" />
+		<result property="Strong" column="Identity_Strong" />
+		<result property="Info" column="Identity_Info" />
+		<result property="Memo" column="Identity_Memo" />
+		<result property="Status" column="Identity_Status" />
+		<result property="Delete" column="Identity_Delete" />
+		<result property="CreateTime" column="Identity_CreateTime" />
+		<result property="ModifyTime" column="Identity_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Identity_Id, Identity_Name, Identity_CardFront, Identity_CardVerso, Identity_CardNumber, Identity_Star, Identity_Level, Identity_Strong, Identity_Info, Identity_Memo, Identity_Status, Identity_Delete, Identity_CreateTime, Identity_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id != null ">
+			 AND Identity_Id = #{Id}
+		</if>
+		<if test="Name != null ">
+			 AND Identity_Name = #{Name}
+		</if>
+		<if test="CardFront != null ">
+			 AND Identity_CardFront = #{CardFront}
+		</if>
+		<if test="CardVerso != null ">
+			 AND Identity_CardVerso = #{CardVerso}
+		</if>
+		<if test="CardNumber != null ">
+			 AND Identity_CardNumber = #{CardNumber}
+		</if>
+		<if test="Star != null ">
+			 AND Identity_Star = #{Star}
+		</if>
+		<if test="Level != null ">
+			 AND Identity_Level = #{Level}
+		</if>
+		<if test="Strong != null ">
+			 AND Identity_Strong = #{Strong}
+		</if>
+		<if test="Info != null ">
+			 AND Identity_Info = #{Info}
+		</if>
+		<if test="Memo != null ">
+			 AND Identity_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Identity_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Identity_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Identity_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Identity_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="identity" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_identity
+		<where>
+			Identity_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据model 查找-->
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="identity" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_identity
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_identity
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Identity"  useGeneratedKeys="true">
+		INSERT INTO fit_identity( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{Name},
+				#{CardFront},
+				#{CardVerso},
+				#{CardNumber},
+				#{Star},
+				#{Level},
+				#{Strong},
+				#{Info},
+				#{Memo},
+				Default,
+				Default,
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Identity">
+		UPDATE fit_identity 
+		  <set> 
+			<if test="Name != null ">
+				Identity_Name = #{Name},
+			</if>
+			<if test="CardFront != null ">
+				Identity_CardFront = #{CardFront},
+			</if>
+			<if test="CardVerso != null ">
+				Identity_CardVerso = #{CardVerso},
+			</if>
+			<if test="CardNumber != null ">
+				Identity_CardNumber = #{CardNumber},
+			</if>
+			<if test="Star != null ">
+				Identity_Star = #{Star},
+			</if>
+			<if test="Level != null ">
+				Identity_Level = #{Level},
+			</if>
+			<if test="Strong != null ">
+				Identity_Strong = #{Strong},
+			</if>
+			<if test="Info != null ">
+				Identity_Info = #{Info},
+			</if>
+			<if test="Memo != null ">
+				Identity_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Identity_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Identity_Delete = #{Delete},
+			</if>
+				Identity_ModifyTime = now()
+		  </set>
+		<where>
+			Identity_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Identity">
+		UPDATE fit_identity SET Identity_Status = 88 WHERE Identity_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Identity">
+		UPDATE fit_identity SET Identity_Status=  1 WHERE Identity_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Identity">
+		UPDATE fit_identity SET Identity_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Identity">
+		UPDATE fit_identity SET Identity_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

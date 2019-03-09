@@ -25,13 +25,13 @@ public class Picture implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_TypeId = "TypeId";
+    public static final String COLUMN_Type = "Type";
 
     public static final String COLUMN_Identity = "Identity";
 
     public static final String COLUMN_Purpose = "Purpose";
 
-    public static final String COLUMN_BelongId = "BelongId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Title = "Title";
 
@@ -53,14 +53,14 @@ public class Picture implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "图片编号")
+    @ApiModelProperty(value = "图片")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "图片类型")
-    private Integer TypeId;
+    private Integer Type;
 
     @ApiModelProperty(value = "加密编号")
     private String Identity;
@@ -68,8 +68,8 @@ public class Picture implements Serializable {
     @ApiModelProperty(value = "用途 ")
     private Integer Purpose;
 
-    @ApiModelProperty(value = "所属")
-    private String BelongId;
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "图片标题")
     private String Title;
@@ -101,7 +101,7 @@ public class Picture implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','图片编号']['UseId','用户编号']['TypeId','图片类型']['Identity','加密编号']['Purpose','用途 ']['BelongId','所属']['Title','图片标题']['Content','图片说明']['Url','图片链接']['RedirectUrl','跳转链接']['Sort','排序']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','图片']['UseId','使用Id']['Type','图片类型']['Identity','加密编号']['Purpose','用途 ']['LogicId','逻辑Id']['Title','图片标题']['Content','图片说明']['Url','图片链接']['RedirectUrl','跳转链接']['Sort','排序']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String PictureField;
 }

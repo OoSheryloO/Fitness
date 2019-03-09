@@ -2,14 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.PictureMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+	
 	<!-- 返回的map -->
 	<resultMap id="picture" type="com.kjyl.pojo.Picture">
 		<result property="Id" column="Picture_Id" />
 		<result property="UseId" column="Picture_UseId" />
-		<result property="TypeId" column="Picture_TypeId" />
+		<result property="Type" column="Picture_Type" />
 		<result property="Identity" column="Picture_Identity" />
 		<result property="Purpose" column="Picture_Purpose" />
-		<result property="BelongId" column="Picture_BelongId" />
+		<result property="LogicId" column="Picture_LogicId" />
 		<result property="Title" column="Picture_Title" />
 		<result property="Content" column="Picture_Content" />
 		<result property="Url" column="Picture_Url" />
@@ -22,58 +25,59 @@
 		<result property="ModifyTime" column="Picture_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Picture_Id, Picture_UseId, Picture_TypeId, Picture_Identity, Picture_Purpose, Picture_BelongId, Picture_Title, Picture_Content, Picture_Url, Picture_RedirectUrl, Picture_Sort, Picture_Version, Picture_Status, Picture_Delete, Picture_CreateTime, Picture_ModifyTime
+		Picture_Id, Picture_UseId, Picture_Type, Picture_Identity, Picture_Purpose, Picture_LogicId, Picture_Title, Picture_Content, Picture_Url, Picture_RedirectUrl, Picture_Sort, Picture_Version, Picture_Status, Picture_Delete, Picture_CreateTime, Picture_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Picture_Id = #{Id}
+		<if test="Id != null ">
+			 AND Picture_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Picture_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Picture_UseId = #{UseId}
 		</if>
-		<if test="TypeId!= null">
-				 AND Picture_TypeId = #{TypeId}
+		<if test="Type != null ">
+			 AND Picture_Type = #{Type}
 		</if>
-		<if test="Identity!= null">
-				 AND Picture_Identity = #{Identity}
+		<if test="Identity != null ">
+			 AND Picture_Identity = #{Identity}
 		</if>
-		<if test="Purpose!= null">
-				 AND Picture_Purpose = #{Purpose}
+		<if test="Purpose != null ">
+			 AND Picture_Purpose = #{Purpose}
 		</if>
-		<if test="BelongId!= null">
-				 AND Picture_BelongId = #{BelongId}
+		<if test="LogicId != null ">
+			 AND Picture_LogicId = #{LogicId}
 		</if>
-		<if test="Title!= null">
-				 AND Picture_Title = #{Title}
+		<if test="Title != null ">
+			 AND Picture_Title = #{Title}
 		</if>
-		<if test="Content!= null">
-				 AND Picture_Content = #{Content}
+		<if test="Content != null ">
+			 AND Picture_Content = #{Content}
 		</if>
-		<if test="Url!= null">
-				 AND Picture_Url = #{Url}
+		<if test="Url != null ">
+			 AND Picture_Url = #{Url}
 		</if>
-		<if test="RedirectUrl!= null">
-				 AND Picture_RedirectUrl = #{RedirectUrl}
+		<if test="RedirectUrl != null ">
+			 AND Picture_RedirectUrl = #{RedirectUrl}
 		</if>
-		<if test="Sort!= null">
-				 AND Picture_Sort = #{Sort}
+		<if test="Sort != null ">
+			 AND Picture_Sort = #{Sort}
 		</if>
-		<if test="Version!= null">
-				 AND Picture_Version = #{Version}
+		<if test="Version != null ">
+			 AND Picture_Version = #{Version}
 		</if>
-		<if test="Status!= null">
-				 AND Picture_Status = #{Status}
+		<if test="Status != null ">
+			 AND Picture_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Picture_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Picture_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Picture_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Picture_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Picture_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Picture_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -85,6 +89,8 @@
 			Picture_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="picture" parameterType="java.util.Map">
@@ -112,18 +118,18 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TypeId},
+				#{Type},
 				#{Identity},
 				#{Purpose},
-				#{BelongId},
+				#{LogicId},
 				#{Title},
 				#{Content},
 				#{Url},
 				#{RedirectUrl},
 				#{Sort},
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -135,8 +141,8 @@
 			<if test="UseId != null ">
 				Picture_UseId = #{UseId},
 			</if>
-			<if test="TypeId != null ">
-				Picture_TypeId = #{TypeId},
+			<if test="Type != null ">
+				Picture_Type = #{Type},
 			</if>
 			<if test="Identity != null ">
 				Picture_Identity = #{Identity},
@@ -144,8 +150,8 @@
 			<if test="Purpose != null ">
 				Picture_Purpose = #{Purpose},
 			</if>
-			<if test="BelongId != null ">
-				Picture_BelongId = #{BelongId},
+			<if test="LogicId != null ">
+				Picture_LogicId = #{LogicId},
 			</if>
 			<if test="Title != null ">
 				Picture_Title = #{Title},

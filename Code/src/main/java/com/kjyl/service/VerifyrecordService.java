@@ -31,65 +31,65 @@ public class VerifyrecordService {
    
     @Autowired
 	private VerifyrecordMapper mapper;
-
-//	@CachePut(key="#p0.Id")  
-//	@CacheEvict(value = "VerifyrecordCache", allEntries = true)
-	public int Insert(Verifyrecord obj){
-		return mapper.Insert(obj);
-	}
-
-//	@CachePut(key="#p0.Id")  
-//	@CacheEvict(value = "VerifyrecordCache", allEntries = true)
-	public Verifyrecord Modify(Verifyrecord obj){
-		mapper.Modify(obj);
-		return mapper.SearchBySpecial(obj.getId());
-	}
-
-//	@CachePut(key="#p0")  
-//	@CacheEvict(value = "VerifyrecordCache", allEntries = true)
-	public Verifyrecord RemoveBySpecial(String Id){
-		mapper.RemoveBySpecial(Id);
-		return mapper.SearchBySpecial(Id);
-	}
-
-//	@CachePut(key="#p0")  
-//	@CacheEvict(value = "VerifyrecordCache", allEntries = true)
-	public Verifyrecord RecoverBySpecial(String Id){
-		mapper.RecoverBySpecial(Id);
-		return mapper.SearchBySpecial(Id);
-	}
-
-//	@CacheEvict(value = {"VerifyrecordCache", "VerifyrecordCache"},allEntries = true)
-	public int RemoveByCondition(Map<String,Object> mapSearch){
-		return mapper.RemoveByCondition(mapSearch);
-	}
-
-//	@CacheEvict(value = {"VerifyrecordCache", "VerifyrecordCache"},allEntries = true)
-	public int RecoverByCondition(Map<String,Object> mapSearch){
-		return mapper.RecoverByCondition(mapSearch);
-	}
-	
+    
 //	@Cacheable(value = "VerifyrecordCache", key="'Verifyrecord_'+#p0") 
 	public Verifyrecord SearchBySpecial(String Id){
 		return mapper.SearchBySpecial(Id);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Verifyrecord> SearchByCondition(Map<String,Object> mapSearch){
+	public List<Verifyrecord> SearchByCondition(Map<String, Object> mapSearch){
 		return mapper.SearchByCondition(mapSearch);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public int SearchData(Map<String,Object> mapSearch){
+	public int SearchData(Map<String, Object> mapSearch){
 		return mapper.SearchData(mapSearch);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Verifyrecord> SearchPage(Map<String,Object> mapSearch, int pageNum, int pageSize){
+	public PageInfo<Verifyrecord> SearchPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
 		Page<Verifyrecord> page = PageHelper.startPage(pageNum, pageSize);
-		page.setOrderBy("Verifyrecord_CreateTime desc");
+		page.setOrderBy("Verifyrecord_CreateTime DESC");
 		mapper.SearchByCondition(mapSearch);
 		return page.toPageInfo();
+	}
+
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ReadVerifyrecordCache", allEntries = true)
+	public int Insert(Verifyrecord obj){
+		return mapper.Insert(obj);
+	}
+
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ReadVerifyrecordCache", allEntries = true)
+	public Verifyrecord Modify(Verifyrecord obj){
+		mapper.Modify(obj);
+		return mapper.SearchBySpecial(obj.getId());
+	}
+
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ReadVerifyrecordCache", allEntries = true)
+	public Verifyrecord RemoveBySpecial(String Id){
+		mapper.RemoveBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
+	}
+
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ReadVerifyrecordCache", allEntries = true)
+	public Verifyrecord RecoverBySpecial(String Id){
+		mapper.RecoverBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
+	}
+
+//	@CacheEvict(value = {"ReadVerifyrecordCache", "VerifyrecordCache"},allEntries = true)
+	public int RemoveByCondition(Map<String, Object> mapSearch){
+		return mapper.RemoveByCondition(mapSearch);
+	}
+
+//	@CacheEvict(value = {"ReadVerifyrecordCache", "VerifyrecordCache"},allEntries = true)
+	public int RecoverByCondition(Map<String, Object> mapSearch){
+		return mapper.RecoverByCondition(mapSearch);
 	}
 
 }

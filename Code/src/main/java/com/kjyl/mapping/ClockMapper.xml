@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.ClockMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="clock" type="com.kjyl.pojo.Clock">
 		<result property="Id" column="Clock_Id" />
@@ -16,26 +19,27 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Clock_Id = #{Id}
+		<if test="Id != null ">
+			 AND Clock_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Clock_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Clock_UseId = #{UseId}
 		</if>
-		<if test="Status!= null">
-				 AND Clock_Status = #{Status}
+		<if test="Status != null ">
+			 AND Clock_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Clock_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Clock_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Clock_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Clock_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Clock_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Clock_ModifyTime = #{ModifyTime}
 		</if>
-	</sql>
 
+	</sql>
+	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="clock" parameterType="long">
 		SELECT
@@ -45,6 +49,8 @@
 			Clock_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="clock" parameterType="java.util.Map">
@@ -72,8 +78,8 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -123,5 +129,22 @@
 			<include refid="where"></include>
 		</where>
 	</update>
+	
+	<!-- 查询排行 -->
+	<resultMap id="rank" type="com.kjyl.bean.RankList">
+		<result property="UseId" column="UseId" />
+		<result property="Number" column="Number" />
+		<association property="User" javaType="com.kjyl.pojo.User" resultMap="com.kjyl.dao.UserMapper.user" />
+	</resultMap>
+	<select id="SearchRankByCondition"  resultMap="rank" parameterType="java.util.Map">
+		SELECT
+		Clock_UseId AS UseId, COUNT(1) AS Number, fit_user.*
+			FROM fit_clock, fit_user
+		<where>
+			<include refid="where"></include>
+		</where>
+		AND fit_clock.Clock_UseId = fit_user.User_Id AND fit_user.User_Delete &lt; 88
+		GROUP BY Clock_UseId
+	</select>
 
 </mapper>

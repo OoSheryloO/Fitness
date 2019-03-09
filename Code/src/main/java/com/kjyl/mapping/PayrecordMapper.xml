@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.PayrecordMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+	
 	<!-- 返回的map -->
 	<resultMap id="payrecord" type="com.kjyl.pojo.Payrecord">
 		<result property="Id" column="PayRecord_Id" />
 		<result property="UseId" column="PayRecord_UseId" />
-		<result property="TouchId" column="PayRecord_TouchId" />
-		<result property="Site" column="PayRecord_Site" />
+		<result property="LogicId" column="PayRecord_LogicId" />
+		<result property="Prize" column="PayRecord_Prize" />
 		<result property="Type" column="PayRecord_Type" />
 		<result property="Memo" column="PayRecord_Memo" />
 		<result property="Status" column="PayRecord_Status" />
@@ -16,40 +19,41 @@
 		<result property="ModifyTime" column="PayRecord_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		PayRecord_Id, PayRecord_UseId, PayRecord_TouchId, PayRecord_Site, PayRecord_Type, PayRecord_Memo, PayRecord_Status, PayRecord_Delete, PayRecord_CreateTime, PayRecord_ModifyTime
+		PayRecord_Id, PayRecord_UseId, PayRecord_LogicId, PayRecord_Prize, PayRecord_Type, PayRecord_Memo, PayRecord_Status, PayRecord_Delete, PayRecord_CreateTime, PayRecord_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND PayRecord_Id = #{Id}
+		<if test="Id != null ">
+			 AND PayRecord_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND PayRecord_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND PayRecord_UseId = #{UseId}
 		</if>
-		<if test="TouchId!= null">
-				 AND PayRecord_TouchId = #{TouchId}
+		<if test="LogicId != null ">
+			 AND PayRecord_LogicId = #{LogicId}
 		</if>
-		<if test="Site!= null">
-				 AND PayRecord_Site = #{Site}
+		<if test="Prize != null ">
+			 AND PayRecord_Prize = #{Prize}
 		</if>
-		<if test="Type!= null">
-				 AND PayRecord_Type = #{Type}
+		<if test="Type != null ">
+			 AND PayRecord_Type = #{Type}
 		</if>
-		<if test="Memo!= null">
-				 AND PayRecord_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND PayRecord_Memo = #{Memo}
 		</if>
-		<if test="Status!= null">
-				 AND PayRecord_Status = #{Status}
+		<if test="Status != null ">
+			 AND PayRecord_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND PayRecord_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND PayRecord_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND PayRecord_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND PayRecord_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND PayRecord_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND PayRecord_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -61,6 +65,8 @@
 			PayRecord_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="payrecord" parameterType="java.util.Map">
@@ -88,12 +94,12 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TouchId},
-				#{Site},
+				#{LogicId},
+				#{Prize},
 				#{Type},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -105,11 +111,11 @@
 			<if test="UseId != null ">
 				PayRecord_UseId = #{UseId},
 			</if>
-			<if test="TouchId != null ">
-				PayRecord_TouchId = #{TouchId},
+			<if test="LogicId != null ">
+				PayRecord_LogicId = #{LogicId},
 			</if>
-			<if test="Site != null ">
-				PayRecord_Site = #{Site},
+			<if test="Prize != null ">
+				PayRecord_Prize = #{Prize},
 			</if>
 			<if test="Type != null ">
 				PayRecord_Type = #{Type},

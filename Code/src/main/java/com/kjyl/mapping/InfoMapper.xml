@@ -2,13 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.InfoMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="info" type="com.kjyl.pojo.Info">
 		<result property="Id" column="Info_Id" />
 		<result property="UseId" column="Info_UseId" />
+		<result property="LogicId" column="Info_LogicId" />
 		<result property="Title" column="Info_Title" />
 		<result property="Content" column="Info_Content" />
-		<result property="LikeCount" column="Info_LikeCount" />
+		<result property="Like" column="Info_Like" />
 		<result property="Review" column="Info_Review" />
 		<result property="Share" column="Info_Share" />
 		<result property="Status" column="Info_Status" />
@@ -17,43 +21,47 @@
 		<result property="ModifyTime" column="Info_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Info_Id, Info_UseId, Info_Title, Info_Content, Info_LikeCount, Info_Review, Info_Share, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
+		Info_Id, Info_UseId, Info_LogicId, Info_Title, Info_Content, Info_Like, Info_Review, Info_Share, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Info_Id = #{Id}
+		<if test="Id != null ">
+			 AND Info_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Info_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Info_UseId = #{UseId}
 		</if>
-		<if test="Title!= null">
-				 AND Info_Title = #{Title}
+		<if test="LogicId != null ">
+			 AND Info_LogicId = #{LogicId}
 		</if>
-		<if test="Content!= null">
-				 AND Info_Content = #{Content}
+		<if test="Title != null ">
+			 AND Info_Title = #{Title}
 		</if>
-		<if test="LikeCount!= null">
-				 AND Info_LikeCount = #{LikeCount}
+		<if test="Content != null ">
+			 AND Info_Content = #{Content}
 		</if>
-		<if test="Review!= null">
-				 AND Info_Review = #{Review}
+		<if test="Like != null ">
+			 AND Info_Like = #{Like}
 		</if>
-		<if test="Share!= null">
-				 AND Info_Share = #{Share}
+		<if test="Review != null ">
+			 AND Info_Review = #{Review}
 		</if>
-		<if test="Status!= null">
-				 AND Info_Status = #{Status}
+		<if test="Share != null ">
+			 AND Info_Share = #{Share}
 		</if>
-		<if test="Delete!= null">
-				 AND Info_Delete &gt; #{Delete}
+		<if test="Status != null ">
+			 AND Info_Status = #{Status}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Info_CreateTime = #{CreateTime}
+		<if test="Delete != null ">
+			 AND Info_Delete &lt; #{Delete}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Info_ModifyTime = #{ModifyTime}
+		<if test="CreateTime != null ">
+			 AND Info_CreateTime = #{CreateTime}
 		</if>
+		<if test="ModifyTime != null ">
+			 AND Info_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -65,6 +73,8 @@
 			Info_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="info" parameterType="java.util.Map">
@@ -92,13 +102,14 @@
 		VALUES(
 				#{Id},
 				#{UseId},
+				#{LogicId},
 				#{Title},
 				#{Content},
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
+				#{Like},
+				#{Review},
+				#{Share},
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -110,14 +121,17 @@
 			<if test="UseId != null ">
 				Info_UseId = #{UseId},
 			</if>
+			<if test="LogicId != null ">
+				Info_LogicId = #{LogicId},
+			</if>
 			<if test="Title != null ">
 				Info_Title = #{Title},
 			</if>
 			<if test="Content != null ">
 				Info_Content = #{Content},
 			</if>
-			<if test="LikeCount != null ">
-				Info_LikeCount = #{LikeCount},
+			<if test="Like != null ">
+				Info_Like = #{Like},
 			</if>
 			<if test="Review != null ">
 				Info_Review = #{Review},

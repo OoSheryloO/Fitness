@@ -16,38 +16,43 @@ import com.kjyl.service.FitdataService;
 
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
 
 /**
  * <p> 控制器 Class</p>
  * @author sheryl 自动构建脚本
  */
-@Api("Fitdata")
+@Api(value="Fitdata", description="")
 @RestController
 @RequestMapping("/Fitdata")
 public class FitdataController extends BaseController {
 
 //    @GetMapping("/searchFitdataPage")
-	@RequestMapping(value="/searhcFitdataPage", method=RequestMethod.GET)
-    @ApiOperation(value = "获取列表")
-    public Map<String, Object> searchFitdataPage(int status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+	@ApiOperation(value = "获取列表", notes= "", httpMethod = "GET")
+	@RequestMapping(value="/searchFitdataPage", method=RequestMethod.GET)
+//  @ApiImplicitParam(name = "data", value = "data描述", required = true, dataType = "UserInfo", paramType = "query")
+//  @ApiImplicitParams({
+//    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
+//	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
+//  })
+    public Map<String, Object> searchFitdataPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
-        if(status!=-1){
-        	mapSearch.put("Status", status);
+        if(status != null && status != -1){
+        	mapSearch.put(Fitdata.COLUMN_Status, status);
         }
         PageInfo<Fitdata> page = this.FitdataService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setFitdataStatus")
-	@RequestMapping(value="/setFitdataStatus", method=RequestMethod.POST)
+    @RequestMapping(value="/setFitdataStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
     public Map<String, Object> setFitdataStatus(String data){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Fitdata temp = JSON.parseObject(data, Fitdata.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -57,46 +62,36 @@ public class FitdataController extends BaseController {
                 FitdataService.RemoveBySpecial(Id);
             }
         }
-        mapResult.put(CodeInfo.sRowKey, 0);
-        mapResult.put(CodeInfo.sMessageKey, "操作成功");
-        return mapResult;
+        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchFitdata/{id}")
-	@RequestMapping(value="/searchFitdata/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/searchFitdata/{id}", method=RequestMethod.GET)
     @ApiOperation(value = "根据编号查询内容")
     public Map<String, Object> searchFitdata(@PathVariable("id") String Id){
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Fitdata temp = FitdataService.SearchBySpecial(Id);
         if(temp != null){
-        	mapResult.put(CodeInfo.sRowKey, 0);
-        	mapResult.put(CodeInfo.sDataKey, temp);
-        	mapResult.put(CodeInfo.sMessageKey, "获取成功");
+        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		mapResult.put(CodeInfo.sRowKey, -1);
-    		mapResult.put(CodeInfo.sDataKey, temp);
-    		mapResult.put(CodeInfo.sMessageKey, "获取失败");
+    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
-        return mapResult;
     }
 
 //    @PostMapping("/modifyFitdata")
-	@RequestMapping(value="/modifyFitdata", method=RequestMethod.POST)
+    @RequestMapping(value="/modifyFitdata", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
     public Map<String, Object> modifyFitdata(String data, HttpServletRequest request) {
-        Map<String, Object> mapResult = new HashMap<String, Object>();
         Fitdata temp = JSON.parseObject(data, Fitdata.class);
         Fitdata obj = new Fitdata();
         boolean isNew = false;
         if("0".equals(temp.getId())){
-            isNew=true;
+            isNew = true;
         }else{
             obj = FitdataService.SearchBySpecial(temp.getId());
-            if(obj==null){
-                isNew=true;
+            if(obj == null){
+                isNew = true;
             }
         }
-
         obj.setUseId(temp.getUseId());
         obj.setDate(temp.getDate());
         obj.setHeight(temp.getHeight());
@@ -121,17 +116,19 @@ public class FitdataController extends BaseController {
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-        Fitdata tempObj=null;
+        Fitdata tempObj = null;
         if(isNew){
-            obj.setId(String.valueOf(IdWorker.CreateNewId()));
+            obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj=FitdataService.Insert(obj);
+            tempObj = FitdataService.Insert(obj);
         }else{
-            tempObj=FitdataService.Modify(obj);
+            tempObj = FitdataService.Modify(obj);
         }
-        mapResult.put(CodeInfo.sRowKey, tempObj != null ? 0 : -1);
-        mapResult.put(CodeInfo.sMessageKey, tempObj != null ? "修改成功" : "修改失败");
-        return mapResult;
+        if (tempObj != null) {
+			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+		} else {
+			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+		}
     }
 
 }

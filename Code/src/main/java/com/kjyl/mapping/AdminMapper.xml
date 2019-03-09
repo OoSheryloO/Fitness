@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.AdminMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="admin" type="com.kjyl.pojo.Admin">
 		<result property="Id" column="Admin_Id" />
@@ -25,51 +28,52 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Admin_Id = #{Id}
+		<if test="Id != null ">
+			 AND Admin_Id = #{Id}
 		</if>
-		<if test="Name!= null">
-				 AND Admin_Name = #{Name}
+		<if test="Name != null ">
+			 AND Admin_Name = #{Name}
 		</if>
-		<if test="PassWord!= null">
-				 AND Admin_PassWord = #{PassWord}
+		<if test="PassWord != null ">
+			 AND Admin_PassWord = #{PassWord}
 		</if>
-		<if test="NickName!= null">
-				 AND Admin_NickName = #{NickName}
+		<if test="NickName != null ">
+			 AND Admin_NickName = #{NickName}
 		</if>
-		<if test="Image!= null">
-				 AND Admin_Image = #{Image}
+		<if test="Image != null ">
+			 AND Admin_Image = #{Image}
 		</if>
-		<if test="Phone!= null">
-				 AND Admin_Phone = #{Phone}
+		<if test="Phone != null ">
+			 AND Admin_Phone = #{Phone}
 		</if>
-		<if test="Level!= null">
-				 AND Admin_Level = #{Level}
+		<if test="Level != null ">
+			 AND Admin_Level = #{Level}
 		</if>
-		<if test="Version!= null">
-				 AND Admin_Version = #{Version}
+		<if test="Version != null ">
+			 AND Admin_Version = #{Version}
 		</if>
-		<if test="Memo!= null">
-				 AND Admin_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND Admin_Memo = #{Memo}
 		</if>
-		<if test="ParentId!= null">
-				 AND Admin_ParentId = #{ParentId}
+		<if test="ParentId != null ">
+			 AND Admin_ParentId = #{ParentId}
 		</if>
-		<if test="AreaId!= null">
-				 AND Admin_AreaId = #{AreaId}
+		<if test="AreaId != null ">
+			 AND Admin_AreaId = #{AreaId}
 		</if>
-		<if test="Status!= null">
-				 AND Admin_Status = #{Status}
+		<if test="Status != null ">
+			 AND Admin_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Admin_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Admin_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Admin_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Admin_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Admin_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Admin_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -81,6 +85,8 @@
 			Admin_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="admin" parameterType="java.util.Map">
@@ -113,12 +119,12 @@
 				#{Image},
 				#{Phone},
 				#{Level},
-				#{Version},
+				Default,
 				#{Memo},
 				#{ParentId},
 				#{AreaId},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)

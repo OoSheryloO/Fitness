@@ -2,15 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.GoodsMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="goods" type="com.kjyl.pojo.Goods">
 		<result property="Id" column="Goods_Id" />
-		<result property="UseId" column="Goods_UseId" />
+		<result property="LogicId" column="Goods_LogicId" />
+		<result property="HeadIcon" column="Goods_HeadIcon" />
 		<result property="Title" column="Goods_Title" />
 		<result property="Intro" column="Goods_Intro" />
 		<result property="Price" column="Goods_Price" />
-		<result property="HeadIcon" column="Goods_HeadIcon" />
+		<result property="FreeShip" column="Goods_FreeShip" />
+		<result property="FreeFirst" column="Goods_FreeFirst" />
+		<result property="RefundDay" column="Goods_RefundDay" />
+		<result property="Delivery" column="Goods_Delivery" />
 		<result property="Type" column="Goods_Type" />
+		<result property="Size" column="Goods_Size" />
 		<result property="Memo" column="Goods_Memo" />
 		<result property="Status" column="Goods_Status" />
 		<result property="Delete" column="Goods_Delete" />
@@ -18,48 +26,64 @@
 		<result property="ModifyTime" column="Goods_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Goods_Id, Goods_UseId, Goods_Title, Goods_Intro, Goods_Price, Goods_HeadIcon, Goods_Type, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
+		Goods_Id, Goods_LogicId, Goods_HeadIcon, Goods_Title, Goods_Intro, Goods_Price, Goods_FreeShip, Goods_FreeFirst, Goods_RefundDay, Goods_Delivery, Goods_Type, Goods_Size, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Goods_Id = #{Id}
+		<if test="Id != null ">
+			 AND Goods_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Goods_UseId = #{UseId}
+		<if test="LogicId != null ">
+			 AND Goods_LogicId = #{LogicId}
 		</if>
-		<if test="Title!= null">
-				 AND Goods_Title = #{Title}
+		<if test="HeadIcon != null ">
+			 AND Goods_HeadIcon = #{HeadIcon}
 		</if>
-		<if test="Intro!= null">
-				 AND Goods_Intro = #{Intro}
+		<if test="Title != null ">
+			 AND Goods_Title = #{Title}
 		</if>
-		<if test="Price!= null">
-				 AND Goods_Price = #{Price}
+		<if test="Intro != null ">
+			 AND Goods_Intro = #{Intro}
 		</if>
-		<if test="HeadIcon!= null">
-				 AND Goods_HeadIcon = #{HeadIcon}
+		<if test="Price != null ">
+			 AND Goods_Price = #{Price}
 		</if>
-		<if test="Type!= null">
-				 AND Goods_Type = #{Type}
+		<if test="FreeShip != null ">
+			 AND Goods_FreeShip = #{FreeShip}
 		</if>
-		<if test="Memo!= null">
-				 AND Goods_Memo = #{Memo}
+		<if test="FreeFirst != null ">
+			 AND Goods_FreeFirst = #{FreeFirst}
 		</if>
-		<if test="Status!= null">
-				 AND Goods_Status = #{Status}
+		<if test="RefundDay != null ">
+			 AND Goods_RefundDay = #{RefundDay}
 		</if>
-		<if test="Delete!= null">
-				 AND Goods_Delete &gt; #{Delete}
+		<if test="Delivery != null ">
+			 AND Goods_Delivery = #{Delivery}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Goods_CreateTime = #{CreateTime}
+		<if test="Type != null ">
+			 AND Goods_Type = #{Type}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Goods_ModifyTime = #{ModifyTime}
+		<if test="Size != null ">
+			 AND Goods_Size = #{Size}
 		</if>
-	</sql>
+		<if test="Memo != null ">
+			 AND Goods_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Goods_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Goods_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Goods_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Goods_ModifyTime = #{ModifyTime}
+		</if>
 
+	</sql>
+	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="goods" parameterType="long">
 		SELECT
@@ -69,6 +93,8 @@
 			Goods_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="goods" parameterType="java.util.Map">
@@ -95,15 +121,20 @@
 		INSERT INTO fit_goods( <include refid="sql"></include> )
 		VALUES(
 				#{Id},
-				#{UseId},
+				#{LogicId},
+				#{HeadIcon},
 				#{Title},
 				#{Intro},
 				#{Price},
-				#{HeadIcon},
+				#{FreeShip},
+				#{FreeFirst},
+				#{RefundDay},
+				#{Delivery},
 				#{Type},
+				#{Size},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -112,8 +143,11 @@
 	<update id="Modify" parameterType="com.kjyl.pojo.Goods">
 		UPDATE fit_goods 
 		  <set> 
-			<if test="UseId != null ">
-				Goods_UseId = #{UseId},
+			<if test="LogicId != null ">
+				Goods_LogicId = #{LogicId},
+			</if>
+			<if test="HeadIcon != null ">
+				Goods_HeadIcon = #{HeadIcon},
 			</if>
 			<if test="Title != null ">
 				Goods_Title = #{Title},
@@ -124,11 +158,23 @@
 			<if test="Price != null ">
 				Goods_Price = #{Price},
 			</if>
-			<if test="HeadIcon != null ">
-				Goods_HeadIcon = #{HeadIcon},
+			<if test="FreeShip != null ">
+				Goods_FreeShip = #{FreeShip},
+			</if>
+			<if test="FreeFirst != null ">
+				Goods_FreeFirst = #{FreeFirst},
+			</if>
+			<if test="RefundDay != null ">
+				Goods_RefundDay = #{RefundDay},
+			</if>
+			<if test="Delivery != null ">
+				Goods_Delivery = #{Delivery},
 			</if>
 			<if test="Type != null ">
 				Goods_Type = #{Type},
+			</if>
+			<if test="Size != null ">
+				Goods_Size = #{Size},
 			</if>
 			<if test="Memo != null ">
 				Goods_Memo = #{Memo},

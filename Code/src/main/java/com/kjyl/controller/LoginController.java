@@ -65,18 +65,22 @@ public class LoginController extends BaseController{
         List<Verifyrecord> lstVr = this.VerifyrecordService.SearchByCondition(mapSearch);
         if (lstVr.size() == 1) {
         	mapSearch.clear();
-        	mapSearch.put(User.COLUMN_Id, lstVr.get(0).getUseId());
-        	
         	User pjUser = this.UserService.SearchBySpecial(lstVr.get(0).getUseId());
-			mapResult.put(CodeInfo.sCodeKey, CodeInfo.Code.OK);
-			mapResult.put(CodeInfo.sDataKey, pjUser);
-			mapResult.put(CodeInfo.sMessageKey, "请求成功!");
+        	
+        	mapSearch.put(Online.COLUMN_UseId, pjUser.getId());
+        	mapSearch.put(Online.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+        	List<Online> lstOl = OnlineService.SearchByCondition(mapSearch);
+        	if (lstOl != null) {
+        		mapResult.put(CodeInfo.sTokenKey, lstOl.get(0).getSession());
+    			mapResult.put(CodeInfo.sDataKey, pjUser);
+    			mapResult = ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+			} else {
+				mapResult = ResultUtil.sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+			}
 		} else if(lstVr.size() == 0){
-			mapResult.put(CodeInfo.sCodeKey, CodeInfo.Code.NO);
-			mapResult.put(CodeInfo.sMessageKey, "请先发送验证码!");
+			mapResult = ResultUtil.sharedInstance().FalseData("请先发送验证码!!", CodeInfo.Code.NO.getCode());
 		}else {
-			mapResult.put(CodeInfo.sCodeKey, CodeInfo.Code.NO);
-			mapResult.put(CodeInfo.sMessageKey, "未知错误!");
+			mapResult = ResultUtil.sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
 		}
         return mapResult;
     }
@@ -93,22 +97,38 @@ public class LoginController extends BaseController{
         return mapResult;
     }
 	
+	@RequestMapping(value="/verifycode", method=RequestMethod.GET)
+    @ApiOperation(value = "验证验证码")
+    public Map<String, Object> verifyCode(String phone, String code, HttpServletRequest request) {
+		Map<String, Object> mapSearch = new HashMap<String, Object>();
+        mapSearch.put(Verifyrecord.COLUMN_Phone, phone);
+        mapSearch.put(Verifyrecord.COLUMN_CheckNumber, code);
+        mapSearch.put(Verifyrecord.COLUMN_Status, DBParam.RecordStatus.Delete.getCode());
+        
+        List<Verifyrecord> lstVr = VerifyrecordService.SearchByCondition(mapSearch);
+        if (lstVr != null && lstVr.size() > 0) {
+        	return ResultUtil.sharedInstance().TrueData(null, "验证成功!", CodeInfo.Code.OK.getCode());
+		} else {
+			return ResultUtil.sharedInstance().FalseData("验证失败!", CodeInfo.Code.NO.getCode());
+		}
+    }
+	
 	@RequestMapping(value="/wechatin", method=RequestMethod.POST)
-    @ApiOperation(value = "发送验证码")
+    @ApiOperation(value = "微信登录")
     public Map<String, Object> weChatIn(String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         User temp = JSON.parseObject(data, User.class);
-		String wechatId = temp.getWeChatOpenID();
+		String wechatId = temp.getWeChatOpenId();
 		Integer wechatSex = temp.getSex();
 		String wechatName = temp.getName();
-		String wechatHeadIcon = temp.getHeadIcon();
-		String wechatCity = temp.getCity();
+//		String wechatHeadIcon = temp.getHeadIcon();
+//		String wechatCity = temp.getCity();
 		if (wechatId == null || wechatId.equals("") || wechatSex == null || wechatName == null || wechatName.equals("")) {
 			return ResultUtil.sharedInstance().FalseData("微信信息获取失败!", CodeInfo.Code.NO.getCode());
 		}
 		
-		mapSearch.put(User.COLUMN_WeChatOpenID, wechatId);
+		mapSearch.put(User.COLUMN_WeChatOpenId, wechatId);
 		mapSearch.put(User.COLUMN_Delete, DBParam.RecordStatus.Delete);
 		List<User> lstU = UserService.SearchByCondition(mapSearch);
 		// 添加session信息
@@ -130,6 +150,7 @@ public class LoginController extends BaseController{
 				pjOl = lstOnline.get(0);
 				pjOl.setSession(session.getId());
 				//注销前会话
+				
 				OnlineService.Modify(pjOl);
 			} 
 		} else {//无用户

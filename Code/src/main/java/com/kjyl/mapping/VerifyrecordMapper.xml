@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.VerifyrecordMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="verifyrecord" type="com.kjyl.pojo.Verifyrecord">
 		<result property="Id" column="VerifyRecord_Id" />
@@ -21,41 +24,42 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND VerifyRecord_Id = #{Id}
+		<if test="Id != null ">
+			 AND VerifyRecord_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND VerifyRecord_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND VerifyRecord_UseId = #{UseId}
 		</if>
-		<if test="Phone!= null">
-				 AND VerifyRecord_Phone = #{Phone}
+		<if test="Phone != null ">
+			 AND VerifyRecord_Phone = #{Phone}
 		</if>
-		<if test="CheckNumber!= null">
-				 AND VerifyRecord_CheckNumber = #{CheckNumber}
+		<if test="CheckNumber != null ">
+			 AND VerifyRecord_CheckNumber = #{CheckNumber}
 		</if>
-		<if test="DisableTime!= null">
-				 AND VerifyRecord_DisableTime = #{DisableTime}
+		<if test="DisableTime != null ">
+			 AND VerifyRecord_DisableTime = #{DisableTime}
 		</if>
-		<if test="EnableTime!= null">
-				 AND VerifyRecord_EnableTime = #{EnableTime}
+		<if test="EnableTime != null ">
+			 AND VerifyRecord_EnableTime = #{EnableTime}
 		</if>
-		<if test="Version!= null">
-				 AND VerifyRecord_Version = #{Version}
+		<if test="Version != null ">
+			 AND VerifyRecord_Version = #{Version}
 		</if>
-		<if test="Status!= null">
-				 AND VerifyRecord_Status = #{Status}
+		<if test="Status != null ">
+			 AND VerifyRecord_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND VerifyRecord_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND VerifyRecord_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND VerifyRecord_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND VerifyRecord_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND VerifyRecord_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND VerifyRecord_ModifyTime = #{ModifyTime}
 		</if>
-	</sql>
 
+	</sql>
+	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="verifyrecord" parameterType="long">
 		SELECT
@@ -65,6 +69,8 @@
 			VerifyRecord_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="verifyrecord" parameterType="java.util.Map">
@@ -96,9 +102,9 @@
 				#{CheckNumber},
 				#{DisableTime},
 				#{EnableTime},
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
+				Default,
 				now(),
 				now()
 				)

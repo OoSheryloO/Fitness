@@ -2,82 +2,94 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.UserMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+	
 	<!-- 返回的map -->
 	<resultMap id="user" type="com.kjyl.pojo.User">
 		<result property="Id" column="User_Id" />
 		<result property="HeadIcon" column="User_HeadIcon" />
 		<result property="Name" column="User_Name" />
 		<result property="Sex" column="User_Sex" />
+		<result property="Birthday" column="User_Birthday" />
 		<result property="Phone" column="User_Phone" />
 		<result property="QQ" column="User_QQ" />
 		<result property="MicroBlog" column="User_MicroBlog" />
 		<result property="QRCode" column="User_QRCode" />
-		<result property="WeChatOpenID" column="User_WeChatOpenID" />
+		<result property="WeChatOpenId" column="User_WeChatOpenId" />
 		<result property="Password" column="User_Password" />
 		<result property="PayPassword" column="User_PayPassword" />
 		<result property="City" column="User_City" />
 		<result property="FitClub" column="User_FitClub" />
+		<result property="Level" column="User_Level" />
 		<result property="Status" column="User_Status" />
 		<result property="Delete" column="User_Delete" />
 		<result property="CreateTime" column="User_CreateTime" />
 		<result property="ModifyTime" column="User_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		User_Id, User_HeadIcon, User_Name, User_Sex, User_Phone, User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenID, User_Password, User_PayPassword, User_City, User_FitClub, User_Status, User_Delete, User_CreateTime, User_ModifyTime
+		User_Id, User_HeadIcon, User_Name, User_Sex, User_Birthday, User_Phone, User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenId, User_Password, User_PayPassword, User_City, User_FitClub, User_Level, User_Status, User_Delete, User_CreateTime, User_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND User_Id = #{Id}
+		<if test="Id != null ">
+			 AND User_Id = #{Id}
 		</if>
-		<if test="HeadIcon!= null">
-				 AND User_HeadIcon = #{HeadIcon}
+		<if test="HeadIcon != null ">
+			 AND User_HeadIcon = #{HeadIcon}
 		</if>
-		<if test="Name!= null">
-				 AND User_Name = #{Name}
+		<if test="Name != null ">
+			 AND User_Name = #{Name}
 		</if>
-		<if test="Sex!= null">
-				 AND User_Sex = #{Sex}
+		<if test="Sex != null ">
+			 AND User_Sex = #{Sex}
 		</if>
-		<if test="Phone!= null">
-				 AND User_Phone = #{Phone}
+		<if test="Birthday != null ">
+			 AND User_Birthday = #{Birthday}
 		</if>
-		<if test="QQ!= null">
-				 AND User_QQ = #{QQ}
+		<if test="Phone != null ">
+			 AND User_Phone = #{Phone}
 		</if>
-		<if test="MicroBlog!= null">
-				 AND User_MicroBlog = #{MicroBlog}
+		<if test="QQ != null ">
+			 AND User_QQ = #{QQ}
 		</if>
-		<if test="QRCode!= null">
-				 AND User_QRCode = #{QRCode}
+		<if test="MicroBlog != null ">
+			 AND User_MicroBlog = #{MicroBlog}
 		</if>
-		<if test="WeChatOpenID!= null">
-				 AND User_WeChatOpenID = #{WeChatOpenID}
+		<if test="QRCode != null ">
+			 AND User_QRCode = #{QRCode}
 		</if>
-		<if test="Password!= null">
-				 AND User_Password = #{Password}
+		<if test="WeChatOpenId != null ">
+			 AND User_WeChatOpenId = #{WeChatOpenId}
 		</if>
-		<if test="PayPassword!= null">
-				 AND User_PayPassword = #{PayPassword}
+		<if test="Password != null ">
+			 AND User_Password = #{Password}
 		</if>
-		<if test="City!= null">
-				 AND User_City = #{City}
+		<if test="PayPassword != null ">
+			 AND User_PayPassword = #{PayPassword}
 		</if>
-		<if test="FitClub!= null">
-				 AND User_FitClub = #{FitClub}
+		<if test="City != null ">
+			 AND User_City = #{City}
 		</if>
-		<if test="Status!= null">
-				 AND User_Status = #{Status}
+		<if test="FitClub != null ">
+			 AND User_FitClub = #{FitClub}
 		</if>
-		<if test="Delete!= null">
-				 AND User_Delete &gt; #{Delete}
+		<if test="Level != null ">
+			 AND User_Level = #{Level}
 		</if>
-		<if test="CreateTime!= null">
-				 AND User_CreateTime = #{CreateTime}
+		<if test="Status != null ">
+			 AND User_Status = #{Status}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND User_ModifyTime = #{ModifyTime}
+		<if test="Delete != null ">
+			 AND User_Delete &lt; #{Delete}
 		</if>
+		<if test="CreateTime != null ">
+			 AND User_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND User_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -89,6 +101,8 @@
 			User_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="user" parameterType="java.util.Map">
@@ -118,17 +132,19 @@
 				#{HeadIcon},
 				#{Name},
 				#{Sex},
+				#{Birthday},
 				#{Phone},
 				#{QQ},
 				#{MicroBlog},
 				#{QRCode},
-				#{WeChatOpenID},
+				#{WeChatOpenId},
 				#{Password},
 				#{PayPassword},
 				#{City},
 				#{FitClub},
-				DEFAULT,
-				DEFAULT,
+				#{Level},
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -146,6 +162,9 @@
 			<if test="Sex != null ">
 				User_Sex = #{Sex},
 			</if>
+			<if test="Birthday != null ">
+				User_Birthday = #{Birthday},
+			</if>
 			<if test="Phone != null ">
 				User_Phone = #{Phone},
 			</if>
@@ -158,8 +177,8 @@
 			<if test="QRCode != null ">
 				User_QRCode = #{QRCode},
 			</if>
-			<if test="WeChatOpenID != null ">
-				User_WeChatOpenID = #{WeChatOpenID},
+			<if test="WeChatOpenId != null ">
+				User_WeChatOpenId = #{WeChatOpenId},
 			</if>
 			<if test="Password != null ">
 				User_Password = #{Password},
@@ -172,6 +191,9 @@
 			</if>
 			<if test="FitClub != null ">
 				User_FitClub = #{FitClub},
+			</if>
+			<if test="Level != null ">
+				User_Level = #{Level},
 			</if>
 			<if test="Status != null ">
 				User_Status = #{Status},

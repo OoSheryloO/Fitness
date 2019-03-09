@@ -16,13 +16,12 @@ import java.util.Date;
 @Setter
 @ApiModel(value = "Admin")
 public class Admin implements Serializable {
-
-    /** 
+	/** 
 	* @Fields field:field: {todo}() 
 	*/ 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COLUMN_Id = "Id";
+    public static final String COLUMN_Id = "Id";
 
     public static final String COLUMN_Name = "Name";
 
@@ -52,13 +51,14 @@ public class Admin implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "管理员 ID")
+    @ApiModelProperty(value = "管理员")
     private String Id;
 
     @ApiModelProperty(value = "管理员帐号")
     private String Name;
 
     @ApiModelProperty(value = "密码")
+    @JSONField(serialize = false)
     private String PassWord;
 
     @ApiModelProperty(value = "昵称")
@@ -79,10 +79,10 @@ public class Admin implements Serializable {
     @ApiModelProperty(value = "备注")
     private String Memo;
 
-    @ApiModelProperty(value = "创建人ID")
+    @ApiModelProperty(value = "创建人Id")
     private String ParentId;
 
-    @ApiModelProperty(value = "所属地区ID")
+    @ApiModelProperty(value = "所属地区Id")
     private String AreaId;
 
     @ApiModelProperty(value = "状态")
@@ -97,7 +97,7 @@ public class Admin implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','管理员 ID']['Name','管理员帐号']['PassWord','密码']['NickName','昵称']['Image','头像URL']['Phone','联系方式']['Level','级别']['Version','修改次数']['Memo','备注']['ParentId','创建人ID']['AreaId','所属地区ID']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','管理员']['Name','管理员帐号']['PassWord','密码']['NickName','昵称']['Image','头像URL']['Phone','联系方式']['Level','级别']['Version','修改次数']['Memo','备注']['ParentId','创建人Id']['AreaId','所属地区Id']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String AdminField;
 }

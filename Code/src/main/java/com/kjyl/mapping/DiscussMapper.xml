@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.DiscussMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="discuss" type="com.kjyl.pojo.Discuss">
 		<result property="Id" column="Discuss_Id" />
@@ -10,7 +13,7 @@
 		<result property="ParentId" column="Discuss_ParentId" />
 		<result property="Title" column="Discuss_Title" />
 		<result property="Content" column="Discuss_Content" />
-		<result property="LikeCount" column="Discuss_LikeCount" />
+		<result property="Like" column="Discuss_Like" />
 		<result property="Review" column="Discuss_Review" />
 		<result property="Status" column="Discuss_Status" />
 		<result property="Delete" column="Discuss_Delete" />
@@ -18,46 +21,47 @@
 		<result property="ModifyTime" column="Discuss_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Discuss_Id, Discuss_UseId, Discuss_TopicId, Discuss_ParentId, Discuss_Title, Discuss_Content, Discuss_LikeCount, Discuss_Review, Discuss_Status, Discuss_Delete, Discuss_CreateTime, Discuss_ModifyTime
+		Discuss_Id, Discuss_UseId, Discuss_TopicId, Discuss_ParentId, Discuss_Title, Discuss_Content, Discuss_Like, Discuss_Review, Discuss_Status, Discuss_Delete, Discuss_CreateTime, Discuss_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Discuss_Id = #{Id}
+		<if test="Id != null ">
+			 AND Discuss_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Discuss_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Discuss_UseId = #{UseId}
 		</if>
-		<if test="TopicId!= null">
-				 AND Discuss_TopicId = #{TopicId}
+		<if test="TopicId != null ">
+			 AND Discuss_TopicId = #{TopicId}
 		</if>
-		<if test="ParentId!= null">
-				 AND Discuss_ParentId = #{ParentId}
+		<if test="ParentId != null ">
+			 AND Discuss_ParentId = #{ParentId}
 		</if>
-		<if test="Title!= null">
-				 AND Discuss_Title = #{Title}
+		<if test="Title != null ">
+			 AND Discuss_Title = #{Title}
 		</if>
-		<if test="Content!= null">
-				 AND Discuss_Content = #{Content}
+		<if test="Content != null ">
+			 AND Discuss_Content = #{Content}
 		</if>
-		<if test="LikeCount!= null">
-				 AND Discuss_LikeCount = #{LikeCount}
+		<if test="Like != null ">
+			 AND Discuss_Like = #{Like}
 		</if>
-		<if test="Review!= null">
-				 AND Discuss_Review = #{Review}
+		<if test="Review != null ">
+			 AND Discuss_Review = #{Review}
 		</if>
-		<if test="Status!= null">
-				 AND Discuss_Status = #{Status}
+		<if test="Status != null ">
+			 AND Discuss_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Discuss_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Discuss_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Discuss_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Discuss_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Discuss_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Discuss_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -69,6 +73,8 @@
 			Discuss_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="discuss" parameterType="java.util.Map">
@@ -100,10 +106,10 @@
 				#{ParentId},
 				#{Title},
 				#{Content},
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
+				#{Like},
+				#{Review},
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -127,8 +133,8 @@
 			<if test="Content != null ">
 				Discuss_Content = #{Content},
 			</if>
-			<if test="LikeCount != null ">
-				Discuss_LikeCount = #{LikeCount},
+			<if test="Like != null ">
+				Discuss_Like = #{Like},
 			</if>
 			<if test="Review != null ">
 				Discuss_Review = #{Review},

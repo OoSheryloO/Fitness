@@ -76,7 +76,7 @@ public class Fitdata implements Serializable {
     @ApiModelProperty(value = "健康数据")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "体测时间")
@@ -151,7 +151,7 @@ public class Fitdata implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','健康数据']['UseId','用户编号']['Date','体测时间']['Height','身高/cm']['Weight','体重/kg']['BMI','BMI']['BodyFat','体脂']['FatRate','体脂率']['MetabolicRate','代谢率']['WHR','腰臀比']['Humidity','水分含量']['MuscleMass','肌肉含量']['UpperArm','上臂围/cm']['UnderArm','下臂围/cm']['Bust','胸围/cm']['Waist','腰围/cm']['Hipline','臀围/cm']['LeftThigh','左大腿围']['RightThigh','右大腿围']['LeftShank','左小腿围']['RightShank','右小腿围']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','健康数据']['UseId','使用Id']['Date','体测时间']['Height','身高/cm']['Weight','体重/kg']['BMI','BMI']['BodyFat','体脂']['FatRate','体脂率']['MetabolicRate','代谢率']['WHR','腰臀比']['Humidity','水分含量']['MuscleMass','肌肉含量']['UpperArm','上臂围/cm']['UnderArm','下臂围/cm']['Bust','胸围/cm']['Waist','腰围/cm']['Hipline','臀围/cm']['LeftThigh','左大腿围']['RightThigh','右大腿围']['LeftShank','左小腿围']['RightShank','右小腿围']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String FitdataField;
 }

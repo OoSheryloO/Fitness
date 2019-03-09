@@ -1,4 +1,4 @@
-package com.kjyl.config;
+package com.kjyl.config.Mybaties;
 
 import java.util.List;
 import java.util.Map;

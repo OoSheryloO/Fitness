@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.UserlogMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="userlog" type="com.kjyl.pojo.Userlog">
 		<result property="Id" column="UserLog_Id" />
@@ -14,39 +17,39 @@
 		<result property="CreateTime" column="UserLog_CreateTime" />
 		<result property="ModifyTime" column="UserLog_ModifyTime" />
 	</resultMap>
-	<!-- sql查询语句-->
 	<sql id="sql">
 		UserLog_Id, UserLog_UseId, UserLog_TypeId, UserLog_Note, UserLog_Version, UserLog_Status, UserLog_Delete, UserLog_CreateTime, UserLog_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND UserLog_Id = #{Id}
+		<if test="Id != null ">
+			 AND UserLog_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND UserLog_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND UserLog_UseId = #{UseId}
 		</if>
-		<if test="TypeId!= null">
-				 AND UserLog_TypeId = #{TypeId}
+		<if test="TypeId != null ">
+			 AND UserLog_TypeId = #{TypeId}
 		</if>
-		<if test="Note!= null">
-				 AND UserLog_Note = #{Note}
+		<if test="Note != null ">
+			 AND UserLog_Note = #{Note}
 		</if>
-		<if test="Version!= null">
-				 AND UserLog_Version = #{Version}
+		<if test="Version != null ">
+			 AND UserLog_Version = #{Version}
 		</if>
-		<if test="Status!= null">
-				 AND UserLog_Status = #{Status}
+		<if test="Status != null ">
+			 AND UserLog_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND UserLog_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND UserLog_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND UserLog_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND UserLog_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND UserLog_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND UserLog_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -58,6 +61,8 @@
 			UserLog_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="userlog" parameterType="java.util.Map">
@@ -78,6 +83,7 @@
 				<include refid="where"></include>
 			</where>
 	</select>
+	
 
 	<!-- 插入数据 -->
 	<insert id="Insert" parameterType="com.kjyl.pojo.Userlog"  useGeneratedKeys="true">
@@ -87,9 +93,9 @@
 				#{UseId},
 				#{TypeId},
 				#{Note},
-				DEFAULT,
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
+				Default,
 				now(),
 				now()
 				)

@@ -25,11 +25,13 @@ public class Info implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
+    public static final String COLUMN_LogicId = "LogicId";
+
     public static final String COLUMN_Title = "Title";
 
     public static final String COLUMN_Content = "Content";
 
-    public static final String COLUMN_LikeCount = "LikeCount";
+    public static final String COLUMN_Like = "Like";
 
     public static final String COLUMN_Review = "Review";
 
@@ -43,11 +45,14 @@ public class Info implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "在线")
+    @ApiModelProperty(value = "资讯-俱乐部")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
+
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "标题")
     private String Title;
@@ -56,7 +61,7 @@ public class Info implements Serializable {
     private String Content;
 
     @ApiModelProperty(value = "点赞")
-    private Integer LikeCount;
+    private Integer Like;
 
     @ApiModelProperty(value = "评论")
     private Integer Review;
@@ -76,7 +81,7 @@ public class Info implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','资讯ID']['UseId','用户编号']['Title','标题']['Content','内容']['LikeCount','点赞']['Review','评论']['Share','分享数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','资讯-俱乐部']['UseId','使用Id']['LogicId','逻辑Id']['Title','标题']['Content','内容']['Like','点赞']['Review','评论']['Share','分享数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String InfoField;
 }

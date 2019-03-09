@@ -2,12 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.StatusMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="status" type="com.kjyl.pojo.Status">
 		<result property="Id" column="Status_Id" />
 		<result property="UseId" column="Status_UseId" />
-		<result property="ObjectId" column="Status_ObjectId" />
+		<result property="LogicId" column="Status_LogicId" />
 		<result property="Like" column="Status_Like" />
+		<result property="Collect" column="Status_Collect" />
 		<result property="Memo" column="Status_Memo" />
 		<result property="Status" column="Status_Status" />
 		<result property="Delete" column="Status_Delete" />
@@ -15,37 +19,41 @@
 		<result property="ModifyTime" column="Status_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Status_Id, Status_UseId, Status_ObjectId, Status_Like, Status_Memo, Status_Status, Status_Delete, Status_CreateTime, Status_ModifyTime
+		Status_Id, Status_UseId, Status_LogicId, Status_Like, Status_Collect, Status_Memo, Status_Status, Status_Delete, Status_CreateTime, Status_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Status_Id = #{Id}
+		<if test="Id != null ">
+			 AND Status_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Status_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Status_UseId = #{UseId}
 		</if>
-		<if test="ObjectId!= null">
-				 AND Status_ObjectId = #{ObjectId}
+		<if test="LogicId != null ">
+			 AND Status_LogicId = #{LogicId}
 		</if>
-		<if test="Like!= null">
-				 AND Status_Like = #{Like}
+		<if test="Like != null ">
+			 AND Status_Like = #{Like}
 		</if>
-		<if test="Memo!= null">
-				 AND Status_Memo = #{Memo}
+		<if test="Collect != null ">
+			 AND Status_Collect = #{Collect}
 		</if>
-		<if test="Status!= null">
-				 AND Status_Status = #{Status}
+		<if test="Memo != null ">
+			 AND Status_Memo = #{Memo}
 		</if>
-		<if test="Delete!= null">
-				 AND Status_Delete &gt; #{Delete}
+		<if test="Status != null ">
+			 AND Status_Status = #{Status}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Status_CreateTime = #{CreateTime}
+		<if test="Delete != null ">
+			 AND Status_Delete &lt; #{Delete}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Status_ModifyTime = #{ModifyTime}
+		<if test="CreateTime != null ">
+			 AND Status_CreateTime = #{CreateTime}
 		</if>
+		<if test="ModifyTime != null ">
+			 AND Status_ModifyTime = #{ModifyTime}
+		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -57,6 +65,8 @@
 			Status_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="status" parameterType="java.util.Map">
@@ -82,15 +92,16 @@
 	<insert id="Insert" parameterType="com.kjyl.pojo.Status"  useGeneratedKeys="true">
 		INSERT INTO fit_status( <include refid="sql"></include> )
 		VALUES(
-				#{Id},
-				#{UseId},
-				#{ObjectId},
-				#{Like},
-				#{Memo},
-				DEFAULT,
-				DEFAULT,
-				now(),
-				now()
+				Default,
+				Default,
+				Default,
+				Default,
+				Default,
+				Default,
+				Default,
+				Default,
+				Default,
+				Default
 				)
 	</insert>
 		
@@ -100,11 +111,14 @@
 			<if test="UseId != null ">
 				Status_UseId = #{UseId},
 			</if>
-			<if test="ObjectId != null ">
-				Status_ObjectId = #{ObjectId},
+			<if test="LogicId != null ">
+				Status_LogicId = #{LogicId},
 			</if>
 			<if test="Like != null ">
 				Status_Like = #{Like},
+			</if>
+			<if test="Collect != null ">
+				Status_Collect = #{Collect},
 			</if>
 			<if test="Memo != null ">
 				Status_Memo = #{Memo},

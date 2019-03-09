@@ -33,7 +33,11 @@ public class Club implements Serializable {
 
     public static final String COLUMN_Site = "Site";
 
+    public static final String COLUMN_Location = "Location";
+
     public static final String COLUMN_Tel = "Tel";
+
+    public static final String COLUMN_OpenTime = "OpenTime";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -45,10 +49,10 @@ public class Club implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "俱乐部ID")
+    @ApiModelProperty(value = "俱乐部")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号/创始人")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "标题")
@@ -63,8 +67,14 @@ public class Club implements Serializable {
     @ApiModelProperty(value = "地址")
     private String Site;
 
+    @ApiModelProperty(value = "经纬度")
+    private String Location;
+
     @ApiModelProperty(value = "座机")
     private String Tel;
+
+    @ApiModelProperty(value = "开放时间")
+    private String OpenTime;
 
     @ApiModelProperty(value = "备注")
     private String Memo;
@@ -81,7 +91,7 @@ public class Club implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','俱乐部ID']['UseId','用户编号/创始人']['Title','标题']['Theme','主题']['Intro','介绍']['Site','地址']['Tel','座机']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','俱乐部']['UseId','使用Id']['Title','标题']['Theme','主题']['Intro','介绍']['Site','地址']['Location','经纬度']['Tel','座机']['OpenTime','开放时间']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String ClubField;
 }

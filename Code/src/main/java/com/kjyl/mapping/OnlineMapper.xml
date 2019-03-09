@@ -22,32 +22,32 @@
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id != null">
-				 AND Online_Id = #{Id}
+		<if test="Id != null ">
+			 AND Online_Id = #{Id}
 		</if>
-		<if test="UseId != null">
-				 AND Online_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Online_UseId = #{UseId}
 		</if>
-		<if test="Session != null">
-				 AND Online_Session = #{Session}
+		<if test="Session != null ">
+			 AND Online_Session = #{Session}
 		</if>
-		<if test="Version != null">
-				 AND Online_Version = #{Version}
+		<if test="Version != null ">
+			 AND Online_Version = #{Version}
 		</if>
-		<if test="Memo != null">
-				 AND Online_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND Online_Memo = #{Memo}
 		</if>
-		<if test="Status != null">
-				 AND Online_Status = #{Status}
+		<if test="Status != null ">
+			 AND Online_Status = #{Status}
 		</if>
-		<if test="Delete != null">
-				 AND Online_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Online_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime != null">
-				 AND Online_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Online_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime != null">
-				 AND Online_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Online_ModifyTime = #{ModifyTime}
 		</if>
 
 	</sql>
@@ -61,6 +61,8 @@
 			Online_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="online" parameterType="java.util.Map">
@@ -89,10 +91,10 @@
 				#{Id},
 				#{UseId},
 				#{Session},
-				DEFAULT,
+				Default,
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)

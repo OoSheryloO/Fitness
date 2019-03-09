@@ -25,19 +25,23 @@ import com.kjyl.service.CardService;
 import com.kjyl.service.CartService;
 import com.kjyl.service.ClockService;
 import com.kjyl.service.ClubService;
+import com.kjyl.service.ClubcardService;
 import com.kjyl.service.CourseService;
 import com.kjyl.service.DiscussService;
 import com.kjyl.service.ErrorlogService;
 import com.kjyl.service.EventService;
 import com.kjyl.service.FitdataService;
 import com.kjyl.service.GoodsService;
+import com.kjyl.service.IdentityService;
 import com.kjyl.service.InfoService;
 import com.kjyl.service.OnlineService;
 import com.kjyl.service.OpinionService;
+import com.kjyl.service.OrderService;
 import com.kjyl.service.PayrecordService;
 import com.kjyl.service.PictureService;
 import com.kjyl.service.PostService;
 import com.kjyl.service.StatusService;
+import com.kjyl.service.SyllabusService;
 import com.kjyl.service.UserService;
 import com.kjyl.service.UserlogService;
 import com.kjyl.service.VerifyrecordService;
@@ -65,6 +69,8 @@ public class BaseController {
     @Autowired
     public ClockService ClockService;
     @Autowired
+    public ClubcardService ClubcardService;
+    @Autowired
     public ClubService ClubService;
     @Autowired
     public CourseService CourseService;
@@ -79,9 +85,13 @@ public class BaseController {
     @Autowired
     public GoodsService	GoodsService;
     @Autowired
+    public IdentityService IdentityService;
+    @Autowired
     public InfoService InfoService;
     @Autowired
     public OpinionService OpinionService;
+    @Autowired
+    public OrderService OrderService;
     @Autowired
     public PayrecordService PayrecordService;
     @Autowired
@@ -90,6 +100,8 @@ public class BaseController {
     public PostService PostService;
     @Autowired
     public StatusService StatusService;
+    @Autowired
+    public SyllabusService SyllabusService;
     @Autowired
     public UserlogService UserlogService;
     @Autowired

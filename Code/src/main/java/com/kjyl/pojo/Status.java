@@ -25,9 +25,11 @@ public class Status implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_ObjectId = "ObjectId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Like = "Like";
+
+    public static final String COLUMN_Collect = "Collect";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -39,17 +41,20 @@ public class Status implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "状态ID")
+    @ApiModelProperty(value = "状态-帖子")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
-    @ApiModelProperty(value = "对象ID")
-    private String ObjectId;
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "点赞状态")
     private Integer Like;
+
+    @ApiModelProperty(value = "收藏状态")
+    private Integer Collect;
 
     @ApiModelProperty(value = "备注")
     private String Memo;
@@ -66,7 +71,7 @@ public class Status implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','状态ID']['UseId','用户编号']['ObjectId','对象ID']['Like','点赞状态']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','状态-帖子']['UseId','使用Id']['LogicId','逻辑Id']['Like','点赞状态']['Collect','收藏状态']['Memo','备注']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String StatusField;
 }

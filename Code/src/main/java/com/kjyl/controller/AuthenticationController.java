@@ -241,10 +241,10 @@ public class AuthenticationController implements HandlerInterceptor {
 										if (UID == null) {
 											UID = jsonObject.getString(BaseUtil.userIdKey);
 											if (UID == null) {
-												User pjUser = JSON.parseObject(jsonObject.getString(User.sUserClass), User.class);
-												if (pjUser.getId() != null) {
-													UID = pjUser.getId().toString();
-												}
+//												User pjUser = JSON.parseObject(jsonObject.getString(User.sUserClass), User.class);
+//												if (pjUser.getId() != null) {
+//													UID = pjUser.getId().toString();
+//												}
 											}
 										}
 									}

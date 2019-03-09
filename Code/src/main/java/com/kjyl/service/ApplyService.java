@@ -31,66 +31,66 @@ public class ApplyService {
    
     @Autowired
 	private ApplyMapper mapper;
-
-//	@CachePut(key="#p0.Id")  
-//	@CacheEvict(value = "ApplyCache", allEntries = true)
-	public Apply Insert(Apply obj){
-		mapper.Insert(obj);
-		return mapper.SearchBySpecial(obj.getId());
-	}
-
-//	@CachePut(key="#p0.Id")  
-//	@CacheEvict(value = "ApplyCache", allEntries = true)
-	public Apply Modify(Apply obj){
-		mapper.Modify(obj);
-		return mapper.SearchBySpecial(obj.getId());
-	}
-
-//	@CachePut(key="#p0")  
-//	@CacheEvict(value = "ApplyCache", allEntries = true)
-	public Apply RemoveBySpecial(String Id){
-		mapper.RemoveBySpecial(Id);
-		return mapper.SearchBySpecial(Id);
-	}
-
-//	@CachePut(key="#p0")  
-//	@CacheEvict(value = "ApplyCache", allEntries = true)
-	public Apply RecoverBySpecial(String Id){
-		mapper.RecoverBySpecial(Id);
-		return mapper.SearchBySpecial(Id);
-	}
-
-//	@CacheEvict(value = {"ApplyCache", "ApplyCache"},allEntries = true)
-	public int RemoveByCondition(Map<String,Object> mapSearch){
-		return mapper.RemoveByCondition(mapSearch);
-	}
-
-//	@CacheEvict(value = {"ApplyCache", "ApplyCache"},allEntries = true)
-	public int RecoverByCondition(Map<String,Object> mapSearch){
-		return mapper.RecoverByCondition(mapSearch);
-	}
-	
+    
 //	@Cacheable(value = "ApplyCache", key="'Apply_'+#p0") 
 	public Apply SearchBySpecial(String Id){
 		return mapper.SearchBySpecial(Id);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Apply> SearchByCondition(Map<String,Object> mapSearch){
+	public List<Apply> SearchByCondition(Map<String, Object> mapSearch){
 		return mapper.SearchByCondition(mapSearch);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public int SearchData(Map<String,Object> mapSearch){
+	public int SearchData(Map<String, Object> mapSearch){
 		return mapper.SearchData(mapSearch);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Apply> SearchPage(Map<String,Object> mapSearch, int pageNum, int pageSize){
+	public PageInfo<Apply> SearchPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
 		Page<Apply> page = PageHelper.startPage(pageNum, pageSize);
-		page.setOrderBy("Apply_CreateTime desc");
+		page.setOrderBy("Apply_CreateTime DESC");
 		mapper.SearchByCondition(mapSearch);
 		return page.toPageInfo();
+	}
+
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ReadApplyCache", allEntries = true)
+	public Apply Insert(Apply obj){
+		mapper.Insert(obj);
+		return mapper.SearchBySpecial(obj.getId());
+	}
+
+//	@CachePut(key="#p0.Id")  
+//	@CacheEvict(value = "ReadApplyCache", allEntries = true)
+	public Apply Modify(Apply obj){
+		mapper.Modify(obj);
+		return mapper.SearchBySpecial(obj.getId());
+	}
+
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ReadApplyCache", allEntries = true)
+	public Apply RemoveBySpecial(String Id){
+		mapper.RemoveBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
+	}
+
+//	@CachePut(key="#p0")  
+//	@CacheEvict(value = "ReadApplyCache", allEntries = true)
+	public Apply RecoverBySpecial(String Id){
+		mapper.RecoverBySpecial(Id);
+		return mapper.SearchBySpecial(Id);
+	}
+
+//	@CacheEvict(value = {"ReadApplyCache", "ApplyCache"},allEntries = true)
+	public int RemoveByCondition(Map<String, Object> mapSearch){
+		return mapper.RemoveByCondition(mapSearch);
+	}
+
+//	@CacheEvict(value = {"ReadApplyCache", "ApplyCache"},allEntries = true)
+	public int RecoverByCondition(Map<String, Object> mapSearch){
+		return mapper.RecoverByCondition(mapSearch);
 	}
 
 }

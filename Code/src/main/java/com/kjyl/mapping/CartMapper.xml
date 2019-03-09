@@ -2,11 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjyl.dao.CartMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
 	<!-- 返回的map -->
 	<resultMap id="cart" type="com.kjyl.pojo.Cart">
 		<result property="Id" column="Cart_Id" />
 		<result property="UseId" column="Cart_UseId" />
-		<result property="TouchId" column="Cart_TouchId" />
+		<result property="LogicId" column="Cart_LogicId" />
 		<result property="Memo" column="Cart_Memo" />
 		<result property="Status" column="Cart_Status" />
 		<result property="Delete" column="Cart_Delete" />
@@ -14,34 +17,35 @@
 		<result property="ModifyTime" column="Cart_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Cart_Id, Cart_UseId, Cart_TouchId, Cart_Memo, Cart_Status, Cart_Delete, Cart_CreateTime, Cart_ModifyTime
+		Cart_Id, Cart_UseId, Cart_LogicId, Cart_Memo, Cart_Status, Cart_Delete, Cart_CreateTime, Cart_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
-		<if test="Id!= null">
-				 AND Cart_Id = #{Id}
+		<if test="Id != null ">
+			 AND Cart_Id = #{Id}
 		</if>
-		<if test="UseId!= null">
-				 AND Cart_UseId = #{UseId}
+		<if test="UseId != null ">
+			 AND Cart_UseId = #{UseId}
 		</if>
-		<if test="TouchId!= null">
-				 AND Cart_TouchId = #{TouchId}
+		<if test="LogicId != null ">
+			 AND Cart_LogicId = #{LogicId}
 		</if>
-		<if test="Memo!= null">
-				 AND Cart_Memo = #{Memo}
+		<if test="Memo != null ">
+			 AND Cart_Memo = #{Memo}
 		</if>
-		<if test="Status!= null">
-				 AND Cart_Status = #{Status}
+		<if test="Status != null ">
+			 AND Cart_Status = #{Status}
 		</if>
-		<if test="Delete!= null">
-				 AND Cart_Delete &gt; #{Delete}
+		<if test="Delete != null ">
+			 AND Cart_Delete &lt; #{Delete}
 		</if>
-		<if test="CreateTime!= null">
-				 AND Cart_CreateTime = #{CreateTime}
+		<if test="CreateTime != null ">
+			 AND Cart_CreateTime = #{CreateTime}
 		</if>
-		<if test="ModifyTime!= null">
-				 AND Cart_ModifyTime = #{ModifyTime}
+		<if test="ModifyTime != null ">
+			 AND Cart_ModifyTime = #{ModifyTime}
 		</if>
+
 	</sql>
 	
 	<!-- 根据ID 查找-->
@@ -53,6 +57,8 @@
 			Cart_Id = #{_parameter} 
 		</where>
 	</select>
+	
+	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="cart" parameterType="java.util.Map">
@@ -80,10 +86,10 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TouchId},
+				#{LogicId},
 				#{Memo},
-				DEFAULT,
-				DEFAULT,
+				Default,
+				Default,
 				now(),
 				now()
 				)
@@ -95,8 +101,8 @@
 			<if test="UseId != null ">
 				Cart_UseId = #{UseId},
 			</if>
-			<if test="TouchId != null ">
-				Cart_TouchId = #{TouchId},
+			<if test="LogicId != null ">
+				Cart_LogicId = #{LogicId},
 			</if>
 			<if test="Memo != null ">
 				Cart_Memo = #{Memo},

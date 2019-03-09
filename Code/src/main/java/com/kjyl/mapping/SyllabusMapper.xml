@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.SyllabusMapper">
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+
+	<!-- 返回的map -->
+	<resultMap id="syllabus" type="com.kjyl.pojo.Syllabus">
+		<result property="Id" column="Syllabus_Id" />
+		<result property="UseId" column="Syllabus_UseId" />
+		<result property="LogicId" column="Syllabus_LogicId" />
+		<result property="Memo" column="Syllabus_Memo" />
+		<result property="Status" column="Syllabus_Status" />
+		<result property="Delete" column="Syllabus_Delete" />
+		<result property="CreateTime" column="Syllabus_CreateTime" />
+		<result property="ModifyTime" column="Syllabus_ModifyTime" />
+	</resultMap>
+	<sql id="sql">
+		Syllabus_Id, Syllabus_UseId, Syllabus_LogicId, Syllabus_Memo, Syllabus_Status, Syllabus_Delete, Syllabus_CreateTime, Syllabus_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Id != null ">
+			 AND Syllabus_Id = #{Id}
+		</if>
+		<if test="UseId != null ">
+			 AND Syllabus_UseId = #{UseId}
+		</if>
+		<if test="LogicId != null ">
+			 AND Syllabus_LogicId = #{LogicId}
+		</if>
+		<if test="Memo != null ">
+			 AND Syllabus_Memo = #{Memo}
+		</if>
+		<if test="Status != null ">
+			 AND Syllabus_Status = #{Status}
+		</if>
+		<if test="Delete != null ">
+			 AND Syllabus_Delete &lt; #{Delete}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Syllabus_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Syllabus_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据ID 查找-->
+	<select id="SearchBySpecial" resultMap="syllabus" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_syllabus
+		<where>
+			Syllabus_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据model 查找-->
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="syllabus" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_syllabus
+		<where>
+			<include refid="where"></include>
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_syllabus
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Syllabus"  useGeneratedKeys="true">
+		INSERT INTO fit_syllabus( <include refid="sql"></include> )
+		VALUES(
+				#{Id},
+				#{UseId},
+				#{LogicId},
+				#{Memo},
+				Default,
+				Default,
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Syllabus">
+		UPDATE fit_syllabus 
+		  <set> 
+			<if test="UseId != null ">
+				Syllabus_UseId = #{UseId},
+			</if>
+			<if test="LogicId != null ">
+				Syllabus_LogicId = #{LogicId},
+			</if>
+			<if test="Memo != null ">
+				Syllabus_Memo = #{Memo},
+			</if>
+			<if test="Status != null ">
+				Syllabus_Status = #{Status},
+			</if>
+			<if test="Delete != null ">
+				Syllabus_Delete = #{Delete},
+			</if>
+				Syllabus_ModifyTime = now()
+		  </set>
+		<where>
+			Syllabus_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Syllabus">
+		UPDATE fit_syllabus SET Syllabus_Status = 88 WHERE Syllabus_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Syllabus">
+		UPDATE fit_syllabus SET Syllabus_Status=  1 WHERE Syllabus_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Syllabus">
+		UPDATE fit_syllabus SET Syllabus_Status = 88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Syllabus">
+		UPDATE fit_syllabus SET Syllabus_Status = 1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+</mapper>

@@ -39,10 +39,10 @@ public class Online implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "课程ID")
+    @ApiModelProperty(value = "在线")
     private String Id;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "会话")
@@ -66,7 +66,7 @@ public class Online implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','课程ID']['UseId','用户ID']['Session','会话']['Version','修改次数']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','在线']['UseId','使用Id']['Session','会话']['Version','修改次数']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String OnlineField;
 }

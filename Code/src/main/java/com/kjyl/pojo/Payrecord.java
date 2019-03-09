@@ -25,9 +25,9 @@ public class Payrecord implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_TouchId = "TouchId";
+    public static final String COLUMN_LogicId = "LogicId";
 
-    public static final String COLUMN_Site = "Site";
+    public static final String COLUMN_Prize = "Prize";
 
     public static final String COLUMN_Type = "Type";
 
@@ -41,17 +41,17 @@ public class Payrecord implements Serializable {
 
     public static final String COLUMN_ModifyTime = "ModifyTime";
 
-    @ApiModelProperty(value = "支付ID")
+    @ApiModelProperty(value = "支付-订单")
     private String Id;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
-    @ApiModelProperty(value = "商品IDs")
-    private String TouchId;
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
-    @ApiModelProperty(value = "收货地址")
-    private String Site;
+    @ApiModelProperty(value = "价格")
+    private String Prize;
 
     @ApiModelProperty(value = "类型/方式")
     private Integer Type;
@@ -71,7 +71,7 @@ public class Payrecord implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','支付ID']['UseId','用户ID']['TouchId','商品IDs']['Site','收货地址']['Type','类型/方式']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','支付-订单']['UseId','使用Id']['LogicId','逻辑Id']['Prize','价格']['Type','类型/方式']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String PayrecordField;
 }

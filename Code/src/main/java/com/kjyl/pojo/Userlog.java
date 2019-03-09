@@ -42,7 +42,7 @@ public class Userlog implements Serializable {
     @ApiModelProperty(value = "用户日志")
     private String Id;
 
-    @ApiModelProperty(value = "用户编号")
+    @ApiModelProperty(value = "使用Id")
     private String UseId;
 
     @ApiModelProperty(value = "日志类型")
@@ -66,7 +66,7 @@ public class Userlog implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','用户日志']['UseId','用户编号']['TypeId','日志类型']['Note','操作说明']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','用户日志']['UseId','使用Id']['TypeId','日志类型']['Note','操作说明']['Version','修改次数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String UserlogField;
 }
