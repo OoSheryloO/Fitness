@@ -131,19 +131,19 @@
 	</update>
 	
 	<!-- 查询排行 -->
-	<resultMap id="rank" type="com.kjyl.bean.RankList">
+	<resultMap id="rank" type="com.kjyl.bean.ClockRankBean">
 		<result property="UseId" column="UseId" />
 		<result property="Number" column="Number" />
-		<association property="User" javaType="com.kjyl.pojo.User" resultMap="com.kjyl.dao.UserMapper.user" />
+		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser"/>
 	</resultMap>
 	<select id="SearchRankByCondition"  resultMap="rank" parameterType="java.util.Map">
 		SELECT
-		Clock_UseId AS UseId, COUNT(1) AS Number, fit_user.*
+		Clock_UseId UseId, COUNT(1) Number, User_Id, User_HeadIcon, User_Name, User_Sex
 			FROM fit_clock, fit_user
 		<where>
+			fit_user.User_Delete &lt; 88 AND fit_clock.Clock_UseId = fit_user.User_Id AND 
 			<include refid="where"></include>
 		</where>
-		AND fit_clock.Clock_UseId = fit_user.User_Id AND fit_user.User_Delete &lt; 88
 		GROUP BY Clock_UseId
 	</select>
 

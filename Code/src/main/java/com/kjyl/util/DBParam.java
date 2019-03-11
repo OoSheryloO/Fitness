@@ -23,6 +23,11 @@ public class DBParam {
 				return 0;
 			}
 		},
+		Reverse{/**反面*/
+			public int getCode() {
+				return 1;
+			}
+		},
 		Recover{/**恢复*/
 			public int getCode() {
 				return 1;

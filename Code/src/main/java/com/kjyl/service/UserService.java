@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.kjyl.pojo.User;
+import com.kjyl.bean.GymDataBean;
 import com.kjyl.dao.UserMapper;
 
 /**
@@ -91,6 +92,10 @@ public class UserService {
 //	@CacheEvict(value = {"ReadUserCache", "UserCache"},allEntries = true)
 	public int RecoverByCondition(Map<String, Object> mapSearch){
 		return mapper.RecoverByCondition(mapSearch);
+	}
+	
+	public GymDataBean SearchGymDataByCondition(Map<String, Object> mapSearch){
+		return mapper.SearchGymDataByCondition(mapSearch);
 	}
 
 }

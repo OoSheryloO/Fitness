@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.kjyl.bean.GymDataBean;
 import com.kjyl.pojo.User;
 import com.kjyl.service.UserService;
 
@@ -121,6 +122,20 @@ public class UserController extends BaseController {
 			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
 			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+		}
+    }
+    
+    @RequestMapping(value="/searchUserInfo/{id}", method=RequestMethod.GET)
+    @ApiOperation(value = "个人信息")
+    public Map<String, Object> searchUserInfo(@PathVariable("id") String Id){
+    	Map<String, Object> mapSearch = new HashMap<String, Object>();
+    	mapSearch.put(User.COLUMN_Id, Id);
+    	mapSearch.put(User.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+    	GymDataBean pjData = UserService.SearchGymDataByCondition(mapSearch);
+        if(pjData != null){
+        	return ResultUtil.sharedInstance().TrueData(pjData, "请求成功!", CodeInfo.Code.OK.getCode());
+    	}else{
+    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 

@@ -92,7 +92,7 @@ public class CardController extends BaseController {
                 isNew = true;
             }
         }
-        obj.setUseId(temp.getUseId());
+        obj.setLogicId(temp.getLogicId());
         obj.setHeadIcon(temp.getHeadIcon());
         obj.setTitle(temp.getTitle());
         obj.setIntro(temp.getIntro());

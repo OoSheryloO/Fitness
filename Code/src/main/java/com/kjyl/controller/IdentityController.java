@@ -84,7 +84,7 @@ public class IdentityController extends BaseController {
         Identity temp = JSON.parseObject(data, Identity.class);
         Identity obj = new Identity();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
             obj = IdentityService.SearchBySpecial(temp.getId());

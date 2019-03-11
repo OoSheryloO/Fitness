@@ -17,7 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.kjyl.pojo.Clock;
-import com.kjyl.bean.RankList;
+import com.kjyl.bean.ClockRankBean;
 import com.kjyl.dao.ClockMapper;
 
 /**
@@ -94,8 +94,8 @@ public class ClockService {
 		return mapper.RecoverByCondition(mapSearch);
 	}
 	
-	public PageInfo<RankList> SearchRankByCondition(Map<String, Object> mapSearch, int pageNum, int pageSize){
-		Page<RankList> page = PageHelper.startPage(pageNum, pageSize);
+	public PageInfo<ClockRankBean> SearchRankByCondition(Map<String, Object> mapSearch, int pageNum, int pageSize){
+		Page<ClockRankBean> page = PageHelper.startPage(pageNum, pageSize);
 		page.setOrderBy("Number DESC");
 		mapper.SearchRankByCondition(mapSearch);
 		return page.toPageInfo();

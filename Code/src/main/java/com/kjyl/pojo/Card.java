@@ -23,7 +23,7 @@ public class Card implements Serializable {
 
     public static final String COLUMN_Id = "Id";
 
-    public static final String COLUMN_UseId = "UseId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_HeadIcon = "HeadIcon";
 
@@ -55,7 +55,7 @@ public class Card implements Serializable {
     private String Id;
 
     @ApiModelProperty(value = "使用Id")
-    private String UseId;
+    private String LogicId;
 
     @ApiModelProperty(value = "图片")
     private String HeadIcon;
@@ -96,7 +96,7 @@ public class Card implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','卡片']['UseId','使用Id']['HeadIcon','图片']['Title','名称']['Intro','介绍']['Price','价格']['Level','等级']['ValidTime','有效时间']['Discount','折扣']['Type','类型']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','卡片']['LogicId','使用Id']['HeadIcon','图片']['Title','名称']['Intro','介绍']['Price','价格']['Level','等级']['ValidTime','有效时间']['Discount','折扣']['Type','类型']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String CardField;
 }

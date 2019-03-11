@@ -84,7 +84,7 @@ public class PostController extends BaseController {
         Post temp = JSON.parseObject(data, Post.class);
         Post obj = new Post();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
             obj = PostService.SearchBySpecial(temp.getId());
@@ -93,7 +93,7 @@ public class PostController extends BaseController {
             }
         }
         obj.setUseId(temp.getUseId());
-        obj.setTopicId(temp.getTopicId());
+        obj.setLogicId(temp.getLogicId());
         obj.setTitle(temp.getTitle());
         obj.setContent(temp.getContent());
         obj.setLike(temp.getLike());

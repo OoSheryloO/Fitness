@@ -222,6 +222,7 @@ public class LoginController extends BaseController{
 				}
 			}
 		} else {//首次获取验证码
+			pjVr.setId(IdWorker.CreateStringNewId());
 			pjVr.setUseId("-1");// 避免使用 0 , 0在系统中有特殊使命
 			pjVr.setPhone(phone);
 			pjVr.setCheckNumber(number);

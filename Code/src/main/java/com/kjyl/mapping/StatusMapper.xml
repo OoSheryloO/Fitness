@@ -92,16 +92,16 @@
 	<insert id="Insert" parameterType="com.kjyl.pojo.Status"  useGeneratedKeys="true">
 		INSERT INTO fit_status( <include refid="sql"></include> )
 		VALUES(
+				#{Id},
+				#{UseId},
+				#{LogicId},
+				#{Like},
+				#{Collect},
+				#{Demo},
 				Default,
 				Default,
-				Default,
-				Default,
-				Default,
-				Default,
-				Default,
-				Default,
-				Default,
-				Default
+				now(),
+				now()
 				)
 	</insert>
 		

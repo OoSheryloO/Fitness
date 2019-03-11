@@ -1,8 +1,5 @@
 package com.kjyl.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.kjyl.pojo.User;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -15,8 +12,8 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel(value = "RankList")
-public class RankList implements Serializable {
+@ApiModel(value = "ClockRankBean", description="打卡排行")
+public class ClockRankBean implements Serializable {
 
     /** 
 	* @Fields field:field: {todo}() 
@@ -30,6 +27,6 @@ public class RankList implements Serializable {
     private Integer Number;
     
     @ApiModelProperty(value = "用户")
-    private User User;
+    private SimpleUser User;
 
 }

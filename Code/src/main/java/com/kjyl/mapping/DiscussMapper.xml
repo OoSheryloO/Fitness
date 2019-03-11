@@ -9,7 +9,7 @@
 	<resultMap id="discuss" type="com.kjyl.pojo.Discuss">
 		<result property="Id" column="Discuss_Id" />
 		<result property="UseId" column="Discuss_UseId" />
-		<result property="TopicId" column="Discuss_TopicId" />
+		<result property="LogicId" column="Discuss_LogicId" />
 		<result property="ParentId" column="Discuss_ParentId" />
 		<result property="Title" column="Discuss_Title" />
 		<result property="Content" column="Discuss_Content" />
@@ -21,7 +21,7 @@
 		<result property="ModifyTime" column="Discuss_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Discuss_Id, Discuss_UseId, Discuss_TopicId, Discuss_ParentId, Discuss_Title, Discuss_Content, Discuss_Like, Discuss_Review, Discuss_Status, Discuss_Delete, Discuss_CreateTime, Discuss_ModifyTime
+		Discuss_Id, Discuss_UseId, Discuss_LogicId, Discuss_ParentId, Discuss_Title, Discuss_Content, Discuss_Like, Discuss_Review, Discuss_Status, Discuss_Delete, Discuss_CreateTime, Discuss_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -31,8 +31,8 @@
 		<if test="UseId != null ">
 			 AND Discuss_UseId = #{UseId}
 		</if>
-		<if test="TopicId != null ">
-			 AND Discuss_TopicId = #{TopicId}
+		<if test="LogicId != null ">
+			 AND Discuss_LogicId = #{LogicId}
 		</if>
 		<if test="ParentId != null ">
 			 AND Discuss_ParentId = #{ParentId}
@@ -102,7 +102,7 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TopicId},
+				#{LogicId},
 				#{ParentId},
 				#{Title},
 				#{Content},
@@ -121,8 +121,8 @@
 			<if test="UseId != null ">
 				Discuss_UseId = #{UseId},
 			</if>
-			<if test="TopicId != null ">
-				Discuss_TopicId = #{TopicId},
+			<if test="LogicId != null ">
+				Discuss_LogicId = #{LogicId},
 			</if>
 			<if test="ParentId != null ">
 				Discuss_ParentId = #{ParentId},

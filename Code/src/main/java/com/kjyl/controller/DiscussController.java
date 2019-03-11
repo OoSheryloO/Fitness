@@ -7,11 +7,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.kjyl.pojo.Discuss;
+import com.kjyl.pojo.Post;
+import com.kjyl.pojo.Status;
 import com.kjyl.service.DiscussService;
 
 import com.kjyl.util.CodeInfo;
@@ -84,7 +89,7 @@ public class DiscussController extends BaseController {
         Discuss temp = JSON.parseObject(data, Discuss.class);
         Discuss obj = new Discuss();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
             obj = DiscussService.SearchBySpecial(temp.getId());
@@ -93,7 +98,7 @@ public class DiscussController extends BaseController {
             }
         }
         obj.setUseId(temp.getUseId());
-        obj.setTopicId(temp.getTopicId());
+        obj.setLogicId(temp.getLogicId());
         obj.setParentId(temp.getParentId());
         obj.setTitle(temp.getTitle());
         obj.setContent(temp.getContent());
@@ -107,6 +112,29 @@ public class DiscussController extends BaseController {
             obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
             tempObj = DiscussService.Insert(obj);
+            
+            //帖子被评论数 +1
+            Post pjPost = PostService.SearchBySpecial(tempObj.getLogicId());
+            if (pjPost != null) {
+				pjPost.setReview(pjPost.getReview()+1);
+				PostService.Modify(pjPost);
+			}
+            
+            Map<String, Object> mapSearch = new HashMap<String, Object>();
+            mapSearch.put(Status.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+            mapSearch.put(Status.COLUMN_LogicId, tempObj.getId());
+            mapSearch.put(Status.COLUMN_UseId, tempObj.getUseId());
+            
+            List<Status> lstStatus = StatusService.SearchByCondition(mapSearch);
+            if (lstStatus == null || lstStatus.size() == 0) {
+				Status pjStatus = new Status();
+				pjStatus.setId(IdWorker.CreateStringNewId());
+				pjStatus.setUseId(tempObj.getUseId());
+				pjStatus.setLogicId(tempObj.getId());
+				pjStatus.setLike(DBParam.RecordStatus.Default.getCode());
+				pjStatus.setCollect(DBParam.RecordStatus.Default.getCode());
+				StatusService.Insert(pjStatus);
+			}
         }else{
             tempObj = DiscussService.Modify(obj);
         }

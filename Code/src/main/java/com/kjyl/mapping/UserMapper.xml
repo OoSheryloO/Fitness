@@ -27,6 +27,16 @@
 		<result property="CreateTime" column="User_CreateTime" />
 		<result property="ModifyTime" column="User_ModifyTime" />
 	</resultMap>
+	
+	<resultMap id="simpleUser" type="com.kjyl.bean.SimpleUser">
+		<result property="Id" column="User_Id" />
+		<result property="HeadIcon" column="User_HeadIcon" />
+		<result property="Name" column="User_Name" />
+		<result property="Sex" column="User_Sex" />
+	</resultMap>
+	<sql id="simpleUserSql">
+		, User_Id, User_HeadIcon, User_Name, User_Sex
+	</sql>
 	<sql id="sql">
 		User_Id, User_HeadIcon, User_Name, User_Sex, User_Birthday, User_Phone, User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenId, User_Password, User_PayPassword, User_City, User_FitClub, User_Level, User_Status, User_Delete, User_CreateTime, User_ModifyTime
 	</sql>
@@ -233,5 +243,26 @@
 			<include refid="where"></include>
 		</where>
 	</update>
+	
+	<!-- 查询个人记录 -->
+	<resultMap id="GymData" type="com.kjyl.bean.GymDataBean">
+		<result property="Course" column="Course" />
+		<result property="Weight" column="Weight" />
+		<result property="Fianco" column="Fianco" />
+		<result property="Diary" column="Diary" />
+	</resultMap>
+	<select id="SearchGymDataByCondition"  resultMap="GymData" parameterType="java.util.Map">
+	<!-- SELECT SUM(Course) Course, SUM(Weight) Weight, SUM(Fianco) Fianco, SUM(Diary) Diary
+		FROM
+		(
+		SELECT COUNT(1) Course , 0 Weight , 0 Fianco , 0 Diary FROM fit_course WHERE Course_UseId = #{Id} AND Course_Delete &lt; #{Delete}
+			UNION ALL
+		SELECT 0 Course , COUNT(1) Weight , 0 Fianco , 0 Diary FROM fit_fitdata WHERE Fitdata_UseId = #{Id} AND Fitdata_Delete &lt; #{Delete}
+			UNION ALL
+		SELECT 0 Course , 0 Weight , COUNT(1) Fianco , 0 Diary FROM fit_  WHERE AND _Delete &lt; #{Delete}
+			UNION ALL
+		SELECT 0 Course , 0 Weight , 0 Fianco , COUNT(1) Diary FROM fit_post WHERE Post_UseId = #{Id} AND Post_Delete &lt; #{Delete}
+		) t -->
+	</select>
 
 </mapper>

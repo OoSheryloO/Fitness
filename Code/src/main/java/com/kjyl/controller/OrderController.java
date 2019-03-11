@@ -84,7 +84,7 @@ public class OrderController extends BaseController {
         Order temp = JSON.parseObject(data, Order.class);
         Order obj = new Order();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
             obj = OrderService.SearchBySpecial(temp.getId());
@@ -116,5 +116,7 @@ public class OrderController extends BaseController {
 			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
+    
+    
 
 }

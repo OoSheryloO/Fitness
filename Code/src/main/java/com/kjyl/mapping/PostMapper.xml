@@ -9,7 +9,7 @@
 	<resultMap id="post" type="com.kjyl.pojo.Post">
 		<result property="Id" column="Post_Id" />
 		<result property="UseId" column="Post_UseId" />
-		<result property="TopicId" column="Post_TopicId" />
+		<result property="LogicId" column="Post_LogicId" />
 		<result property="Title" column="Post_Title" />
 		<result property="Content" column="Post_Content" />
 		<result property="Like" column="Post_Like" />
@@ -19,9 +19,10 @@
 		<result property="Delete" column="Post_Delete" />
 		<result property="CreateTime" column="Post_CreateTime" />
 		<result property="ModifyTime" column="Post_ModifyTime" />
+		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
 	</resultMap>
 	<sql id="sql">
-		Post_Id, Post_UseId, Post_TopicId, Post_Title, Post_Content, Post_Like, Post_Review, Post_Collect, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime
+		Post_Id, Post_UseId, Post_LogicId, Post_Title, Post_Content, Post_Like, Post_Review, Post_Collect, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -31,8 +32,8 @@
 		<if test="UseId != null ">
 			 AND Post_UseId = #{UseId}
 		</if>
-		<if test="TopicId != null ">
-			 AND Post_TopicId = #{TopicId}
+		<if test="LogicId != null ">
+			 AND Post_LogicId = #{LogicId}
 		</if>
 		<if test="Title != null ">
 			 AND Post_Title = #{Title}
@@ -67,7 +68,7 @@
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="post" parameterType="long">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql" />
 			FROM fit_post
 		<where>
 			Post_Id = #{_parameter} 
@@ -79,9 +80,10 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="post" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"></include>
-			FROM fit_post
+		<include refid="sql" /><include refid="com.kjyl.dao.UserMapper.simpleUserSql"/>
+			FROM fit_post, fit_user
 		<where>
+			fit_user.User_Delete &lt; 88 AND fit_post.Post_UseId = fit_user.User_Id AND 
 			<include refid="where"></include>
 		</where>
 	</select>
@@ -92,7 +94,7 @@
 			COUNT(1)
 			FROM fit_post
 			<where>
-				<include refid="where"></include>
+				<include refid="where"/>
 			</where>
 	</select>
 
@@ -102,7 +104,7 @@
 		VALUES(
 				#{Id},
 				#{UseId},
-				#{TopicId},
+				#{LogicId},
 				#{Title},
 				#{Content},
 				#{Like},
@@ -121,8 +123,8 @@
 			<if test="UseId != null ">
 				Post_UseId = #{UseId},
 			</if>
-			<if test="TopicId != null ">
-				Post_TopicId = #{TopicId},
+			<if test="LogicId != null ">
+				Post_LogicId = #{LogicId},
 			</if>
 			<if test="Title != null ">
 				Post_Title = #{Title},

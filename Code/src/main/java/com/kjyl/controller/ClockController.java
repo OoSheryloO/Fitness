@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.kjyl.bean.RankList;
+import com.kjyl.bean.ClockRankBean;
 import com.kjyl.pojo.Clock;
 import com.kjyl.service.ClockService;
 
@@ -116,7 +116,7 @@ public class ClockController extends BaseController {
     @ApiOperation(value = "打卡排行")
     public Map<String, Object> clockRank(Integer type, int pageNumber, int pageSize){
     	Map<String, Object> mapResult = new HashMap<String, Object>();
-    	PageInfo<RankList> lstRank = ClockService.SearchRankByCondition(null, pageNumber, pageSize);
+    	PageInfo<ClockRankBean> lstRank = ClockService.SearchRankByCondition(null, pageNumber, pageSize);
     	mapResult.put(CodeInfo.sRowKey, lstRank.getList());
     	mapResult.put(CodeInfo.sTotalKey, lstRank.getTotal());
         return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());

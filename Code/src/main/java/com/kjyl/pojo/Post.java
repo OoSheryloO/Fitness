@@ -1,6 +1,8 @@
 package com.kjyl.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.kjyl.bean.SimpleUser;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -25,7 +27,7 @@ public class Post implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
 
-    public static final String COLUMN_TopicId = "TopicId";
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Title = "Title";
 
@@ -52,9 +54,9 @@ public class Post implements Serializable {
     private String UseId;
 
     @ApiModelProperty(value = "逻辑Id")
-    private String TopicId;
+    private String LogicId;
 
-    @ApiModelProperty(value = "评论标题")
+    @ApiModelProperty(value = "标题")
     private String Title;
 
     @ApiModelProperty(value = "内容")
@@ -80,8 +82,11 @@ public class Post implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
+    
+    @ApiModelProperty(value = "用户")
+    private SimpleUser User;
 
-	@ApiModelProperty(value = "['Id','帖子-打卡']['UseId','使用Id']['TopicId','逻辑Id']['Title','评论标题']['Content','内容']['Like','点赞数']['Review','评论数']['Collect','收藏数']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','帖子-打卡']['UseId','使用Id']['LogicId','逻辑Id']['Title','评论标题']['Content','内容']['Like','点赞数']['Review','评论数']['Collect','收藏数']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String PostField;
 }

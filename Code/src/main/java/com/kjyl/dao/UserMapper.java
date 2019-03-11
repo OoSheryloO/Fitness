@@ -1,5 +1,8 @@
 package com.kjyl.dao;
 
+import java.util.Map;
+
+import com.kjyl.bean.GymDataBean;
 import com.kjyl.config.Mybaties.MyMapper;
 import com.kjyl.pojo.User;
 
@@ -9,5 +12,7 @@ import com.kjyl.pojo.User;
  * 
  */
 public interface UserMapper extends MyMapper<User>{
+	
+	GymDataBean SearchGymDataByCondition(Map<String, Object> map);
 
 }
