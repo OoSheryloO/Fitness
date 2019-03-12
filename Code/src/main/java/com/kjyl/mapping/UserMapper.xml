@@ -250,19 +250,20 @@
 		<result property="Weight" column="Weight" />
 		<result property="Fianco" column="Fianco" />
 		<result property="Diary" column="Diary" />
+		<association property="Identity" javaType="com.kjyl.pojo.Identity" resultMap="com.kjyl.dao.IdentityMapper.identity"/>
+		<association property="Card" javaType="com.kjyl.pojo.Card" resultMap="com.kjyl.dao.CardMapper.card"/>
 	</resultMap>
 	<select id="SearchGymDataByCondition"  resultMap="GymData" parameterType="java.util.Map">
-	<!-- SELECT SUM(Course) Course, SUM(Weight) Weight, SUM(Fianco) Fianco, SUM(Diary) Diary
-		FROM
-		(
-		SELECT COUNT(1) Course , 0 Weight , 0 Fianco , 0 Diary FROM fit_course WHERE Course_UseId = #{Id} AND Course_Delete &lt; #{Delete}
-			UNION ALL
-		SELECT 0 Course , COUNT(1) Weight , 0 Fianco , 0 Diary FROM fit_fitdata WHERE Fitdata_UseId = #{Id} AND Fitdata_Delete &lt; #{Delete}
-			UNION ALL
-		SELECT 0 Course , 0 Weight , COUNT(1) Fianco , 0 Diary FROM fit_  WHERE AND _Delete &lt; #{Delete}
-			UNION ALL
-		SELECT 0 Course , 0 Weight , 0 Fianco , COUNT(1) Diary FROM fit_post WHERE Post_UseId = #{Id} AND Post_Delete &lt; #{Delete}
-		) t -->
+	<!-- SELECT (SELECT COUNT(1) FROM fit_course WHERE Clock_UseId = #{UId} AND Course_Delete &lt; 88) Course,
+				(SELECT COUNT(1) FROM fit_fitdata WHERE FitData_UseId = #{UId} AND Course_Delete &lt; 88) Weight,
+				(SELECT COUNT(1) FROM fit_ WHERE _UserId = #{UId} AND _Delete &lt; 88) Fianco,
+				(SELECT COUNT(1) FROM fit_post WHERE Post_UseId = #{UId} AND Post_Delete &lt; 88) Diary, 
+				fit_identity.*, fit_card.* FROM fit_identity, fit_card WHERE 
+			WHERE fit_identity.Identity_Id =  #{UId} AND fit_identity.Identity_Delete &lt; 88
+			AND fit_order.Order_UseId = #{UId} AND fit_order.Order_Delete &lt; 88
+			AND fit_order.Order_Type = #{UId} AND fit_order.Order_Status = 0 <!--#{}订单完成状态 未定
+			AND fit_order.Order_Goods = fit_card.Card_Id AND fit_card.Card_Delete &lt; 88 
+		-->
 	</select>
 
 </mapper>

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kjyl.pojo.Order;
+import com.kjyl.pojo.Syllabus;
 import com.kjyl.service.OrderService;
 
 import com.kjyl.util.CodeInfo;
@@ -107,6 +108,24 @@ public class OrderController extends BaseController {
             obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
             tempObj = OrderService.Insert(obj);
+            
+            //判断type 1 卡 2 课程 3 商品
+            switch (obj.getType()) {
+			case 1:
+				
+				break;
+			case 2://写入课程表
+				Syllabus pjSy = new Syllabus();
+				pjSy.setId(IdWorker.CreateStringNewId());
+				pjSy.setUseId(obj.getUseId());
+				pjSy.setLogicId(obj.getLogicId());
+				SyllabusService.Insert(pjSy);
+				break;
+			case 3:
+	
+			break;
+			}
+            
         }else{
             tempObj = OrderService.Modify(obj);
         }

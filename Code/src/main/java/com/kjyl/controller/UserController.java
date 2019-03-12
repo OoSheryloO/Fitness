@@ -129,8 +129,8 @@ public class UserController extends BaseController {
     @ApiOperation(value = "个人信息")
     public Map<String, Object> searchUserInfo(@PathVariable("id") String Id){
     	Map<String, Object> mapSearch = new HashMap<String, Object>();
-    	mapSearch.put(User.COLUMN_Id, Id);
-    	mapSearch.put(User.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+    	mapSearch.put(DBParam.sUIdKey, Id);
+    	mapSearch.put(DBParam.sDeleteKey, DBParam.RecordStatus.Delete.getCode());
     	GymDataBean pjData = UserService.SearchGymDataByCondition(mapSearch);
         if(pjData != null){
         	return ResultUtil.sharedInstance().TrueData(pjData, "请求成功!", CodeInfo.Code.OK.getCode());

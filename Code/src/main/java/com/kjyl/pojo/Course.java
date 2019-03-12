@@ -84,6 +84,9 @@ public class Course implements Serializable {
     @ApiModelProperty(value = "备注")
     private String Memo;
 
+    @ApiModelProperty(value = "预约状态")
+    private Integer State;//判断是否预约
+    
     @ApiModelProperty(value = "状态")
     private Integer Status;
 
@@ -95,6 +98,12 @@ public class Course implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
+    
+    @ApiModelProperty(value = "用户")
+    private User User;
+    
+    @ApiModelProperty(value = "身份")
+    private Identity Identity;
 
 	@ApiModelProperty(value = "['Id','课程']['UseId','使用Id']['Title','标题']['Info','介绍']['StartTime','开始时间']['EndTime','结束时间']['ApplyTime','预约时间']['Apply','人数限制']['Price','价格']['Site','地点']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)

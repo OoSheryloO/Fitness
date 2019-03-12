@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
 
+import com.kjyl.pojo.Card;
+import com.kjyl.pojo.Club;
+import com.kjyl.pojo.Identity;
+
 /**
  * <p> Entity Class</p>
  * @author sheryl
@@ -19,6 +23,15 @@ public class GymDataBean implements Serializable {
 	* @Fields field:field: {todo}() 
 	*/ 
 	private static final long serialVersionUID = 1L;
+	
+//	@ApiModelProperty(value = "会员卡种类")
+//    private String Course;
+	
+	@ApiModelProperty(value = "身份信息")
+	private Identity Identity;
+	
+	@ApiModelProperty(value = "卡信息")
+	private Card Card;
 
     @ApiModelProperty(value = "课程次数")
     private Integer Course;
