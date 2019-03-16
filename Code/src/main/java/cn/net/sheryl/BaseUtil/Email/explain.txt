@@ -1,4 +1,0 @@
-/* by Sheryl */
-2019/3/5 PM 16:16:45
-
-EmailContentModel.java 组建邮件Html
