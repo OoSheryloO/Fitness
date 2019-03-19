@@ -1,23 +1,25 @@
 package com.kjyl.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.kjyl.pojo.Payrecord;
-import com.kjyl.service.PayrecordService;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Payrecord;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
-import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
+import com.kjyl.util.ResultUtil;
 
 /**
  * <p> 控制器 Class</p>
@@ -114,5 +116,6 @@ public class PayrecordController extends BaseController {
 			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
+
 
 }

@@ -11,10 +11,12 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.kjyl.pojo.Errorlog;
 import com.kjyl.service.ErrorlogService;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
-import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
+
+import com.kjyl.util.CodeInfo;
+//import com.taobao.api.DefaultTaobaoClient;
+//import com.taobao.api.TaobaoClient;
+//import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
+//import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
 /**
  * Created by gejaingbo on 17/5/12.
@@ -83,8 +85,7 @@ public class VerifyCode {
     static final String accessKeyId = "LTAItihMSmlTuWst";
     static final String accessKeySecret = "CozuTYt0d2NSX9LICTJ8iaQnmhg6g7";
 
-    public boolean sendCheckNumber(String mobile, String checkNumber,
-                                   ErrorlogService errorLogService) {
+    public boolean sendCheckNumber(String mobile, String checkNumber, ErrorlogService errorLogService) {
         String errormessage = null;
         try {
             IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId,

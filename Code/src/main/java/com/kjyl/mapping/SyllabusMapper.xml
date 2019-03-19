@@ -40,7 +40,7 @@
 			 AND Syllabus_Delete &lt; #{Delete}
 		</if>
 		<if test="CreateTime != null ">
-			 AND Syllabus_CreateTime = #{CreateTime}
+			 AND date_format(Syllabus_CreateTime, '%Y-%m-%d') = date_format(#{CreateTime}, '%Y-%m-%d')
 		</if>
 		<if test="ModifyTime != null ">
 			 AND Syllabus_ModifyTime = #{ModifyTime}

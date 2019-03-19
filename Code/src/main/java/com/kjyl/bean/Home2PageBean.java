@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.kjyl.pojo.Course;
+import com.kjyl.pojo.Info;
 
 /**
  * <p> Entity Class</p>
@@ -29,10 +30,11 @@ public class Home2PageBean implements Serializable {
 
     @ApiModelProperty(value = "推荐课程")
     private List<Course> Course;
-//    
+
+    @ApiModelProperty(value = "资讯")
+    private List<Info> Info;
+
 //    @ApiModelProperty(value = "精英训练营")
 //    private List<E> User;
-//
-//    @ApiModelProperty(value = "热门资讯")
-//    private List<E> User;
+
 }

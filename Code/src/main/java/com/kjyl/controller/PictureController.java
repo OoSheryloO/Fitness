@@ -1,29 +1,30 @@
 package com.kjyl.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.kjyl.pojo.Picture;
-import com.kjyl.service.PictureService;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Picture;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
-import com.kjyl.util.ResultUtil;
 import com.kjyl.util.File.UploadAliYunFile;
 import com.kjyl.util.GenerateKey.IdWorker;
+
+import static com.kjyl.util.ResultUtil.sharedInstance;
 
 /**
  * <p> 控制器 Class</p>
@@ -52,7 +53,7 @@ public class PictureController extends BaseController {
         PageInfo<Picture> page = this.PictureService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setPictureStatus")
@@ -68,7 +69,7 @@ public class PictureController extends BaseController {
                 PictureService.RemoveBySpecial(Id);
             }
         }
-        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchPicture/{id}")
@@ -77,9 +78,9 @@ public class PictureController extends BaseController {
     public Map<String, Object> searchPicture(@PathVariable("id") String Id){
         Picture temp = PictureService.SearchBySpecial(Id);
         if(temp != null){
-        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        	return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
+    		return sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 
@@ -121,9 +122,9 @@ public class PictureController extends BaseController {
             tempObj = PictureService.Modify(obj);
         }
         if (tempObj != null) {
-			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
-			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
     
@@ -148,9 +149,9 @@ public class PictureController extends BaseController {
 	  
 	  pjPic = PictureService.Insert(pjPic);
       if(pjPic != null){
-      	return ResultUtil.sharedInstance().TrueData(pjPic.getUrl(), "请求成功!", CodeInfo.Code.OK.getCode());
+      	return sharedInstance().TrueData(pjPic.getUrl(), "请求成功!", CodeInfo.Code.OK.getCode());
   		}else{
-  		return ResultUtil.sharedInstance().FalseData("请求失败!", CodeInfo.Code.NO.getCode());
+  		return sharedInstance().FalseData("请求失败!", CodeInfo.Code.NO.getCode());
 		}
   }
 }

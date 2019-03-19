@@ -1,43 +1,30 @@
 package com.kjyl.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageInfo;
-
-import com.kjyl.pojo.Info;
 import com.kjyl.pojo.Online;
 import com.kjyl.pojo.User;
 import com.kjyl.pojo.Verifyrecord;
 import com.kjyl.service.ErrorlogService;
 import com.kjyl.service.VerifyrecordService;
-import com.kjyl.util.BaseUtil;
-import com.kjyl.util.CodeInfo;
-import com.kjyl.util.ConstantUtils;
-import com.kjyl.util.DBParam;
-import com.kjyl.util.ResultUtil;
-import com.kjyl.util.SessionContext;
-import com.kjyl.util.VerifyCode;
+import com.kjyl.util.*;
 import com.kjyl.util.GenerateKey.IdWorker;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import static com.kjyl.util.ResultUtil.sharedInstance;
 
 /**
  * 
@@ -73,14 +60,14 @@ public class LoginController extends BaseController{
         	if (lstOl != null) {
         		mapResult.put(CodeInfo.sTokenKey, lstOl.get(0).getSession());
     			mapResult.put(CodeInfo.sDataKey, pjUser);
-    			mapResult = ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+    			mapResult = sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
 			} else {
-				mapResult = ResultUtil.sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+				mapResult = sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
 			}
 		} else if(lstVr.size() == 0){
-			mapResult = ResultUtil.sharedInstance().FalseData("请先发送验证码!!", CodeInfo.Code.NO.getCode());
+			mapResult = sharedInstance().FalseData("请先发送验证码!!", CodeInfo.Code.NO.getCode());
 		}else {
-			mapResult = ResultUtil.sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+			mapResult = sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
 		}
         return mapResult;
     }
@@ -92,7 +79,7 @@ public class LoginController extends BaseController{
         Map<String, Object> mapResult = new HashMap<String, Object>();
         mapResult = SendCheckNumber(VerifyrecordService, phone, ErrorlogService);
         if (mapResult == null) {
-			mapResult = ResultUtil.sharedInstance().TrueData(null, "发送成功!", CodeInfo.Code.OK.getCode());
+			mapResult = sharedInstance().TrueData(null, "发送成功!", CodeInfo.Code.OK.getCode());
 		}
         return mapResult;
     }
@@ -107,9 +94,9 @@ public class LoginController extends BaseController{
         
         List<Verifyrecord> lstVr = VerifyrecordService.SearchByCondition(mapSearch);
         if (lstVr != null && lstVr.size() > 0) {
-        	return ResultUtil.sharedInstance().TrueData(null, "验证成功!", CodeInfo.Code.OK.getCode());
+        	return sharedInstance().TrueData(null, "验证成功!", CodeInfo.Code.OK.getCode());
 		} else {
-			return ResultUtil.sharedInstance().FalseData("验证失败!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("验证失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 	
@@ -125,7 +112,7 @@ public class LoginController extends BaseController{
 //		String wechatHeadIcon = temp.getHeadIcon();
 //		String wechatCity = temp.getCity();
 		if (wechatId == null || wechatId.equals("") || wechatSex == null || wechatName == null || wechatName.equals("")) {
-			return ResultUtil.sharedInstance().FalseData("微信信息获取失败!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("微信信息获取失败!", CodeInfo.Code.NO.getCode());
 		}
 		
 		mapSearch.put(User.COLUMN_WeChatOpenId, wechatId);
@@ -138,7 +125,7 @@ public class LoginController extends BaseController{
 
 		Online pjOl = new Online();
 		if (session == null) {
-			return ResultUtil.sharedInstance().otherError(CodeInfo.ErrorMessageType.LoginFail, request);
+			return sharedInstance().otherError(CodeInfo.ErrorMessageType.LoginFail, request);
 		}
 		if (lstU != null && lstU.size() > 0) {//有用户
 			mapSearch.clear();
@@ -165,7 +152,7 @@ public class LoginController extends BaseController{
 		
 		mapResult.put(CodeInfo.sTokenKey, pjOl.getSession());
 		mapResult.put(CodeInfo.sDataKey, temp);
-		return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+		return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 	
 	
@@ -202,20 +189,20 @@ public class LoginController extends BaseController{
 			if (pjVr.getStatus() == CodeInfo.UserStatus.Disabled.getCode()) {//手机号被禁用
 				Date date = new Date();
 				if (date.compareTo(pjVr.getEnableTime()) <= 0) {//处于禁用时间
-					return ResultUtil.sharedInstance().FalseData("手机号禁用", CodeInfo.Error_Phone_Number.Ban_Phone.getCode()); 
+					return sharedInstance().FalseData("手机号禁用", CodeInfo.Error_Phone_Number.Ban_Phone.getCode());
 				} else {// 不在禁用时间
 					pjVr.setStatus(CodeInfo.UserStatus.Enable.getCode());
 					pjVr.setCheckNumber(number);
 				}
 			} else if (pjVr.getStatus() == CodeInfo.UserStatus.Invalid.getCode()) {//封号
 				// TODO: 手机号码封号一年后号码假删除该账号, 如号码被另外的用户使用了则免受影响
-				return ResultUtil.sharedInstance().FalseData("手机号禁用", CodeInfo.Error_Phone_Number.Ban_Phone.getCode());
+				return sharedInstance().FalseData("手机号禁用", CodeInfo.Error_Phone_Number.Ban_Phone.getCode());
 			} else {// 账号可正常使用, 判断两次获取短信验证码的时间间隔
 				Date dLast = pjVr.getModifyTime();
 				long stamp = (new Date().getTime() - dLast.getTime()) / 1000; // 单位是毫秒, /1000 精确到秒
 				// ToDo 正式环境一分钟内不能重复发, 测试环境为 5 秒
 				if (Integer.parseInt(Long.toString(stamp), 10) < 5) {// 10 表示十进制 一分钟内不能重复发送
-					return ResultUtil.sharedInstance().FalseData("发送验证码频繁，请稍候",CodeInfo.Error_Phone_Number.Often_SMS.getCode());
+					return sharedInstance().FalseData("发送验证码频繁，请稍候",CodeInfo.Error_Phone_Number.Often_SMS.getCode());
 				} else {
 					pjVr.setCheckNumber(number);
 //					pjVr.setStatus(CodeInfo.UserStatus.Enable.getCode());
@@ -242,10 +229,10 @@ public class LoginController extends BaseController{
 			if (pjVr != null || i != 0) {
 				return null;
 			} else {
-				return ResultUtil.sharedInstance().FalseData("发送失败", CodeInfo.Code.NO.getCode());
+				return sharedInstance().FalseData("发送失败", CodeInfo.Code.NO.getCode());
 			}
 		}
-		return ResultUtil.sharedInstance().FalseData("发送失败", CodeInfo.Code.NO.getCode());
+		return sharedInstance().FalseData("发送失败", CodeInfo.Code.NO.getCode());
 	}
 	
 }

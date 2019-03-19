@@ -1,11 +1,11 @@
 package com.kjyl.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by MeetLucky on 16/5/23.
@@ -19,7 +19,7 @@ public class ResultUtil {
         }
         return instance;
     }
-    
+
     public Map<String, Object> TrueData(Object data, String message, int code) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != data ) {

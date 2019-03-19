@@ -1,23 +1,24 @@
 package com.kjyl.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.kjyl.pojo.Errorlog;
-import com.kjyl.service.ErrorlogService;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.*;
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Errorlog;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
-import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
+import com.kjyl.util.ResultUtil;
+
+import static com.kjyl.util.ResultUtil.sharedInstance;
 
 /**
  * <p> 控制器 Class</p>
@@ -31,35 +32,35 @@ public class ErrorlogController extends BaseController {
 //  未知错误
     @RequestMapping(value = "/Interface/Unknown")
     public @ResponseBody Map<String, Object> unknownMethod() {
-        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        ResultUtil errorDetail = sharedInstance();
         return errorDetail.otherError(CodeInfo.ErrorMessageType.UnKownError,null);
     }
 
     //  参数错误
     @RequestMapping(value = "/Interface/Parameter")
     public @ResponseBody Map<String, Object> parameterMethod() {
-        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        ResultUtil errorDetail = sharedInstance();
         return errorDetail.otherError(CodeInfo.ErrorMessageType.Parameter, null);
     }
 
     //  认证失败
     @RequestMapping(value = "/Interface/Authorized")
     public @ResponseBody Map<String, Object> authorizedMethod() {
-        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        ResultUtil errorDetail = sharedInstance();
         return errorDetail.otherError(CodeInfo.ErrorMessageType.Authorized, null);
     }
 
     //  用户不存在
     @RequestMapping(value = "/Interface/UserNoExist")
     public @ResponseBody Map<String, Object> userNoExistMethod() {
-        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        ResultUtil errorDetail = sharedInstance();
         return errorDetail.otherError(CodeInfo.ErrorMessageType.UserNoExist,null);
     }
     
     //  认证失败
     @RequestMapping(value = "/Interface/JsonError")
     public @ResponseBody Map<String, Object> jsonErrorMethod(HttpServletRequest request) {
-        ResultUtil errorDetail = ResultUtil.sharedInstance();
+        ResultUtil errorDetail = sharedInstance();
         return errorDetail.otherError(CodeInfo.ErrorMessageType.JsonParseError,request);
     }
 
@@ -81,7 +82,7 @@ public class ErrorlogController extends BaseController {
         PageInfo<Errorlog> page = this.ErrorlogService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setErrorlogStatus")
@@ -97,7 +98,7 @@ public class ErrorlogController extends BaseController {
                 ErrorlogService.RemoveBySpecial(Id);
             }
         }
-        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchErrorlog/{id}")
@@ -106,9 +107,9 @@ public class ErrorlogController extends BaseController {
     public Map<String, Object> searchErrorlog(@PathVariable("id") String Id){
         Errorlog temp = ErrorlogService.SearchBySpecial(Id);
         if(temp != null){
-        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        	return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
+    		return sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 
@@ -144,9 +145,9 @@ public class ErrorlogController extends BaseController {
             tempObj = ErrorlogService.Modify(obj);
         }
         if (tempObj != null) {
-			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
-			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 

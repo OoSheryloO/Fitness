@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.io.Serializable;
 
 import com.kjyl.pojo.Card;
-import com.kjyl.pojo.Club;
 import com.kjyl.pojo.Identity;
 
 /**

@@ -1,23 +1,26 @@
 package com.kjyl.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.kjyl.pojo.Fitdata;
-import com.kjyl.service.FitdataService;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Fitdata;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
-import com.kjyl.util.ResultUtil;
 import com.kjyl.util.GenerateKey.IdWorker;
+
+import static com.kjyl.util.ResultUtil.sharedInstance;
 
 /**
  * <p> 控制器 Class</p>
@@ -46,7 +49,7 @@ public class FitdataController extends BaseController {
         PageInfo<Fitdata> page = this.FitdataService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
-        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @PostMapping("/setFitdataStatus")
@@ -62,7 +65,7 @@ public class FitdataController extends BaseController {
                 FitdataService.RemoveBySpecial(Id);
             }
         }
-        return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 //    @GetMapping("/searchFitdata/{id}")
@@ -71,9 +74,9 @@ public class FitdataController extends BaseController {
     public Map<String, Object> searchFitdata(@PathVariable("id") String Id){
         Fitdata temp = FitdataService.SearchBySpecial(Id);
         if(temp != null){
-        	return ResultUtil.sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
+        	return sharedInstance().TrueData(temp, "请求成功!", CodeInfo.Code.OK.getCode());
     	}else{
-    		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
+    		return sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 
@@ -125,9 +128,9 @@ public class FitdataController extends BaseController {
             tempObj = FitdataService.Modify(obj);
         }
         if (tempObj != null) {
-			return ResultUtil.sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
-			return ResultUtil.sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
 
