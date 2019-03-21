@@ -80,6 +80,16 @@
 
 	</sql>
 	
+	<!-- 根据 查找Url-->
+	<select id="SearchUrlBySpecial" resultType="string" parameterType="long">
+		SELECT
+		 Picture_Url
+			FROM fit_picture
+		<where>
+			Picture_LogicId = #{_parameter} 
+		</where>
+	</select>
+	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="picture" parameterType="long">
 		SELECT

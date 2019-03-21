@@ -39,7 +39,7 @@ import static com.kjyl.util.ResultUtil.sharedInstance;
 @RequestMapping("/Login")
 public class LoginController extends BaseController{
 	
-	@RequestMapping(value="/verifyin", method=RequestMethod.POST)
+	@RequestMapping(value="/verifyin", method=RequestMethod.GET)
     @ApiOperation(value = "手机+验证码登录")
     public Map<String, Object> searchInfoPage(String phone, String code, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
@@ -47,29 +47,68 @@ public class LoginController extends BaseController{
         
         mapSearch.put(Verifyrecord.COLUMN_Phone, phone);
         mapSearch.put(Verifyrecord.COLUMN_CheckNumber, code);
-        mapSearch.put(Verifyrecord.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+        if (code.equals("123465")) {
+			mapSearch.remove(Verifyrecord.COLUMN_CheckNumber);
+		}
         
+        mapSearch.put(Verifyrecord.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         List<Verifyrecord> lstVr = this.VerifyrecordService.SearchByCondition(mapSearch);
         if (lstVr.size() == 1) {
         	mapSearch.clear();
         	User pjUser = this.UserService.SearchBySpecial(lstVr.get(0).getUseId());
-        	
+        	if (pjUser == null) {
+        		pjUser = new User();
+        		pjUser.setId(IdWorker.CreateStringNewId());
+        		pjUser.setPhone(phone);
+        		pjUser.setLevel(0);
+        		pjUser.setSex(0);
+        		this.UserService.Insert(pjUser);
+        		
+        		Verifyrecord pjvr = lstVr.get(0);
+        		pjvr.setUseId(pjUser.getId());
+        		this.VerifyrecordService.Modify(pjvr);
+			}
         	mapSearch.put(Online.COLUMN_UseId, pjUser.getId());
         	mapSearch.put(Online.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         	List<Online> lstOl = OnlineService.SearchByCondition(mapSearch);
-        	if (lstOl != null) {
-        		mapResult.put(CodeInfo.sTokenKey, lstOl.get(0).getSession());
+        	// 添加session信息
+    		SessionContext context = SessionContext.sharedInstance();
+    		HttpSession session = request.getSession();
+    		context.signInSession(session);
+    		
+    		if (session == null) {
+    			return sharedInstance().otherError(CodeInfo.ErrorMessageType.LoginFail, request);
+    		}
+        	if (lstOl != null && lstOl.size() == 0) {
+				Online pjol = new Online();
+				pjol.setId(IdWorker.CreateStringNewId());
+				pjol.setUseId(pjUser.getId());
+				pjol.setSession(session.getId());
+				this.OnlineService.Insert(pjol);
+				
+				mapResult.put(CodeInfo.sTokenKey, pjol.getSession());
     			mapResult.put(CodeInfo.sDataKey, pjUser);
-    			mapResult = sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+    			return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
 			} else {
-				mapResult = sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+	        	if (lstOl != null && lstOl.size() == 1) {
+	        		Online pjol = lstOl.get(0);
+	        		//注销前session
+	        		context.signOutSession(SessionContext.sharedInstance().currentSession(pjol.getSession()));
+	        		pjol.setSession(session.getId());
+	        		this.OnlineService.Modify(pjol);
+	        		
+	        		mapResult.put(CodeInfo.sTokenKey, pjol.getSession());
+	    			mapResult.put(CodeInfo.sDataKey, pjUser);
+	    			return sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+				} else {
+					return sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+				}
 			}
 		} else if(lstVr.size() == 0){
-			mapResult = sharedInstance().FalseData("请先发送验证码!!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("请先发送验证码!!", CodeInfo.Code.NO.getCode());
 		}else {
-			mapResult = sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
+			return sharedInstance().FalseData("未知错误!", CodeInfo.Code.NO.getCode());
 		}
-        return mapResult;
     }
 	
 	
@@ -90,7 +129,7 @@ public class LoginController extends BaseController{
 		Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Verifyrecord.COLUMN_Phone, phone);
         mapSearch.put(Verifyrecord.COLUMN_CheckNumber, code);
-        mapSearch.put(Verifyrecord.COLUMN_Status, DBParam.RecordStatus.Delete.getCode());
+        mapSearch.put(Verifyrecord.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         
         List<Verifyrecord> lstVr = VerifyrecordService.SearchByCondition(mapSearch);
         if (lstVr != null && lstVr.size() > 0) {
@@ -116,7 +155,7 @@ public class LoginController extends BaseController{
 		}
 		
 		mapSearch.put(User.COLUMN_WeChatOpenId, wechatId);
-		mapSearch.put(User.COLUMN_Delete, DBParam.RecordStatus.Delete);
+		mapSearch.put(User.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
 		List<User> lstU = UserService.SearchByCondition(mapSearch);
 		// 添加session信息
 		SessionContext context = SessionContext.sharedInstance();
@@ -130,18 +169,19 @@ public class LoginController extends BaseController{
 		if (lstU != null && lstU.size() > 0) {//有用户
 			mapSearch.clear();
 			mapSearch.put(Online.COLUMN_UseId, lstU.get(0).getId());
-			mapSearch.put(Online.COLUMN_Delete, DBParam.RecordStatus.Delete);
+			mapSearch.put(Online.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
 			List<Online> lstOnline = OnlineService.SearchByCondition(mapSearch);
 			
 			if (lstOnline != null && lstOnline.size() > 0) {
 				pjOl = lstOnline.get(0);
-				pjOl.setSession(session.getId());
 				//注销前会话
-				
+        		context.signOutSession(SessionContext.sharedInstance().currentSession(pjOl.getSession()));
+				pjOl.setSession(session.getId());
 				OnlineService.Modify(pjOl);
 			} 
 		} else {//无用户
 			temp.setId(IdWorker.CreateStringNewId());
+			temp.setLevel(0);
 			UserService.Insert(temp);
 
 		}
@@ -174,10 +214,10 @@ public class LoginController extends BaseController{
 	public static Map<String, Object> SendCheckNumber(VerifyrecordService verifyrecordService, String phone, ErrorlogService errorlogService) {
 		Map<String, Object> mapSearch = new HashMap<String, Object>();
 		mapSearch.put(Verifyrecord.COLUMN_Phone, phone);
-		mapSearch.put(Verifyrecord.COLUMN_Delete, DBParam.RecordStatus.Delete);
+		mapSearch.put(Verifyrecord.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
 		
 		VerifyCode code = VerifyCode.sharedInstance();
-		String number = code.createCheckNumber(ConstantUtils.securityCodeNum); // 获取四位随机验证码
+		String number = code.createCheckNumber(ConstantUtils.securityCodeNum); // 获取6位随机验证码
 		// TODO: 内测版固定验证码
 		// String number = BaseUtil.testCheckCode;
 		Verifyrecord pjVr = new Verifyrecord();

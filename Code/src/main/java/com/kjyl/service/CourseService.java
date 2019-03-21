@@ -92,5 +92,9 @@ public class CourseService {
 	public int RecoverByCondition(Map<String, Object> mapSearch){
 		return mapper.RecoverByCondition(mapSearch);
 	}
+	
+	public List<Course> SearchBySpecialRand(){
+		return mapper.SearchBySpecialRand();
+	}
 
 }

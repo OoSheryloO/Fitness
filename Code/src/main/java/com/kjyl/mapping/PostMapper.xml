@@ -20,6 +20,7 @@
 		<result property="CreateTime" column="Post_CreateTime" />
 		<result property="ModifyTime" column="Post_ModifyTime" />
 		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
+		<collection property="Picture" column="Picture" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
 		Post_Id, Post_UseId, Post_LogicId, Post_Title, Post_Content, Post_Like, Post_Review, Post_Collect, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime

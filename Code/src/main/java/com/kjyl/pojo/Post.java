@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p> Entity Class</p>
@@ -28,6 +29,8 @@ public class Post implements Serializable {
     public static final String COLUMN_UseId = "UseId";
 
     public static final String COLUMN_LogicId = "LogicId";
+    
+    public static final String COLUMN_Picture = "Picture";
 
     public static final String COLUMN_Title = "Title";
 
@@ -55,6 +58,9 @@ public class Post implements Serializable {
 
     @ApiModelProperty(value = "逻辑Id")
     private String LogicId;
+    
+    @ApiModelProperty(value = "图片")
+    private List<String> Picture;
 
     @ApiModelProperty(value = "标题")
     private String Title;

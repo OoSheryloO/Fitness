@@ -32,7 +32,8 @@
 			 AND Clock_Delete &lt; #{Delete}
 		</if>
 		<if test="CreateTime != null ">
-			 AND Clock_CreateTime = #{CreateTime}
+			 AND date_format(Clock_CreateTime, "%Y-%m-%d") = date_format(#{CreateTime}, "%Y-%m-%d")
+			 <!-- AND Clock_CreateTime = #{CreateTime} -->
 		</if>
 		<if test="ModifyTime != null ">
 			 AND Clock_ModifyTime = #{ModifyTime}

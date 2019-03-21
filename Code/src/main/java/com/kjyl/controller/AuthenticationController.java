@@ -58,6 +58,12 @@ public class AuthenticationController implements HandlerInterceptor {
     
     //  预处理
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
+		// 指定允许其他域名访问
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 响应类型
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, X-Custom-Header, HaiYi-Access-Token");
+		
 //		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 //		Map<String, String> map = HostUtil.getHeadersInfo(request);
 //		if (uri.contains("payCallBack")) {

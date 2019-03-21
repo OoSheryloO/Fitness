@@ -49,7 +49,7 @@
 	</sql>
 	
 	<!-- 根据ID 查找-->
-	<select id="SearchBySpecial" resultMap="clubcard" parameterType="long">
+	<select id="SearchBySpecial" resultMap="clubcard" parameterType="long" >
 		SELECT
 		<include refid="sql"></include>
 			FROM fit_clubcard

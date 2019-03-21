@@ -3,7 +3,9 @@ package com.kjyl.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,13 +90,21 @@ public class ClockController extends BaseController {
         Clock temp = JSON.parseObject(data, Clock.class);
         Clock obj = new Clock();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
-            obj = ClockService.SearchBySpecial(temp.getId());
+        	Map<String, Object> mapSearch = new HashMap<String, Object>();
+        	mapSearch.put(Clock.COLUMN_UseId, temp.getUseId());
+        	mapSearch.put(Clock.COLUMN_CreateTime, new Date());
+        	mapSearch.put(Clock.COLUMN_Delete, DBParam.RecordStatus.Delete.getClass());
+        	List<Clock> lisC = this.ClockService.SearchByCondition(mapSearch);
+        	if (lisC == null || lisC.size() == 0) {
+        		isNew = true;
+			}
+            /*obj = ClockService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
-            }
+            }*/
         }
         obj.setUseId(temp.getUseId());
         obj.setDelete(temp.getDelete());

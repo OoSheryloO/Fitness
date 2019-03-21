@@ -1,5 +1,7 @@
 package com.kjyl.dao;
 
+import java.util.List;
+
 import com.kjyl.config.Mybaties.MyMapper;
 import com.kjyl.pojo.Course;
 
@@ -9,5 +11,5 @@ import com.kjyl.pojo.Course;
  * 
  */
 public interface CourseMapper extends MyMapper<Course>{
-
+	List<Course> SearchBySpecialRand();
 }

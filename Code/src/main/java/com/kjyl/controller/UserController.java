@@ -3,7 +3,9 @@ package com.kjyl.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.kjyl.bean.GymDataBean;
+import com.kjyl.pojo.Clock;
+import com.kjyl.pojo.Course;
+import com.kjyl.pojo.Info;
 import com.kjyl.pojo.User;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
@@ -112,8 +117,6 @@ public class UserController extends BaseController {
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-
-
         User tempObj = null;
         if(isNew){
             obj.setId(IdWorker.CreateStringNewId());
@@ -141,6 +144,27 @@ public class UserController extends BaseController {
     	}else{
     		return ResultUtil.sharedInstance().FalseData("获取失败!", CodeInfo.Code.NO.getCode());
 		}
+    }
+    
+    @ApiOperation(value = "次首页列表", notes= "", httpMethod = "GET")
+	@RequestMapping(value="/nextHomePage", method=RequestMethod.GET)
+    public Map<String, Object> nextHomePage(String id, int pageNum, int pageSize, HttpServletRequest request) {
+        Map<String, Object> mapResult = new HashMap<String, Object>();
+        Map<String, Object> mapSearch = new HashMap<String, Object>();
+        mapSearch.put(Clock.COLUMN_CreateTime, new Date());
+        mapSearch.put(Clock.COLUMN_UseId, id);
+        mapSearch.put(DBParam.sDeleteKey, DBParam.RecordStatus.Delete.getCode());
+        List<Clock> lstCl = this.ClockService.SearchByCondition(mapSearch);
+        
+        List<Course> lstCo = this.CourseService.SearchBySpecialRand();
+        mapSearch.clear();
+        mapSearch.put(Info.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+        PageInfo<Info> pageIn = this.InfoService.SearchPage(mapSearch, pageNum, pageSize);
+        mapResult.put("Clock", lstCl != null && lstCl.size() == 1 ? true : false);
+        mapResult.put("Course", lstCo);
+        mapResult.put("Info", pageIn.getList());
+        mapResult.put("InfoTotal", pageIn.getTotal());
+        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
 
 }
