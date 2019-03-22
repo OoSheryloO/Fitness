@@ -1,6 +1,8 @@
 package com.kjyl.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.kjyl.bean.SimpleUser;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -91,7 +93,7 @@ public class Course implements Serializable {
     private String Memo;
 
     @ApiModelProperty(value = "预约状态")
-    private Integer State;//判断是否预约
+    private boolean State;//判断是否预约
     
     @ApiModelProperty(value = "状态")
     private Integer Status;
@@ -106,7 +108,7 @@ public class Course implements Serializable {
     private Date ModifyTime;
     
     @ApiModelProperty(value = "用户")
-    private User User;
+    private SimpleUser User;
     
     @ApiModelProperty(value = "身份")
     private Identity Identity;

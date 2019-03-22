@@ -254,15 +254,21 @@
 		<association property="Card" javaType="com.kjyl.pojo.Card" resultMap="com.kjyl.dao.CardMapper.card"/>
 	</resultMap>
 	<select id="SearchGymDataByCondition"  resultMap="GymData" parameterType="java.util.Map">
-	 	SELECT (SELECT COUNT(1) FROM fit_course WHERE Clock_UseId = #{UId} AND Course_Delete &lt; 88) Course,
-				(SELECT COUNT(1) FROM fit_fitdata WHERE FitData_UseId = #{UId} AND FitData_Delete &lt; 88) Weight,
-				(SELECT COUNT(1) FROM fit_fitdata WHERE FitData_UseId = #{UId} AND FitData_Delete &lt; 88) Fianco,
-				(SELECT COUNT(1) FROM fit_post WHERE Post_UseId = #{UId} AND Post_Delete &lt; 88) Diary, 
-				fit_identity.*, fit_card.* FROM fit_identity, fit_card, fit_order
-			WHERE fit_identity.Identity_Id =  #{UId} AND fit_identity.Identity_Delete &lt; 88
-			AND fit_order.Order_UseId = #{UId} AND fit_order.Order_Delete &lt; 88
-			AND fit_order.Order_Type = #{UId} AND fit_order.Order_Status = 0 <!-- #{}订单完成状态 未定 -->
-			AND fit_order.Order_Goods = fit_card.Card_Id AND fit_card.Card_Delete &lt; 88 
+	 	SELECT
+			( SELECT COUNT( 1 ) FROM fit_course WHERE Course_UseId = #{UId} AND  Course_Delete &lt; 88 ) Course,
+			( SELECT COUNT( 1 ) FROM fit_fitdata WHERE FitData_UseId = #{UId} AND  FitData_Delete &lt; 88 ) Weight,
+			( SELECT COUNT( 1 ) FROM fit_fitdata WHERE FitData_UseId = #{UId} AND  FitData_Delete &lt; 88 ) Fianco,
+			( SELECT COUNT( 1 ) FROM fit_post WHERE Post_UseId = #{UId} AND  Post_Delete &lt; 88 ) Diary,
+			fit_identity.*, fit_card.*
+		FROM
+			fit_user
+			LEFT JOIN fit_identity ON fit_identity.Identity_Id = #{UId} AND  fit_identity.Identity_Delete &lt; 88
+			LEFT JOIN fit_order ON fit_order.Order_UseId = #{UId} AND  fit_order.Order_Delete &lt; 88 
+				AND fit_order.Order_Type = #{UId} AND  fit_order.Order_Status = 0<!-- 订单完成状态 -->
+			LEFT JOIN fit_card ON fit_order.Order_LogicId = fit_card.Card_Id
+		  		AND fit_card.Card_Delete &lt; 88 	
+		WHERE
+			fit_user.User_Id = #{UId} AND  fit_user.User_Delete &lt; 88
 	</select>
 
 </mapper>

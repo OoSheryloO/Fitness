@@ -97,7 +97,7 @@
 				#{LogicId},
 				#{Like},
 				#{Collect},
-				#{Demo},
+				#{Memo},
 				Default,
 				Default,
 				now(),

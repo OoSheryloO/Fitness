@@ -15,13 +15,14 @@
 		<result property="Like" column="Info_Like" />
 		<result property="Review" column="Info_Review" />
 		<result property="Share" column="Info_Share" />
+		<result property="Collect" column="Info_Collect" />
 		<result property="Status" column="Info_Status" />
 		<result property="Delete" column="Info_Delete" />
 		<result property="CreateTime" column="Info_CreateTime" />
 		<result property="ModifyTime" column="Info_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Info_Id, Info_UseId, Info_LogicId, Info_Title, Info_Content, Info_Like, Info_Review, Info_Share, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
+		Info_Id, Info_UseId, Info_LogicId, Info_Title, Info_Content, Info_Like, Info_Review, Info_Share, Info_Collect, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -48,6 +49,9 @@
 		</if>
 		<if test="Share != null ">
 			 AND Info_Share = #{Share}
+		</if>
+		<if test="Collect != null ">
+			 AND Info_Collect = #{Collect}
 		</if>
 		<if test="Status != null ">
 			 AND Info_Status = #{Status}
@@ -108,6 +112,7 @@
 				#{Like},
 				#{Review},
 				#{Share},
+				#{Collect},
 				Default,
 				Default,
 				now(),
@@ -135,6 +140,9 @@
 			</if>
 			<if test="Review != null ">
 				Info_Review = #{Review},
+			</if>
+			<if test="Collect != null ">
+				Info_Collect = #{Collect},
 			</if>
 			<if test="Share != null ">
 				Info_Share = #{Share},

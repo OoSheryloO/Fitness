@@ -36,6 +36,8 @@ public class Info implements Serializable {
     public static final String COLUMN_Review = "Review";
 
     public static final String COLUMN_Share = "Share";
+    
+    public static final String COLUMN_Collect = "Collect";
 
     public static final String COLUMN_Status = "Status";
 
@@ -68,6 +70,9 @@ public class Info implements Serializable {
 
     @ApiModelProperty(value = "分享数")
     private Integer Share;
+    
+    @ApiModelProperty(value = "收藏数")
+    private Integer Collect;
 
     @ApiModelProperty(value = "状态信息")
     private Integer Status;
@@ -81,7 +86,7 @@ public class Info implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','资讯-俱乐部']['UseId','使用Id']['LogicId','逻辑Id']['Title','标题']['Content','内容']['Like','点赞']['Review','评论']['Share','分享数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','资讯-俱乐部']['UseId','使用Id']['LogicId','逻辑Id']['Title','标题']['Content','内容']['Like','点赞']['Review','评论']['Share','分享数']['Collect','收藏数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String InfoField;
 }

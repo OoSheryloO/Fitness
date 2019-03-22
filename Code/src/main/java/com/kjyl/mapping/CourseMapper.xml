@@ -107,9 +107,9 @@
 	<!-- 根据model 查找-->
 	
 	<!-- 根据条件 查找-->
-	<select id="SearchByCondition"  resultMap="course" parameterType="java.util.Map">
+	<select id="SearchByCondition"  resultMap="course" parameterType="map">
 		SELECT
-		<include refid="sql" />, <include refid="com.kjyl.dao.UserMapper.simpleUserSql" />
+		<include refid="sql" /><include refid="com.kjyl.dao.UserMapper.simpleUserSql" />
 		, <include refid="com.kjyl.dao.IdentityMapper.sql" />, <include refid="stateSql" />
 			FROM fit_course, fit_user, fit_Identity
 			<if test="Condition != null and Condition == 1">, fit_syllabus</if>
@@ -119,14 +119,14 @@
 		AND fit_syllabus.Syllabus_Delete &lt; 88
 		</if>
 			AND fit_course.Course_UseId = fit_user.User_Id AND fit_user.User_Delete &lt; 88
-			AND fit_user.User_Id = fit_identity.Identity_Id  AND fit_identity_Identity_Delete &lt; 88
-			<include refid="where"></include>
+			AND fit_user.User_Id = fit_identity.Identity_Id  AND fit_identity.Identity_Delete &lt; 88
+			AND <include refid="where" />
 		</where>
 	</select>
 	
 	<sql id="stateSql">
-		IF((SELECT COUNT(1) FROM fit_syllabus WHERE fit_syllabus.Syllabus_UseId = #{UId} AND fit_syllabus.Syllabus_LogicId = fit_course.Course_Id) > 0, 1, 0) State
-	</sql>
+			IF((SELECT COUNT(1) FROM fit_syllabus WHERE fit_syllabus.Syllabus_UseId = #{UId} AND fit_syllabus.Syllabus_LogicId = fit_course.Course_Id) > 0, 1, 0) State
+		</sql>
 	<!-- 根据条件总数-->
 	<select id="SearchData" parameterType="map" resultType="int">
 		SELECT
