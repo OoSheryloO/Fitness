@@ -40,10 +40,10 @@ public class OrderController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchOrderPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchOrderPage(Integer status, String id, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
-        mapSearch.put("search", search);
+        mapSearch.put(Order.COLUMN_UseId, id);
         if(status != null && status != -1){
         	mapSearch.put(Order.COLUMN_Status, status);
         }

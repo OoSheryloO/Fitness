@@ -43,6 +43,7 @@ public class ClubController extends BaseController {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put("search", search);
+        mapSearch.put(Club.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         if(status != null && status != -1){
         	mapSearch.put(Club.COLUMN_Status, status);
         }
