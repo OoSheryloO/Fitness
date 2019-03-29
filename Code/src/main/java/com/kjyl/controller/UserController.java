@@ -105,6 +105,7 @@ public class UserController extends BaseController {
         obj.setSex(temp.getSex());
         obj.setBirthday(temp.getBirthday());
         obj.setPhone(temp.getPhone());
+        obj.setLogicId(temp.getLogicId());
         obj.setQQ(temp.getQQ());
         obj.setMicroBlog(temp.getMicroBlog());
         obj.setQRCode(temp.getQRCode());
@@ -116,6 +117,7 @@ public class UserController extends BaseController {
         obj.setLevel(temp.getLevel());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
+        obj.setWallet(temp.getWallet());
 
         User tempObj = null;
         if(isNew){
@@ -166,5 +168,5 @@ public class UserController extends BaseController {
         mapResult.put("InfoTotal", pageIn.getTotal());
         return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
     }
-
+    
 }

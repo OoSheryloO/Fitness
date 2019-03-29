@@ -43,6 +43,7 @@ public class CartController extends BaseController {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Cart.COLUMN_UseId, id);
+        mapSearch.put(Cart.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         if(status != null && status != -1){
         	mapSearch.put(Cart.COLUMN_Status, status);
         }
@@ -100,6 +101,8 @@ public class CartController extends BaseController {
         obj.setMemo(temp.getMemo());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
+        obj.setAmount(temp.getAmount());
+        obj.setSize(temp.getSize());
 
         Cart tempObj = null;
         if(isNew){

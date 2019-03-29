@@ -32,6 +32,8 @@ public class Card implements Serializable {
     public static final String COLUMN_Intro = "Intro";
 
     public static final String COLUMN_Price = "Price";
+    
+    public static final String COLUMN_Residue = "Residue";
 
     public static final String COLUMN_Level = "Level";
 
@@ -68,6 +70,9 @@ public class Card implements Serializable {
 
     @ApiModelProperty(value = "价格")
     private String Price;
+    
+    @ApiModelProperty(value = "仓库")
+    private Integer Residue;
 
     @ApiModelProperty(value = "等级")
     private Integer Level;

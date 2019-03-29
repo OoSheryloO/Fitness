@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -32,6 +33,8 @@ public class User implements Serializable {
     public static final String COLUMN_Birthday = "Birthday";
 
     public static final String COLUMN_Phone = "Phone";
+    
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_QQ = "QQ";
 
@@ -44,6 +47,8 @@ public class User implements Serializable {
     public static final String COLUMN_Password = "Password";
 
     public static final String COLUMN_PayPassword = "PayPassword";
+    
+    public static final String COLUMN_Wallet = "Wallet";
 
     public static final String COLUMN_City = "City";
 
@@ -76,6 +81,9 @@ public class User implements Serializable {
 
     @ApiModelProperty(value = "用户手机")
     private String Phone;
+    
+    @ApiModelProperty(value = "逻辑id")
+    private String LogicId;
 
     @ApiModelProperty(value = "用户QQ")
     private String QQ;
@@ -96,6 +104,9 @@ public class User implements Serializable {
     @ApiModelProperty(value = "用户支付密码")
     @JSONField(serialize = false)
     private String PayPassword;
+    
+    @ApiModelProperty(value = "钱包")
+    private BigDecimal Wallet;
 
     @ApiModelProperty(value = "用户城市")
     private String City;
@@ -118,7 +129,7 @@ public class User implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','用户']['HeadIcon','用户头像']['Name','昵称']['Sex','用户性别']['Birthday','生日']['Phone','用户手机']['QQ','用户QQ']['MicroBlog','用户微博']['QRCode','用户二维码']['WeChatOpenId','微信openId']['Password','用户登录密码']['PayPassword','用户支付密码']['City','用户城市']['FitClub','俱乐部Id']['Level','等级']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','用户']['HeadIcon','用户头像']['Name','昵称']['Sex','用户性别']['Birthday','生日']['Phone','用户手机']['LogicId','逻辑id']['QQ','用户QQ']['MicroBlog','用户微博']['QRCode','用户二维码']['WeChatOpenId','微信openId']['Password','用户登录密码']['PayPassword','用户支付密码']['Wallet','钱包']['City','用户城市']['FitClub','俱乐部Id']['Level','等级']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String UserField;
 }

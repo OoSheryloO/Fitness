@@ -56,9 +56,11 @@ public class Status implements Serializable {
     @ApiModelProperty(value = "收藏状态")
     private Integer Collect;
     
-    @ApiModelProperty(value = "类型")
-    @JSONField(serialize = false)
+    @ApiModelProperty(value = "对象类型")
     private int Type;
+    
+    @ApiModelProperty(value = "操作类型")
+    private int State;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

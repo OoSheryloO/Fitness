@@ -30,6 +30,8 @@ public class Payrecord implements Serializable {
     public static final String COLUMN_Prize = "Prize";
 
     public static final String COLUMN_Type = "Type";
+    
+    public static final String COLUMN_Direction = "Dirtction";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -55,6 +57,9 @@ public class Payrecord implements Serializable {
 
     @ApiModelProperty(value = "类型/方式")
     private Integer Type;
+    
+    @ApiModelProperty(value = "方向 0:默认+ 1:-")
+    private Integer Direction;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

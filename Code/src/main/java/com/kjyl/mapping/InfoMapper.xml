@@ -20,6 +20,7 @@
 		<result property="Delete" column="Info_Delete" />
 		<result property="CreateTime" column="Info_CreateTime" />
 		<result property="ModifyTime" column="Info_ModifyTime" />
+		<association property="State" javaType="com.kjyl.pojo.Status" resultMap="com.kjyl.dao.StatusMapper.status" />
 	</resultMap>
 	<sql id="sql">
 		Info_Id, Info_UseId, Info_LogicId, Info_Title, Info_Content, Info_Like, Info_Review, Info_Share, Info_Collect, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime
@@ -71,8 +72,8 @@
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="info" parameterType="long">
 		SELECT
-		<include refid="sql"></include>
-			FROM fit_info
+		<include refid="sql"/>
+			FROM fit_info 
 		<where>
 			Info_Id = #{_parameter} 
 		</where>
@@ -83,8 +84,11 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="info" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql"/>,<include refid="com.kjyl.dao.StatusMapper.sql"/>
 			FROM fit_info
+			LEFT JOIN fit_status ON fit_status.Status_UseId = #{UId}
+			AND fit_status.Status_LogicId = fit_info.Info_Id 
+			AND fit_status.Status_Delete &lt; 88 
 		<where>
 			<include refid="where"></include>
 		</where>

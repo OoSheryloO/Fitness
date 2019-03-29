@@ -12,6 +12,7 @@
 		<result property="LogicId" column="PayRecord_LogicId" />
 		<result property="Prize" column="PayRecord_Prize" />
 		<result property="Type" column="PayRecord_Type" />
+		<result property="Direction" column="PayRecord_Direction" />
 		<result property="Memo" column="PayRecord_Memo" />
 		<result property="Status" column="PayRecord_Status" />
 		<result property="Delete" column="PayRecord_Delete" />
@@ -19,7 +20,7 @@
 		<result property="ModifyTime" column="PayRecord_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		PayRecord_Id, PayRecord_UseId, PayRecord_LogicId, PayRecord_Prize, PayRecord_Type, PayRecord_Memo, PayRecord_Status, PayRecord_Delete, PayRecord_CreateTime, PayRecord_ModifyTime
+		PayRecord_Id, PayRecord_UseId, PayRecord_LogicId, PayRecord_Prize, PayRecord_Type, PayRecord_Direction, PayRecord_Memo, PayRecord_Status, PayRecord_Delete, PayRecord_CreateTime, PayRecord_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -37,6 +38,9 @@
 		</if>
 		<if test="Type != null ">
 			 AND PayRecord_Type = #{Type}
+		</if>
+		<if test="Direction != null ">
+			 AND PayRecord_Direction = #{Direction}
 		</if>
 		<if test="Memo != null ">
 			 AND PayRecord_Memo = #{Memo}
@@ -97,6 +101,7 @@
 				#{LogicId},
 				#{Prize},
 				#{Type},
+				#{Direction},
 				#{Memo},
 				Default,
 				Default,
@@ -119,6 +124,9 @@
 			</if>
 			<if test="Type != null ">
 				PayRecord_Type = #{Type},
+			</if>
+			<if test="Direction != null ">
+				 PayRecord_Direction = #{Direction}
 			</if>
 			<if test="Memo != null ">
 				PayRecord_Memo = #{Memo},

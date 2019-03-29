@@ -3,7 +3,7 @@
   <display-name>Fitness</display-name>
   <context-param>
     <param-name>webAppRootKey</param-name>
-    <param-value>ReadBank</param-value>
+    <param-value>Fitness</param-value>
   </context-param>
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -15,7 +15,7 @@
 	<filter-name>cors</filter-name>
 	<filter-class>com.kjyl.config.filter</filter-class>
   </filter>
-	<filter-mapping>
+  <filter-mapping>
 	<filter-name>cors</filter-name>
 	<url-pattern>/*</url-pattern>
   </filter-mapping>

@@ -10,14 +10,17 @@
 		<result property="Id" column="Cart_Id" />
 		<result property="UseId" column="Cart_UseId" />
 		<result property="LogicId" column="Cart_LogicId" />
+		<result property="Amount" column="Cart_Amount" />
+		<result property="Size" column="Cart_Size" />		
 		<result property="Memo" column="Cart_Memo" />
 		<result property="Status" column="Cart_Status" />
 		<result property="Delete" column="Cart_Delete" />
 		<result property="CreateTime" column="Cart_CreateTime" />
 		<result property="ModifyTime" column="Cart_ModifyTime" />
+		<association property="Goods" javaType="com.kjyl.pojo.Goods" resultMap="com.kjyl.dao.GoodsMapper.goods" />
 	</resultMap>
 	<sql id="sql">
-		Cart_Id, Cart_UseId, Cart_LogicId, Cart_Memo, Cart_Status, Cart_Delete, Cart_CreateTime, Cart_ModifyTime
+		Cart_Id, Cart_UseId, Cart_LogicId, Cart_Amount, Cart_Size, Cart_Memo, Cart_Status, Cart_Delete, Cart_CreateTime, Cart_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -29,6 +32,12 @@
 		</if>
 		<if test="LogicId != null ">
 			 AND Cart_LogicId = #{LogicId}
+		</if>
+		<if test="Amount != null ">
+			 AND Cart_Amount = #{Amount}
+		</if>
+		<if test="Size != null ">
+			 AND Cart_Size = #{Size}
 		</if>
 		<if test="Memo != null ">
 			 AND Cart_Memo = #{Memo}
@@ -63,8 +72,9 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="cart" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql"></include> ,<include refid="com.kjyl.dao.GoodsMapper.sql"/>
 			FROM fit_cart
+			LEFT JOIN fit_goods ON fit_goods.Goods_Id = fit_cart.Cart_LogicId AND fit_cart.Cart_Delete &lt; 88
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -87,6 +97,8 @@
 				#{Id},
 				#{UseId},
 				#{LogicId},
+				Default,
+				#{Size},
 				#{Memo},
 				Default,
 				Default,
@@ -103,6 +115,12 @@
 			</if>
 			<if test="LogicId != null ">
 				Cart_LogicId = #{LogicId},
+			</if>
+			<if test="Amount != null ">
+				 Cart_Amount = #{Amount},
+			</if>
+			<if test="Size != null ">
+				 Cart_Size = #{Size},
 			</if>
 			<if test="Memo != null ">
 				Cart_Memo = #{Memo},

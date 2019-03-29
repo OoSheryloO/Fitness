@@ -91,6 +91,9 @@ public class Post implements Serializable {
     
     @ApiModelProperty(value = "用户")
     private SimpleUser User;
+    
+    @ApiModelProperty(value = "其他状态")
+    private Status State;
 
 	@ApiModelProperty(value = "['Id','帖子-打卡']['UseId','使用Id']['LogicId','逻辑Id']['Title','评论标题']['Content','内容']['Like','点赞数']['Review','评论数']['Collect','收藏数']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)

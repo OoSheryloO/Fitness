@@ -39,10 +39,10 @@ public class InfoController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchInfoPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchInfoPage(Integer status, String id, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
-        mapSearch.put("search", search);
+        mapSearch.put(DBParam.sUIdKey, id);
         if(status != null && status != -1){
         	mapSearch.put(Info.COLUMN_Status, status);
         }

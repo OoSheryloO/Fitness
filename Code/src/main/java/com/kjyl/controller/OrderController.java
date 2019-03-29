@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Card;
+import com.kjyl.pojo.Cart;
+import com.kjyl.pojo.Course;
+import com.kjyl.pojo.Goods;
 import com.kjyl.pojo.Order;
 import com.kjyl.pojo.Syllabus;
 import com.kjyl.util.CodeInfo;
@@ -88,6 +92,7 @@ public class OrderController extends BaseController {
         Order temp = JSON.parseObject(data, Order.class);
         Order obj = new Order();
         boolean isNew = false;
+        boolean Residue = false;
         if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
@@ -110,28 +115,61 @@ public class OrderController extends BaseController {
         if(isNew){
             obj.setId(IdWorker.CreateStringNewId());
             obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj = OrderService.Insert(obj);
             
-            //判断type 1 卡 2 课程 3 商品
+            //判断type 1 卡 2 课程 3 商品 支付回调 失败仓库+1
             switch (obj.getType()) {
 			case 1:
+				Card pjCard = CardService.SearchBySpecial(obj.getLogicId());
+				if (pjCard != null && pjCard.getResidue() > 0) {
+					pjCard.setResidue(pjCard.getResidue() - 1);
+					this.CardService.Modify(pjCard);
+				}else {
+					Residue = true;
+				}
 				
 				break;
 			case 2://写入课程表
+				Course pjCourse = CourseService.SearchBySpecial(obj.getLogicId());
+				if (pjCourse != null && pjCourse.getApply() > 0) {
+					pjCourse.setApply(pjCourse.getApply() - 1);
+					this.CourseService.Modify(pjCourse);
+				}else {
+					Residue = true;
+				}
+				
 				Syllabus pjSy = new Syllabus();
 				pjSy.setId(IdWorker.CreateStringNewId());
 				pjSy.setUseId(obj.getUseId());
 				pjSy.setLogicId(obj.getLogicId());
-				SyllabusService.Insert(pjSy);
+				this.SyllabusService.Insert(pjSy);
+				
 				break;
 			case 3:
-	
+				String[] goodids = obj.getGoods().split("@::@");
+				for (String goodid : goodids) {
+					Cart pjCart = CartService.SearchBySpecial(goodid);
+					if (pjCart != null) {
+						pjCart.setDelete(DBParam.RecordStatus.Delete.getCode());
+						CartService.Modify(pjCart);
+					}
+					Goods pjGood = GoodsService.SearchBySpecial(pjCart.getLogicId());
+					if (pjGood != null && pjGood.getResidue() >= pjCart.getAmount()) {
+						pjGood.setResidue(pjGood.getResidue() - pjCart.getAmount());
+						this.GoodsService.Modify(pjGood);
+					}else {
+						Residue = true;
+					}
+				}
 			break;
 			}
-            
         }else{
             tempObj = OrderService.Modify(obj);
         }
+        if (Residue) {
+        	return sharedInstance().FalseData("库存不足!请刷新", CodeInfo.Code.NO.getCode());
+		}else {
+			tempObj = OrderService.Insert(obj);
+		}
         if (tempObj != null) {
 			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {

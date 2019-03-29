@@ -19,7 +19,7 @@ public class CorsFilter extends OncePerRequestFilter {
       System.out.println(strUri);
       response.setHeader("Access-Control-Allow-Origin", "*");
       response.setHeader("Access-Control-Allow-Method", "GET,POST,OPTIONS");
-       filterChain.doFilter(request, response);    
+      filterChain.doFilter(request, response);    
   }
 
 }

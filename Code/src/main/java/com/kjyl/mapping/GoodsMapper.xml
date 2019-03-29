@@ -13,6 +13,7 @@
 		<result property="Title" column="Goods_Title" />
 		<result property="Intro" column="Goods_Intro" />
 		<result property="Price" column="Goods_Price" />
+		<result property="Residue" column="Goods_Residue" />
 		<result property="FreeShip" column="Goods_FreeShip" />
 		<result property="FreeFirst" column="Goods_FreeFirst" />
 		<result property="RefundDay" column="Goods_RefundDay" />
@@ -26,7 +27,7 @@
 		<result property="ModifyTime" column="Goods_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Goods_Id, Goods_LogicId, Goods_HeadIcon, Goods_Title, Goods_Intro, Goods_Price, Goods_FreeShip, Goods_FreeFirst, Goods_RefundDay, Goods_Delivery, Goods_Type, Goods_Size, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
+		Goods_Id, Goods_LogicId, Goods_HeadIcon, Goods_Title, Goods_Intro, Goods_Price, Goods_Residue, Goods_FreeShip, Goods_FreeFirst, Goods_RefundDay, Goods_Delivery, Goods_Type, Goods_Size, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -47,6 +48,9 @@
 		</if>
 		<if test="Price != null ">
 			 AND Goods_Price = #{Price}
+		</if>
+		<if test="Residue != null ">
+			 AND Goods_Residue = #{Residue}
 		</if>
 		<if test="FreeShip != null ">
 			 AND Goods_FreeShip = #{FreeShip}
@@ -126,6 +130,7 @@
 				#{Title},
 				#{Intro},
 				#{Price},
+				#{Residue},
 				#{FreeShip},
 				#{FreeFirst},
 				#{RefundDay},
@@ -157,6 +162,9 @@
 			</if>
 			<if test="Price != null ">
 				Goods_Price = #{Price},
+			</if>
+			<if test="Residue != null ">
+				Goods_Residue = #{Residue},
 			</if>
 			<if test="FreeShip != null ">
 				Goods_FreeShip = #{FreeShip},

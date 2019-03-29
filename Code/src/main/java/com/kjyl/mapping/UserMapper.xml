@@ -13,12 +13,14 @@
 		<result property="Sex" column="User_Sex" />
 		<result property="Birthday" column="User_Birthday" />
 		<result property="Phone" column="User_Phone" />
+		<result property="LogicId" column="User_LogicId" />
 		<result property="QQ" column="User_QQ" />
 		<result property="MicroBlog" column="User_MicroBlog" />
 		<result property="QRCode" column="User_QRCode" />
 		<result property="WeChatOpenId" column="User_WeChatOpenId" />
 		<result property="Password" column="User_Password" />
 		<result property="PayPassword" column="User_PayPassword" />
+		<result property="Wallet" column="User_Wallet" />
 		<result property="City" column="User_City" />
 		<result property="FitClub" column="User_FitClub" />
 		<result property="Level" column="User_Level" />
@@ -38,7 +40,7 @@
 		, User_Id, User_HeadIcon, User_Name, User_Sex
 	</sql>
 	<sql id="sql">
-		User_Id, User_HeadIcon, User_Name, User_Sex, User_Birthday, User_Phone, User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenId, User_Password, User_PayPassword, User_City, User_FitClub, User_Level, User_Status, User_Delete, User_CreateTime, User_ModifyTime
+		User_Id, User_HeadIcon, User_Name, User_Sex, User_Birthday, User_Phone, User_LogicId , User_QQ, User_MicroBlog, User_QRCode, User_WeChatOpenId, User_Password, User_PayPassword, User_Wallet, User_City, User_FitClub, User_Level, User_Status, User_Delete, User_CreateTime, User_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -60,6 +62,9 @@
 		<if test="Phone != null ">
 			 AND User_Phone = #{Phone}
 		</if>
+		<if test="LogicId != null ">
+			 AND User_LogicId = #{LogicId}
+		</if>
 		<if test="QQ != null ">
 			 AND User_QQ = #{QQ}
 		</if>
@@ -77,6 +82,9 @@
 		</if>
 		<if test="PayPassword != null ">
 			 AND User_PayPassword = #{PayPassword}
+		</if>
+		<if test="Wallet != null ">
+			 AND User_Wallet = #{Wallet}
 		</if>
 		<if test="City != null ">
 			 AND User_City = #{City}
@@ -144,12 +152,14 @@
 				#{Sex},
 				#{Birthday},
 				#{Phone},
+				#{LogicId},
 				#{QQ},
 				#{MicroBlog},
 				#{QRCode},
 				#{WeChatOpenId},
 				#{Password},
 				#{PayPassword},
+				Default,
 				#{City},
 				#{FitClub},
 				#{Level},
@@ -178,6 +188,9 @@
 			<if test="Phone != null ">
 				User_Phone = #{Phone},
 			</if>
+			<if test="LogicId != null ">
+				User_LogicId = #{LogicId},
+			</if>
 			<if test="QQ != null ">
 				User_QQ = #{QQ},
 			</if>
@@ -195,6 +208,9 @@
 			</if>
 			<if test="PayPassword != null ">
 				User_PayPassword = #{PayPassword},
+			</if>
+			<if test="Wallet != null">
+				User_Wallet = #{Wallet},
 			</if>
 			<if test="City != null ">
 				User_City = #{City},

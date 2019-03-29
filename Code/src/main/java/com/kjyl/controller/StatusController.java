@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Info;
+import com.kjyl.pojo.Post;
 import com.kjyl.pojo.Status;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
@@ -111,6 +113,46 @@ public class StatusController extends BaseController {
         }else{
             tempObj = StatusService.Modify(obj);
         }
+        if (temp.getType() == 1) {//1 帖子 2资讯
+        	Post pjPost = PostService.SearchBySpecial(temp.getLogicId());
+			switch (temp.getState()) {
+			case 1://点赞
+				pjPost.setLike(pjPost.getLike() + 1);
+				break;
+			case 2://取消点赞
+				pjPost.setLike(pjPost.getLike() - 1);
+				break;
+			case 3://收藏
+				pjPost.setCollect(pjPost.getCollect() + 1);
+				break;
+			case 4://取消收藏
+				pjPost.setCollect(pjPost.getCollect() - 1);
+				break;
+			default:
+				break;
+			}
+			PostService.Modify(pjPost);
+		}
+        if (temp.getType() == 2) {
+        	Info pjInfo = InfoService.SearchBySpecial(temp.getLogicId());
+        	switch (temp.getState()) {
+			case 1:
+				pjInfo.setLike(pjInfo.getLike() + 1);
+				break;
+			case 2:
+				pjInfo.setLike(pjInfo.getLike() - 1);
+				break;
+			case 3:
+				pjInfo.setCollect(pjInfo.getCollect() + 1);
+				break;
+			case 4:
+				pjInfo.setCollect(pjInfo.getCollect() - 1);
+				break;
+			default:
+				break;
+			}
+        	InfoService.Modify(pjInfo);
+		}
         if (tempObj != null) {
 			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {

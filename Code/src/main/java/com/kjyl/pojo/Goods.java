@@ -32,6 +32,8 @@ public class Goods implements Serializable {
     public static final String COLUMN_Intro = "Intro";
 
     public static final String COLUMN_Price = "Price";
+    
+    public static final String COLUMN_Residue = "Residue";
 
     public static final String COLUMN_FreeShip = "FreeShip";
 
@@ -72,6 +74,9 @@ public class Goods implements Serializable {
 
     @ApiModelProperty(value = "价格")
     private String Price;
+    
+    @ApiModelProperty(value = "仓库")
+    private Integer Residue;
 
     @ApiModelProperty(value = "免邮")
     private String FreeShip;
@@ -106,7 +111,7 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
 
-	@ApiModelProperty(value = "['Id','商品-俱乐部']['LogicId','逻辑Id']['HeadIcon','头像']['Title','名称']['Intro','介绍']['Price','价格']['FreeShip','免邮']['FreeFirst','是否首单包邮']['RefundDay','退货时间/d']['Delivery','配送地区']['Type','类型']['Size','规格']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
+	@ApiModelProperty(value = "['Id','商品-俱乐部']['LogicId','逻辑Id']['HeadIcon','头像']['Title','名称']['Intro','介绍']['Price','价格']['Residue','仓库']['FreeShip','免邮']['FreeFirst','是否首单包邮']['RefundDay','退货时间/d']['Delivery','配送地区']['Type','类型']['Size','规格']['Memo','备注']['Status','状态']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
 	public String GoodsField;
 }

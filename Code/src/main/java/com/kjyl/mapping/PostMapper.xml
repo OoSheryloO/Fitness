@@ -20,6 +20,7 @@
 		<result property="CreateTime" column="Post_CreateTime" />
 		<result property="ModifyTime" column="Post_ModifyTime" />
 		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
+		<association property="State" javaType="com.kjyl.pojo.Status" resultMap="com.kjyl.dao.StatusMapper.status" />
 		<collection property="Picture" column="Picture" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
@@ -81,8 +82,12 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="post" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql" /><include refid="com.kjyl.dao.UserMapper.simpleUserSql"/>
+		<include refid="sql"/><include refid="com.kjyl.dao.UserMapper.simpleUserSql"/>
+		,<include refid="com.kjyl.dao.StatusMapper.sql"/>
 			FROM fit_post, fit_user
+			LEFT JOIN fit_status ON fit_status.Status_UseId = #{UId}
+			AND fit_status.Status_LogicId = fit_post.Post_Id 
+			AND fit_status.Status_Delete &lt; 88 
 		<where>
 			fit_user.User_Delete &lt; 88 AND fit_post.Post_UseId = fit_user.User_Id AND 
 			<include refid="where"></include>

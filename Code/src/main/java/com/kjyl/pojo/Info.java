@@ -85,6 +85,9 @@ public class Info implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
+    
+    @ApiModelProperty(value = "其他状态")
+    private Status State;
 
 	@ApiModelProperty(value = "['Id','资讯-俱乐部']['UseId','使用Id']['LogicId','逻辑Id']['Title','标题']['Content','内容']['Like','点赞']['Review','评论']['Share','分享数']['Collect','收藏数']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)
