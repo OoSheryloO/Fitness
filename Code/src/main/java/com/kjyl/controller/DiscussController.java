@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +59,7 @@ public class DiscussController extends BaseController {
 //    @PostMapping("/setDiscussStatus")
     @RequestMapping(value="/setDiscussStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setDiscussStatus(String data){
+    public Map<String, Object> setDiscussStatus(@RequestBody String data){
         Discuss temp = JSON.parseObject(data, Discuss.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -86,7 +87,7 @@ public class DiscussController extends BaseController {
 //    @PostMapping("/modifyDiscuss")
     @RequestMapping(value="/modifyDiscuss", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyDiscuss(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyDiscuss(@RequestBody String data, HttpServletRequest request) {
         Discuss temp = JSON.parseObject(data, Discuss.class);
         Discuss obj = new Discuss();
         boolean isNew = false;

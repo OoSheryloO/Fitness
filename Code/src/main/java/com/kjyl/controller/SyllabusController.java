@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +57,7 @@ public class SyllabusController extends BaseController {
 //    @PostMapping("/setSyllabusStatus")
     @RequestMapping(value="/setSyllabusStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setSyllabusStatus(String data){
+    public Map<String, Object> setSyllabusStatus(@RequestBody String data){
         Syllabus temp = JSON.parseObject(data, Syllabus.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -84,7 +85,7 @@ public class SyllabusController extends BaseController {
 //    @PostMapping("/modifySyllabus")
     @RequestMapping(value="/modifySyllabus", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifySyllabus(String data, HttpServletRequest request) {
+    public Map<String, Object> modifySyllabus(@RequestBody String data, HttpServletRequest request) {
         Syllabus temp = JSON.parseObject(data, Syllabus.class);
         Syllabus obj = new Syllabus();
         boolean isNew = false;

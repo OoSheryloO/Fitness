@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +57,7 @@ public class CartController extends BaseController {
 //    @PostMapping("/setCartStatus")
     @RequestMapping(value="/setCartStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setCartStatus(String data){
+    public Map<String, Object> setCartStatus(@RequestBody String data){
         Cart temp = JSON.parseObject(data, Cart.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -84,7 +85,7 @@ public class CartController extends BaseController {
 //    @PostMapping("/modifyCart")
     @RequestMapping(value="/modifyCart", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyCart(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyCart(@RequestBody String data, HttpServletRequest request) {
         Cart temp = JSON.parseObject(data, Cart.class);
         Cart obj = new Cart();
         boolean isNew = false;

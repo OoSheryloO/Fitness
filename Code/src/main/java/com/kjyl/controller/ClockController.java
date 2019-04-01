@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +59,7 @@ public class ClockController extends BaseController {
 //    @PostMapping("/setClockStatus")
     @RequestMapping(value="/setClockStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setClockStatus(String data){
+    public Map<String, Object> setClockStatus(@RequestBody String data){
         Clock temp = JSON.parseObject(data, Clock.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -86,7 +87,7 @@ public class ClockController extends BaseController {
 //    @PostMapping("/modifyClock")
     @RequestMapping(value="/modifyClock", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyClock(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyClock(@RequestBody String data, HttpServletRequest request) {
         Clock temp = JSON.parseObject(data, Clock.class);
         Clock obj = new Clock();
         boolean isNew = false;

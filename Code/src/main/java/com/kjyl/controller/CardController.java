@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class CardController extends BaseController {
 //    @PostMapping("/setCardStatus")
     @RequestMapping(value="/setCardStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setCardStatus(String data){
+    public Map<String, Object> setCardStatus(@RequestBody String data){
         Card temp = JSON.parseObject(data, Card.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class CardController extends BaseController {
 //    @PostMapping("/modifyCard")
     @RequestMapping(value="/modifyCard", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyCard(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyCard(@RequestBody String data, HttpServletRequest request) {
         Card temp = JSON.parseObject(data, Card.class);
         Card obj = new Card();
         boolean isNew = false;

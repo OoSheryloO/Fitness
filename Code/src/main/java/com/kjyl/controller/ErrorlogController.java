@@ -88,7 +88,7 @@ public class ErrorlogController extends BaseController {
 //    @PostMapping("/setErrorlogStatus")
     @RequestMapping(value="/setErrorlogStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setErrorlogStatus(String data){
+    public Map<String, Object> setErrorlogStatus(@RequestBody String data){
         Errorlog temp = JSON.parseObject(data, Errorlog.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -116,7 +116,7 @@ public class ErrorlogController extends BaseController {
 //    @PostMapping("/modifyErrorlog")
     @RequestMapping(value="/modifyErrorlog", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyErrorlog(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyErrorlog(@RequestBody String data, HttpServletRequest request) {
         Errorlog temp = JSON.parseObject(data, Errorlog.class);
         Errorlog obj = new Errorlog();
         boolean isNew = false;

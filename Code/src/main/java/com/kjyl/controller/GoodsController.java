@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +40,10 @@ public class GoodsController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchGoodsPage(Integer status, String search, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchGoodsPage(Integer status, Integer type, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
-        mapSearch.put("search", search);
+        mapSearch.put(Goods.COLUMN_Type, type);
         if(status != null && status != -1){
         	mapSearch.put(Goods.COLUMN_Status, status);
         }
@@ -55,7 +56,7 @@ public class GoodsController extends BaseController {
 //    @PostMapping("/setGoodsStatus")
     @RequestMapping(value="/setGoodsStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setGoodsStatus(String data){
+    public Map<String, Object> setGoodsStatus(@RequestBody String data){
         Goods temp = JSON.parseObject(data, Goods.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class GoodsController extends BaseController {
 //    @PostMapping("/modifyGoods")
     @RequestMapping(value="/modifyGoods", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyGoods(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyGoods(@RequestBody String data, HttpServletRequest request) {
         Goods temp = JSON.parseObject(data, Goods.class);
         Goods obj = new Goods();
         boolean isNew = false;

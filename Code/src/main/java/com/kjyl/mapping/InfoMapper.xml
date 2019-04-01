@@ -21,6 +21,7 @@
 		<result property="CreateTime" column="Info_CreateTime" />
 		<result property="ModifyTime" column="Info_ModifyTime" />
 		<association property="State" javaType="com.kjyl.pojo.Status" resultMap="com.kjyl.dao.StatusMapper.status" />
+		<collection property="Picture" column="Info_Id" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
 		Info_Id, Info_UseId, Info_LogicId, Info_Title, Info_Content, Info_Like, Info_Review, Info_Share, Info_Collect, Info_Status, Info_Delete, Info_CreateTime, Info_ModifyTime

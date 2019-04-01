@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -141,7 +142,7 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value="/wechatin", method=RequestMethod.POST)
     @ApiOperation(value = "微信登录")
-    public Map<String, Object> weChatIn(String data, HttpServletRequest request) {
+    public Map<String, Object> weChatIn(@RequestBody String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         User temp = JSON.parseObject(data, User.class);

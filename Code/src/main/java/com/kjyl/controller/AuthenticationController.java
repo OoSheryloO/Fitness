@@ -24,6 +24,8 @@ import java.util.Properties;
 
 import com.kjyl.pojo.User;
 import com.kjyl.util.BaseUtil;
+import com.kjyl.util.CodeInfo;
+import com.kjyl.util.DBParam;
 import com.kjyl.util.HostUtil;
 
 public class AuthenticationController implements HandlerInterceptor {
@@ -64,6 +66,9 @@ public class AuthenticationController implements HandlerInterceptor {
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, X-Custom-Header, HaiYi-Access-Token");
 		
+		
+		request.getHeader(CodeInfo.sTokenKey);
+		System.out.println(request.getHeader(CodeInfo.sTokenKey));
 //		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 //		Map<String, String> map = HostUtil.getHeadersInfo(request);
 //		if (uri.contains("payCallBack")) {
@@ -179,7 +184,7 @@ public class AuthenticationController implements HandlerInterceptor {
 //        if(param==null || param.equals("")) {
 //            param = (String) request.getAttribute(BaseUtil.paramKey);
 //        }
-        request.setAttribute(BaseUtil.paramKey,param);
+        request.setAttribute(BaseUtil.dataKey, param);
         if (passList.contains(uri)) {
           	 return true;
    		}
@@ -187,273 +192,10 @@ public class AuthenticationController implements HandlerInterceptor {
 //        SmBaseUtil.addAccessActivity(request, uri, accessActiveService);
         String token = map.get(BaseUtil.tokenKey);
         Map<String, Object> onLineQuery = new HashMap<String, Object>();
-        if (whiteList.contains(uri)) {//不需要验证
-        	String userId = map.get(BaseUtil.userIdKey);
-        	if (null == userId || "".equals(userId) || "0" == userId || "0".equals(userId) || "-1" == userId || "-1".equals(userId)) {
-				flag = true;
-			}else {
-/*3.5 onLine表未建 onLineQuery.put(Onlines.attributeOnLineSession, token);
-                onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-                
- 				List<Onlines> onLineList = onLineService.queryList(onLineQuery);
-                if (onLineList.size() < 1) {
-                	Object temp= UserController.CheckUserIsExist(userService,Long.parseLong(userId),request);
-                  if (!(temp instanceof  User)) {
-                          request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-                      return false;
-                  }
-                	request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-                	return flag;
-				}else {
-					if (onLineList.get(0).getOnlineUserid() == Long.parseLong(userId)) {
-						flag = true;
-					}else {
-						request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-					}
-				}*/
-			}
-        	return flag;
-        } else {//需要验证
-            if (token == null || token.equals("")) {
-                request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
-                return false;
-            } else {
-                if (param == null || param.equals("")) {
-                        request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
-                    return false;
-                } else {
-                    request.setAttribute(BaseUtil.tokenKey,token);
-                    try {
-                        JSONObject jsonObject = JSON.parseObject(param);
-                        if (jsonObject == null) {
-                                request.getRequestDispatcher("/Error/Interface/Unknown").forward(request, response);
-                            return false;
-                        } else {
-//                            User user=null;
-//                            String Session="";
-//                            if(session!=null && session.getAttribute("UserID")!=null){
-//                                Session=(String)session.getAttribute("UserID");
-//                                if(!Session.equals(token)){
-//                                    Session="";
-//                                }
-//                            }
-//                            if (Session.equals("")) {
-                        	
-                            	String UID =  map.get(BaseUtil.userIdKey);
-                            	if (UID == null) {
-                            		UID = (String)request.getAttribute(BaseUtil.userIdKey);
-									if ( UID == null) {
-										UID = request.getParameter(BaseUtil.userIdKey);
-										if (UID == null) {
-											UID = jsonObject.getString(BaseUtil.userIdKey);
-											if (UID == null) {
-//												User pjUser = JSON.parseObject(jsonObject.getString(User.sUserClass), User.class);
-//												if (pjUser.getId() != null) {
-//													UID = pjUser.getId().toString();
-//												}
-											}
-										}
-									}
-                            	}
-                                //  内存中不存在,去数据库查询用户的在线状态
-/*3.5 onLine表未建                             onLineQuery.put(Onlines.attributeOnLineSession, token);
-                                onLineQuery.put(Onlines.attributeOnLineUserID, Long.parseLong(UID));
-                                onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-								List<Onlines> onLineList = onLineService.queryList(onLineQuery);*/
-
-                                Boolean isSessionAuthPass = true;//默认表示Session通过
-//                                try{
-//                                    String userString = jsonObject.getString("user");
-//                                    if(userString!=null && !userString.equals("")){
-//                                        user = JSON.parseObject(userString, User.class);
-//                                    }
-//                                }catch (Exception e){
-//                                    e.printStackTrace();
-//                                }
-                                
-/*3.5 onLine表未建					if (onLineList.size() > 0) {
-                                	if( Long.parseLong(UID) != onLineList.get(0).getOnlineUserid().longValue()){
-                                		Object temp= UserController.CheckUserIsExist(userService,Long.parseLong(UID),request);
-                                      if (!(temp instanceof  User)) {
-                                              request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-                                          return false;
-                                      }
-                                        isSessionAuthPass = false;
-                                    }
-								}else {
-									request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-								}*/
-                                
-                                    //如果Session数据库存在,且url里面带上了user值,经比较他们的userId不同,则提示用户无法验证通过
-//                                    if(user!=null && user.getUserId()>0 && user.getUserId().longValue()!=onLineList.get(0).getOnlineUserid().longValue()){
-////                            System.out.println(user.getUserId());
-////                            System.out.println(onLineList.get(0).getOnlineUserid());
-//                                        isSessionAuthPass=false;
-//                                    }
-//                                    if(user!=null && user.getUserId()>0){
-//                                        //检测当前操作的用户是否存在
-//                                        Object temp= UserController.CheckUserIsExist(userService,user.getUserId(),request);
-//                                        if (!(temp instanceof  User)) {
-//                                                request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-//                                            return false;
-//                                        }
-//                                    }
-                                
-/*3.5 onLine表未建
-                                if (onLineList == null || onLineList.size() == 0 || isSessionAuthPass==false) {
-                                        request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-                                    return false;
-                                }*/
-//                            }else {
-//                                try {
-//                                    String userString = jsonObject.getString("user");
-//                                    if (userString != null && !userString.equals("")) {
-//                                        user = JSON.parseObject(userString, User.class);
-//                                    }
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//                                if (user != null && user.getUserId() > 0) {
-//                                    //检测当前操作的用户是否存在
-//                                    Object temp = UserController.CheckUserIsExist(userService, user.getUserId(),request);
-//                                    if (!(temp instanceof User)) {
-//                                            request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-//                                        return false;
-//                                    }
-//                                }
-//                            }
-                        }
-                    }catch (JSONException e){
-                            request.getRequestDispatcher("/Error/Interface/JsonError").forward(request, response);
-                        return false;
-                    }
-                }
-            }
-        }
-
+        
         return true;
         
         
-        
-//      注释备份  
-//        String uri = request.getRequestURI().replace(request.getContextPath(), "");
-//        HttpSession session=request.getSession();
-//        Map<String, String> map = HostUtil.getHeadersInfo(request);
-//        if(uri.contains("payCallBack")){
-//            return true;
-//        }
-//        if(backWhiteList.contains(uri)){
-//            if(session!=null && ((User)session.getAttribute("user"))==null) {
-//                request.getRequestDispatcher("/Index/login").forward(request, response);
-//                return false;
-//            }else{
-//                return true;
-//            }
-//        }
-//        String param ="";
-//        try {
-//            param = HostUtil.getPostData(request);
-//        }catch (Exception e){}
-////        param = (String)request.getAttribute(BaseUtil.paramKey);
-//        if(param==null || param.equals("")) {
-//            param = request.getParameter(BaseUtil.paramKey);
-//        }
-//        
-//        request.setAttribute(BaseUtil.paramKey,param);
-//        if (passList.contains(uri) || whiteList.contains(uri)) {
-//            return true;
-//        } else {
-//            String token = map.get(BaseUtil.tokenKey);
-//            if(token==null || token.equals("")) {
-//                token = request.getParameter(BaseUtil.tokenKey);
-//            }
-//            if (token == null || token.equals("")) {
-//                    request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
-//                return false;
-//            } else {
-//                if (param == null || param.equals("")) {
-//                        request.getRequestDispatcher("/Error/Interface/Parameter").forward(request, response);
-//                    return false;
-//                } else {
-//                    request.setAttribute(BaseUtil.tokenKey,token);
-//                    try {
-//                        JSONObject jsonObject = JSON.parseObject(param);
-//                        if (jsonObject == null) {
-//                                request.getRequestDispatcher("/Error/Interface/Unknown").forward(request, response);
-//                            return false;
-//                        } else {
-//                            User user=null;
-//                            String Session="";
-//                            if(session!=null && session.getAttribute("UserID")!=null){
-//                                Session=(String)session.getAttribute("UserID");
-//                                if(!Session.equals(token)){
-//                                    Session="";
-//                                }
-//                            }
-//                            if (Session.equals("")) {
-//                                //  内存中不存在,去数据库查询用户的在线状态
-//                                Map<String, Object> onLineQuery = new HashMap<String, Object>();
-//                                onLineQuery.put(Onlines.attributeOnLineSession, token);
-//                                onLineQuery.put(Onlines.attributeOnLineStatus, BaseUtil.SessionStatus.OnLine.getCode());
-//                                List<Onlines> onLineList = onLineService.queryList(onLineQuery);
-//
-//                                Boolean isSessionAuthPass=true;//默认表示Session通过
-//                                try{
-//                                    String userString = jsonObject.getString("user");
-//                                    if(userString!=null && !userString.equals("")){
-//                                        user = JSON.parseObject(userString, User.class);
-//                                    }
-//                                }catch (Exception e){
-//                                    e.printStackTrace();
-//                                }
-//                                if(onLineList.size()>0){
-//                                    //如果Session数据库存在,且url里面带上了user值,经比较他们的userId不同,则提示用户无法验证通过
-//                                    if(user!=null && user.getUserId()>0 && user.getUserId().longValue()!=onLineList.get(0).getOnlineUserid().longValue()){
-//                                    	System.out.println(user.getUserId());
-//                                    	System.out.println(onLineList.get(0).getOnlineUserid());
-//                                        isSessionAuthPass=false;
-//                                    }
-//                                    if(user!=null && user.getUserId()>0){
-//                                        //检测当前操作的用户是否存在
-//                                        Object temp= UserController.CheckUserIsExist(userService,user.getUserId(),request);
-//                                        if (!(temp instanceof  User)) {
-//                                                request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-//                                            return false;
-//                                        }
-//                                    }
-//                                }
-//                                if (onLineList == null || onLineList.size() == 0 || isSessionAuthPass==false) {
-//                                        request.getRequestDispatcher("/Error/Interface/Authorized").forward(request, response);
-//                                    return false;
-//                                }
-//                            }else {
-//                                try {
-//                                    String userString = jsonObject.getString("user");
-//                                    if (userString != null && !userString.equals("")) {
-//                                        user = JSON.parseObject(userString, User.class);
-//                                    }
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//                                if (user != null && user.getUserId() > 0) {
-//                                    //检测当前操作的用户是否存在
-//                                    Object temp = UserController.CheckUserIsExist(userService, user.getUserId(),request);
-//                                    if (!(temp instanceof User)) {
-//                                            request.getRequestDispatcher("/Error/Interface/UserNoExist").forward(request, response);
-//                                        return false;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }catch (JSONException e){
-//                            request.getRequestDispatcher("/Error/Interface/JsonError").forward(request, response);
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return true;
         
         
         

@@ -21,6 +21,7 @@
 		<result property="Delete" column="Club_Delete" />
 		<result property="CreateTime" column="Club_CreateTime" />
 		<result property="ModifyTime" column="Club_ModifyTime" />
+		<collection property="Picture" column="Club_Id" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
 		Club_Id, Club_UseId, Club_Title, Club_Theme, Club_Intro, Club_Site, Club_Location, Club_Tel, Club_OpenTime, Club_Memo, Club_Status, Club_Delete, Club_CreateTime, Club_ModifyTime

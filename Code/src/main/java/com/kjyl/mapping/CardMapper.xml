@@ -13,6 +13,7 @@
 		<result property="Title" column="Card_Title" />
 		<result property="Intro" column="Card_Intro" />
 		<result property="Price" column="Card_Price" />
+		<result property="Residue" column="Card_Residue" />
 		<result property="Level" column="Card_Level" />
 		<result property="ValidTime" column="Card_ValidTime" />
 		<result property="Discount" column="Card_Discount" />
@@ -24,7 +25,7 @@
 		<result property="ModifyTime" column="Card_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Card_Id, Card_LogicId, Card_HeadIcon, Card_Title, Card_Intro, Card_Price, Card_Level, Card_ValidTime, Card_Discount, Card_Type, Card_Memo, Card_Status, Card_Delete, Card_CreateTime, Card_ModifyTime
+		Card_Id, Card_LogicId, Card_HeadIcon, Card_Title, Card_Intro, Card_Price, Card_Residue, Card_Level, Card_ValidTime, Card_Discount, Card_Type, Card_Memo, Card_Status, Card_Delete, Card_CreateTime, Card_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -45,6 +46,9 @@
 		</if>
 		<if test="Price != null ">
 			 AND Card_Price = #{Price}
+		</if>
+		<if test="Residue != null ">
+			 AND Card_Residue = #{Residue}
 		</if>
 		<if test="Level != null ">
 			 AND Card_Level = #{Level}
@@ -118,6 +122,7 @@
 				#{Title},
 				#{Intro},
 				#{Price},
+				#{Residue},
 				#{Level},
 				#{ValidTime},
 				#{Discount},
@@ -147,6 +152,9 @@
 			</if>
 			<if test="Price != null ">
 				Card_Price = #{Price},
+			</if>
+			<if test="Residue != null ">
+				Card_Residue = #{Residue},
 			</if>
 			<if test="Level != null ">
 				Card_Level = #{Level},

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class ClubcardController extends BaseController {
 //    @PostMapping("/setClubcardStatus")
     @RequestMapping(value="/setClubcardStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setClubcardStatus(String data){
+    public Map<String, Object> setClubcardStatus(@RequestBody String data){
         Clubcard temp = JSON.parseObject(data, Clubcard.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class ClubcardController extends BaseController {
 //    @PostMapping("/modifyClubcard")
     @RequestMapping(value="/modifyClubcard", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyClubcard(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyClubcard(@RequestBody String data, HttpServletRequest request) {
         Clubcard temp = JSON.parseObject(data, Clubcard.class);
         Clubcard obj = new Clubcard();
         boolean isNew = false;

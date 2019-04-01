@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p> Entity Class</p>
@@ -54,6 +55,9 @@ public class Club implements Serializable {
 
     @ApiModelProperty(value = "使用Id")
     private String UseId;
+    
+    @ApiModelProperty(value = "图片")
+    private List<String> Picture;
 
     @ApiModelProperty(value = "标题")
     private String Title;

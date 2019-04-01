@@ -38,9 +38,7 @@ public class Constant {
 	
 	/**
 	 * 百度APIStore需要的信息 实名认证接口
-
 	 */
-
 	public static String BDAPI_Url="http://apis.baidu.com/chazhao/idcard/idcard";//身份证实名认证
 	public static String BDAPI_AppKey="399385e38546cecf76a3429f69ad7ad9";
 	public static String BDAPI_BankAppKey="399385e38546cecf76a3429f69ad7ad9";//银行卡实名认证   699d0ddeaf053182b29df74d7eb0aa76
@@ -105,9 +103,9 @@ public class Constant {
 	public static  String AliPay_PayAccount="13396810625";
 	public static String  AliPay_PayAccountName="阙廷康";
 
-/**
- * 阿里大于短信验证码
- */
+	/**
+	 * 阿里大于短信验证码
+	 */
 	public static String VerifyCodeAppID="78155019";//开发 23270090  正式 234647150
 	public static String VerifyCodeSecretKey="CozuTYt0d2NSX9LICTJ8iaQnmhg6g7";//开发 c23a2a3742b8f6d851b127d33ce40c37  正式 1e227989f34009104554afe0417f2d49
 	public static String VerifyCodeSignName="阅读银行";

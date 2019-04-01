@@ -17,7 +17,7 @@
 	<!-- 静态资源的访问 --> 
     <mvc:resources location="/pages/" mapping="/pages/**"/>
 	 <!--拦截器配置-->
-    <!--  <mvc:interceptors>
+    <!-- <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <bean id="authenticationInterceptor" class="com.kjyl.controller.AuthenticationController">
@@ -48,7 +48,7 @@
                 </property>
             </bean>
         </mvc:interceptor>
-    </mvc:interceptors> -->
+    </mvc:interceptors>  -->
     <!-- 新增 -->
 <mvc:default-servlet-handler/>
 
@@ -68,6 +68,7 @@
                     <list>
                         <value>text/html;charset=UTF-8</value>
                         <value>application/json</value>
+                        <value>application/xml;charset=UTF-8</value> 
                     </list>
                 </property>
                 <property name="features">

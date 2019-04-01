@@ -36,7 +36,7 @@ public class UploadAliYunFile {
 		ossClient.putObject("wenews", path, inputStream);
 		// 关闭client
 		ossClient.shutdown();
-		System.out.println("http://wenews.oss-cn-hangzhou.aliyuncs.com/" + path);
+//		System.out.println("http://wenews.oss-cn-hangzhou.aliyuncs.com/" + path);
 		return "http://wenews.oss-cn-hangzhou.aliyuncs.com/" + path;
 	}
 	
@@ -44,7 +44,7 @@ public class UploadAliYunFile {
 		String name = file.getOriginalFilename();
 		String prefix = name.substring(name.lastIndexOf(".")+1);
 		Date date = new Date();
-		String path = fileType+"/" + ConstantUtils.sdfDate.format(date) + "/";
+		String path = fileType + "/" + ConstantUtils.sdfDate.format(date) + "/";
 		path += UUID.randomUUID().toString() + "." + prefix;
 		// endpoint以杭州为例，其它region请按实际情况填写
 		String endpoint = "http://oss-cn-hangzhou.aliyuncs.com/";
@@ -57,7 +57,7 @@ public class UploadAliYunFile {
 		ossClient.putObject("readbank", path, inputStream);
 		// 关闭client
 		ossClient.shutdown();
-		System.out.println("http://readbank.oss-cn-hangzhou.aliyuncs.com/" + path);
+//		System.out.println("http://readbank.oss-cn-hangzhou.aliyuncs.com/" + path);
 		return "http://readbank.oss-cn-hangzhou.aliyuncs.com/" + path;
 	}
 

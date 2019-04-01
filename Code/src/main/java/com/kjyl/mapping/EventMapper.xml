@@ -22,6 +22,7 @@
 		<result property="Delete" column="Event_Delete" />
 		<result property="CreateTime" column="Event_CreateTime" />
 		<result property="ModifyTime" column="Event_ModifyTime" />
+		<collection property="Picture" column="Event_Id" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
 		Event_Id, Event_UseId, Event_LogicId, Event_Title, Event_Intro, Event_Site, Event_StartTime, Event_EndTime, Event_StartApply, Event_EndApply, Event_Memo, Event_Status, Event_Delete, Event_CreateTime, Event_ModifyTime

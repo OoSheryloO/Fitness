@@ -57,7 +57,7 @@ public class IdentityController extends BaseController {
 //    @PostMapping("/setIdentityStatus")
     @RequestMapping(value="/setIdentityStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setIdentityStatus(String data){
+    public Map<String, Object> setIdentityStatus(@RequestBody String data){
         Identity temp = JSON.parseObject(data, Identity.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -85,7 +85,7 @@ public class IdentityController extends BaseController {
 //    @PostMapping("/modifyIdentity")
     @RequestMapping(value="/modifyIdentity", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyIdentity(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyIdentity(@RequestBody String data, HttpServletRequest request) {
         Identity temp = JSON.parseObject(data, Identity.class);
         Identity obj = new Identity();
         boolean isNew = false;

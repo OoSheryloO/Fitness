@@ -41,6 +41,8 @@ public class Course implements Serializable {
     public static final String COLUMN_ApplyTime = "ApplyTime";
 
     public static final String COLUMN_Apply = "Apply";
+    
+    public static final String COLUMN_ApplyLimit = "ApplyLimit";
 
     public static final String COLUMN_Price = "Price";
 
@@ -82,6 +84,9 @@ public class Course implements Serializable {
 
     @ApiModelProperty(value = "人数限制")
     private Integer Apply;
+    
+    @ApiModelProperty(value = "人数限制")
+    private Integer ApplyLimit;
 
     @ApiModelProperty(value = "价格")
     private String Price;

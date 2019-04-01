@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +55,7 @@ public class PayrecordController extends BaseController {
 //    @PostMapping("/setPayrecordStatus")
     @RequestMapping(value="/setPayrecordStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setPayrecordStatus(String data){
+    public Map<String, Object> setPayrecordStatus(@RequestBody String data){
         Payrecord temp = JSON.parseObject(data, Payrecord.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -82,7 +83,7 @@ public class PayrecordController extends BaseController {
 //    @PostMapping("/modifyPayrecord")
     @RequestMapping(value="/modifyPayrecord", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyPayrecord(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyPayrecord(@RequestBody String data, HttpServletRequest request) {
         Payrecord temp = JSON.parseObject(data, Payrecord.class);
         Payrecord obj = new Payrecord();
         boolean isNew = false;

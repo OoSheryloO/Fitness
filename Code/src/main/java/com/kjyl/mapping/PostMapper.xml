@@ -84,13 +84,13 @@
 		SELECT
 		<include refid="sql"/><include refid="com.kjyl.dao.UserMapper.simpleUserSql"/>
 		,<include refid="com.kjyl.dao.StatusMapper.sql"/>
-			FROM fit_post, fit_user
+			FROM fit_post
+			LEFT JOIN fit_user ON fit_user.User_Delete &lt; 88 AND fit_post.Post_UseId = fit_user.User_Id 
 			LEFT JOIN fit_status ON fit_status.Status_UseId = #{UId}
 			AND fit_status.Status_LogicId = fit_post.Post_Id 
 			AND fit_status.Status_Delete &lt; 88 
 		<where>
-			fit_user.User_Delete &lt; 88 AND fit_post.Post_UseId = fit_user.User_Id AND 
-			<include refid="where"></include>
+			<include refid="where"/>
 		</where>
 	</select>
 	

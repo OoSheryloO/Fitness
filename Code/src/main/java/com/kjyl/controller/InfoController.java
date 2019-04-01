@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class InfoController extends BaseController {
 //    @PostMapping("/setInfoStatus")
     @RequestMapping(value="/setInfoStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setInfoStatus(String data){
+    public Map<String, Object> setInfoStatus(@RequestBody String data){
         Info temp = JSON.parseObject(data, Info.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class InfoController extends BaseController {
 //    @PostMapping("/modifyInfo")
     @RequestMapping(value="/modifyInfo", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyInfo(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyInfo(@RequestBody String data, HttpServletRequest request) {
         Info temp = JSON.parseObject(data, Info.class);
         Info obj = new Info();
         boolean isNew = false;

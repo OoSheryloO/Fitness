@@ -7,13 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.kjyl.pojo.Card;
 import com.kjyl.pojo.Cart;
@@ -21,6 +25,7 @@ import com.kjyl.pojo.Course;
 import com.kjyl.pojo.Goods;
 import com.kjyl.pojo.Order;
 import com.kjyl.pojo.Syllabus;
+import com.kjyl.util.BaseUtil;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
 import com.kjyl.util.GenerateKey.IdWorker;
@@ -60,7 +65,7 @@ public class OrderController extends BaseController {
 //    @PostMapping("/setOrderStatus")
     @RequestMapping(value="/setOrderStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setOrderStatus(String data){
+    public Map<String, Object> setOrderStatus(@RequestBody String data){
         Order temp = JSON.parseObject(data, Order.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -88,7 +93,7 @@ public class OrderController extends BaseController {
 //    @PostMapping("/modifyOrder")
     @RequestMapping(value="/modifyOrder", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyOrder(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyOrder(@RequestBody String data, HttpServletRequest request) {
         Order temp = JSON.parseObject(data, Order.class);
         Order obj = new Order();
         boolean isNew = false;

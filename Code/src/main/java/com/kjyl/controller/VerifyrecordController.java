@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class VerifyrecordController extends BaseController {
 //    @PostMapping("/setVerifyrecordStatus")
     @RequestMapping(value="/setVerifyrecordStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setVerifyrecordStatus(String data){
+    public Map<String, Object> setVerifyrecordStatus(@RequestBody String data){
         Verifyrecord temp = JSON.parseObject(data, Verifyrecord.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class VerifyrecordController extends BaseController {
 //    @PostMapping("/modifyVerifyrecord")
     @RequestMapping(value="/modifyVerifyrecord", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyVerifyrecord(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyVerifyrecord(@RequestBody String data, HttpServletRequest request) {
         Verifyrecord temp = JSON.parseObject(data, Verifyrecord.class);
         Verifyrecord obj = new Verifyrecord();
         boolean isNew = false;

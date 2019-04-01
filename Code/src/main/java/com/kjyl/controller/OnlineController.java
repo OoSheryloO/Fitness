@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class OnlineController extends BaseController {
 //    @PostMapping("/setOnlineStatus")
     @RequestMapping(value="/setOnlineStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setOnlineStatus(String data){
+    public Map<String, Object> setOnlineStatus(@RequestBody String data){
         Online temp = JSON.parseObject(data, Online.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -83,7 +84,7 @@ public class OnlineController extends BaseController {
 //    @PostMapping("/modifyOnline")
     @RequestMapping(value="/modifyOnline", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyOnline(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyOnline(@RequestBody String data, HttpServletRequest request) {
         Online temp = JSON.parseObject(data, Online.class);
         Online obj = new Online();
         boolean isNew = false;

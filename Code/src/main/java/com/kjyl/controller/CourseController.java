@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +57,7 @@ public class CourseController extends BaseController {
 //    @PostMapping("/setCourseStatus")
     @RequestMapping(value="/setCourseStatus", method=RequestMethod.POST)
     @ApiOperation(value = "设置状态")
-    public Map<String, Object> setCourseStatus(String data){
+    public Map<String, Object> setCourseStatus(@RequestBody String data){
         Course temp = JSON.parseObject(data, Course.class);
         String[] ids = temp.getId().split(",");
         for (String Id : ids){
@@ -84,7 +85,7 @@ public class CourseController extends BaseController {
 //    @PostMapping("/modifyCourse")
     @RequestMapping(value="/modifyCourse", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyCourse(String data, HttpServletRequest request) {
+    public Map<String, Object> modifyCourse(@RequestBody String data, HttpServletRequest request) {
         Course temp = JSON.parseObject(data, Course.class);
         Course obj = new Course();
         boolean isNew = false;
@@ -103,6 +104,7 @@ public class CourseController extends BaseController {
         obj.setEndTime(temp.getEndTime());
         obj.setApplyTime(temp.getApplyTime());
         obj.setApply(temp.getApply());
+        obj.setApplyLimit(temp.getApplyLimit());
         obj.setPrice(temp.getPrice());
         obj.setSite(temp.getSite());
         obj.setMemo(temp.getMemo());
