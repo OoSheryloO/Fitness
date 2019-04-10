@@ -7,17 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.kjyl.pojo.Card;
 import com.kjyl.pojo.Cart;
@@ -25,7 +22,6 @@ import com.kjyl.pojo.Course;
 import com.kjyl.pojo.Goods;
 import com.kjyl.pojo.Order;
 import com.kjyl.pojo.Syllabus;
-import com.kjyl.util.BaseUtil;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
 import com.kjyl.util.GenerateKey.IdWorker;
@@ -104,6 +100,7 @@ public class OrderController extends BaseController {
             obj = OrderService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Order();
             }
         }
         obj.setUseId(temp.getUseId());
@@ -150,7 +147,7 @@ public class OrderController extends BaseController {
 				
 				break;
 			case 3:
-				String[] goodids = obj.getGoods().split("@::@");
+				String[] goodids = obj.getGoods().split(",");
 				for (String goodid : goodids) {
 					Cart pjCart = CartService.SearchBySpecial(goodid);
 					if (pjCart != null) {

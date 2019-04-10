@@ -179,17 +179,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Event">
-		UPDATE fit_event SET Event_Status = 88 WHERE Event_Id = #{_parameter} 
+		UPDATE fit_event SET Event_Delete = 88 WHERE Event_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Event">
-		UPDATE fit_event SET Event_Status=  1 WHERE Event_Id = #{_parameter} 
+		UPDATE fit_event SET Event_Delete = 1 WHERE Event_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Event">
-		UPDATE fit_event SET Event_Status = 88 
+		UPDATE fit_event SET Event_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -197,7 +197,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Event">
-		UPDATE fit_event SET Event_Status = 1 
+		UPDATE fit_event SET Event_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

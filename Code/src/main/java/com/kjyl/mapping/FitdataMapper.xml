@@ -266,17 +266,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Fitdata">
-		UPDATE fit_fitdata SET FitData_Status = 88 WHERE FitData_Id = #{_parameter} 
+		UPDATE fit_fitdata SET FitData_Delete = 88 WHERE FitData_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Fitdata">
-		UPDATE fit_fitdata SET FitData_Status=  1 WHERE FitData_Id = #{_parameter} 
+		UPDATE fit_fitdata SET FitData_Delete = 1 WHERE FitData_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Fitdata">
-		UPDATE fit_fitdata SET FitData_Status = 88 
+		UPDATE fit_fitdata SET FitData_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -284,7 +284,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Fitdata">
-		UPDATE fit_fitdata SET FitData_Status = 1 
+		UPDATE fit_fitdata SET FitData_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

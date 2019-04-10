@@ -90,44 +90,39 @@ public class StatusController extends BaseController {
         Status temp = JSON.parseObject(data, Status.class);
         Status obj = new Status();
         boolean isNew = false;
-        if("0".equals(temp.getId())){
+        if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
             obj = StatusService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Status();
             }
         }
         obj.setUseId(temp.getUseId());
         obj.setLogicId(temp.getLogicId());
-        obj.setLike(temp.getLike());
-        obj.setCollect(temp.getCollect());
         obj.setMemo(temp.getMemo());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 
-        Status tempObj = null;
-        if(isNew){
-            obj.setId(IdWorker.CreateStringNewId());
-            obj.setStatus(DBParam.RecordStatus.Default.getCode());
-            tempObj = StatusService.Insert(obj);
-        }else{
-            tempObj = StatusService.Modify(obj);
-        }
         if (temp.getType() == 1) {//1 帖子 2资讯
         	Post pjPost = PostService.SearchBySpecial(temp.getLogicId());
 			switch (temp.getState()) {
 			case 1://点赞
 				pjPost.setLike(pjPost.getLike() + 1);
+				obj.setLike(1);
 				break;
 			case 2://取消点赞
 				pjPost.setLike(pjPost.getLike() - 1);
+				obj.setLike(0);
 				break;
 			case 3://收藏
 				pjPost.setCollect(pjPost.getCollect() + 1);
+				obj.setCollect(1);
 				break;
 			case 4://取消收藏
 				pjPost.setCollect(pjPost.getCollect() - 1);
+				obj.setCollect(0);
 				break;
 			default:
 				break;
@@ -139,21 +134,33 @@ public class StatusController extends BaseController {
         	switch (temp.getState()) {
 			case 1:
 				pjInfo.setLike(pjInfo.getLike() + 1);
+				obj.setLike(1);
 				break;
 			case 2:
 				pjInfo.setLike(pjInfo.getLike() - 1);
+				obj.setLike(0);
 				break;
 			case 3:
 				pjInfo.setCollect(pjInfo.getCollect() + 1);
+				obj.setCollect(1);
 				break;
 			case 4:
 				pjInfo.setCollect(pjInfo.getCollect() - 1);
+				obj.setCollect(0);
 				break;
 			default:
 				break;
 			}
         	InfoService.Modify(pjInfo);
 		}
+        Status tempObj = null;
+        if(isNew){
+            obj.setId(IdWorker.CreateStringNewId());
+            obj.setStatus(DBParam.RecordStatus.Default.getCode());
+            tempObj = StatusService.Insert(obj);
+        }else{
+            tempObj = StatusService.Modify(obj);
+        }
         if (tempObj != null) {
 			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {

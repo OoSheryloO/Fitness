@@ -94,6 +94,7 @@ public class GoodsController extends BaseController {
             obj = GoodsService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Goods();
             }
         }
         obj.setLogicId(temp.getLogicId());

@@ -16,6 +16,8 @@
 		<result property="Level" column="Admin_Level" />
 		<result property="Version" column="Admin_Version" />
 		<result property="Memo" column="Admin_Memo" />
+		<result property="LogicId" column="Admin_LogicId" />
+		<result property="LogicId" column="Admin_LogicId" />
 		<result property="ParentId" column="Admin_ParentId" />
 		<result property="AreaId" column="Admin_AreaId" />
 		<result property="Status" column="Admin_Status" />
@@ -24,7 +26,7 @@
 		<result property="ModifyTime" column="Admin_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Admin_Id, Admin_Name, Admin_PassWord, Admin_NickName, Admin_Image, Admin_Phone, Admin_Level, Admin_Version, Admin_Memo, Admin_ParentId, Admin_AreaId, Admin_Status, Admin_Delete, Admin_CreateTime, Admin_ModifyTime
+		Admin_Id, Admin_Name, Admin_PassWord, Admin_NickName, Admin_Image, Admin_Phone, Admin_Level, Admin_Version, Admin_Memo, Admin_LogicId, Admin_ParentId, Admin_AreaId, Admin_Status, Admin_Delete, Admin_CreateTime, Admin_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -55,11 +57,14 @@
 		<if test="Memo != null ">
 			 AND Admin_Memo = #{Memo}
 		</if>
+		<if test="LogicId != null ">
+			 AND Admin_LogicId = #{LogicId}
+		</if>
 		<if test="ParentId != null ">
 			 AND Admin_ParentId = #{ParentId}
 		</if>
 		<if test="AreaId != null ">
-			 AND Admin_AreaId = #{AreaId}
+			 AND Admin_AreaId  #{AreaId}
 		</if>
 		<if test="Status != null ">
 			 AND Admin_Status = #{Status}
@@ -121,6 +126,7 @@
 				#{Level},
 				Default,
 				#{Memo},
+				#{LogicId},
 				#{ParentId},
 				#{AreaId},
 				Default,
@@ -157,6 +163,9 @@
 			<if test="Memo != null ">
 				Admin_Memo = #{Memo},
 			</if>
+			<if test="LogicId != null ">
+				Admin_LogicId = #{LogicId},
+			</if>
 			<if test="ParentId != null ">
 				Admin_ParentId = #{ParentId},
 			</if>
@@ -178,17 +187,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Admin">
-		UPDATE fit_admin SET Admin_Status = 88 WHERE Admin_Id = #{_parameter} 
+		UPDATE fit_admin SET Admin_Delete = 88 WHERE Admin_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Admin">
-		UPDATE fit_admin SET Admin_Status=  1 WHERE Admin_Id = #{_parameter} 
+		UPDATE fit_admin SET Admin_Delete=  1 WHERE Admin_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Admin">
-		UPDATE fit_admin SET Admin_Status = 88 
+		UPDATE fit_admin SET Admin_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -196,7 +205,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Admin">
-		UPDATE fit_admin SET Admin_Status = 1 
+		UPDATE fit_admin SET Admin_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

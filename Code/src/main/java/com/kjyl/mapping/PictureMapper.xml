@@ -86,14 +86,14 @@
 		 Picture_Url
 			FROM fit_picture
 		<where>
-			Picture_LogicId = #{_parameter} 
+			Picture_LogicId = #{_parameter} AND Picture_Delete &lt; 88
 		</where>
 	</select>
 	
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="picture" parameterType="long">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql"/>
 			FROM fit_picture
 		<where>
 			Picture_Id = #{_parameter} 
@@ -101,6 +101,14 @@
 	</select>
 	
 	<!-- 根据model 查找-->
+	<select id="SearchByModel" resultMap="picture" parameterType="com.kjyl.pojo.Picture">
+		SELECT 
+		<include refid="sql" />
+			FROM fit_picture
+		<where>
+			<include refid="where" /> LIMIT 1
+		</where>
+	</select>
 	
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="picture" parameterType="java.util.Map">
@@ -196,17 +204,21 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Picture">
-		UPDATE fit_picture SET Picture_Status = 88 WHERE Picture_Id = #{_parameter} 
+		UPDATE fit_picture SET Picture_Delete = 88 WHERE Picture_Id = #{_parameter} 
+	</update>
+	
+	<update id="RemoveBySpecialLogicId" parameterType="com.kjyl.pojo.Picture">
+		UPDATE fit_picture SET Picture_Delete = 88 WHERE Picture_LogicId = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Picture">
-		UPDATE fit_picture SET Picture_Status=  1 WHERE Picture_Id = #{_parameter} 
+		UPDATE fit_picture SET Picture_Delete=  1 WHERE Picture_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Picture">
-		UPDATE fit_picture SET Picture_Status = 88 
+		UPDATE fit_picture SET Picture_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -214,7 +226,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Picture">
-		UPDATE fit_picture SET Picture_Status = 1 
+		UPDATE fit_picture SET Picture_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

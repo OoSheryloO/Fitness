@@ -94,6 +94,7 @@ public class ApplyController extends BaseController {
             obj = ApplyService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Apply();
             }
         }
         obj.setUseId(temp.getUseId());

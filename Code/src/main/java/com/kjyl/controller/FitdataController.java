@@ -94,6 +94,7 @@ public class FitdataController extends BaseController {
             obj = FitdataService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Fitdata();
             }
         }
         obj.setUseId(temp.getUseId());

@@ -94,6 +94,7 @@ public class UserlogController extends BaseController {
             obj = UserlogService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Userlog();
             }
         }
         obj.setUseId(temp.getUseId());

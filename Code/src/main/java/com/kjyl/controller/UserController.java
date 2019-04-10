@@ -99,6 +99,7 @@ public class UserController extends BaseController {
             obj = UserService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new User();
             }
         }
         obj.setHeadIcon(temp.getHeadIcon());

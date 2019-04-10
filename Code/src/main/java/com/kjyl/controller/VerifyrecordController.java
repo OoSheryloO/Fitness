@@ -94,6 +94,7 @@ public class VerifyrecordController extends BaseController {
             obj = VerifyrecordService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Verifyrecord();
             }
         }
         obj.setUseId(temp.getUseId());

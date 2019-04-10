@@ -38,6 +38,8 @@ public class Admin implements Serializable {
     public static final String COLUMN_Version = "Version";
 
     public static final String COLUMN_Memo = "Memo";
+    
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_ParentId = "ParentId";
 
@@ -78,6 +80,9 @@ public class Admin implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String Memo;
+    
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "创建人Id")
     private String ParentId;

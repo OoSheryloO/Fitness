@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.kjyl.pojo.Picture;
 import com.kjyl.pojo.Post;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
@@ -43,7 +45,7 @@ public class PostController extends BaseController {
     public Map<String, Object> searchPostPage(Integer status, String id, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
-        mapSearch.put(Post.COLUMN_UseId, id);
+        mapSearch.put(DBParam.sUIdKey, id);
         if(status != null && status != -1){
         	mapSearch.put(Post.COLUMN_Status, status);
         }
@@ -94,6 +96,7 @@ public class PostController extends BaseController {
             obj = PostService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Post();
             }
         }
         obj.setUseId(temp.getUseId());
@@ -114,7 +117,36 @@ public class PostController extends BaseController {
         }else{
             tempObj = PostService.Modify(obj);
         }
+        if (temp.getPicture() != null) {
+        	if (!isNew) {
+				this.PictureService.RemoveBySpecialLogicId(obj.getId());
+			}
+			List<String> lst = temp.getPicture();
+			for (String id : lst) {
+				Picture pojo = this.PictureService.SearchBySpecial(id);
+				pojo.setLogicId(obj.getId());
+				pojo.setDelete(DBParam.RecordStatus.Default.getCode());
+				this.PictureService.Modify(pojo);
+			}
+		}
         if (tempObj != null) {
+//        	if (temp.getPicture() != null && !temp.getPicture().isEmpty()) {
+//            	if (!isNew) {
+//					Map<String, Object> mapSearch = new HashMap<String, Object>();
+//					mapSearch.put(Picture.COLUMN_LogicId, tempObj.getId());
+//					mapSearch.put(Picture.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+//					this.PictureService.RemoveByCondition(mapSearch);
+//				}
+//            	List<String> lst = temp.getPicture();
+//            	for (String Url : lst) {
+//        			Picture pjPic = new Picture(); 
+//        			pjPic.setUrl(Url);
+//        			pjPic = this.PictureService.SearchByModel(pjPic);
+//        			pjPic.setLogicId(obj.getId());
+//        			pjPic.setDelete(DBParam.RecordStatus.Default.getCode());
+//        			this.PictureService.Modify(pjPic);
+//        		}
+//    		}
 			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
 			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());

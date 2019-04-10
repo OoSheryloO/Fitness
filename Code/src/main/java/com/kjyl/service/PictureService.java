@@ -32,9 +32,21 @@ public class PictureService {
     @Autowired
 	private PictureMapper mapper;
     
+    public String SearchUrlBySpecial(String Id){
+		return mapper.SearchUrlBySpecial(Id);
+	}
+    
+    public int RemoveBySpecialLogicId(String id) {
+    	return mapper.RemoveBySpecialLogicId(id);
+    }
+    
 //	@Cacheable(value = "PictureCache", key="'Picture_'+#p0") 
 	public Picture SearchBySpecial(String Id){
 		return mapper.SearchBySpecial(Id);
+	}
+	
+	public Picture SearchByModel(Picture model){
+		return mapper.SearchByModel(model);
 	}
 
 //	@Cacheable(keyGenerator = "keyGenerator")

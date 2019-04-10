@@ -126,6 +126,7 @@ public class ErrorlogController extends BaseController {
             obj = ErrorlogService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Errorlog();
             }
         }
         obj.setUseId(temp.getUseId());

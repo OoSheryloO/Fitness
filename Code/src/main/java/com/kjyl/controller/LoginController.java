@@ -177,19 +177,25 @@ public class LoginController extends BaseController{
 				pjOl = lstOnline.get(0);
 				//注销前会话
         		context.signOutSession(SessionContext.sharedInstance().currentSession(pjOl.getSession()));
-				pjOl.setSession(session.getId());
+        		pjOl.setSession(session.getId());
 				OnlineService.Modify(pjOl);
 			} 
 		} else {//无用户
-			temp.setId(IdWorker.CreateStringNewId());
-			temp.setLevel(0);
-			UserService.Insert(temp);
-
+			User obj = new User();
+			obj.setId(IdWorker.CreateStringNewId());
+			obj.setLevel(0);
+			obj.setWeChatOpenId(temp.getWeChatOpenId());
+			obj.setSex(temp.getSex());
+			obj.setName(temp.getName());
+			obj.setHeadIcon(temp.getHeadIcon());
+			obj.setCity(temp.getCity());
+			UserService.Insert(obj);
+			
+			pjOl.setId(IdWorker.CreateStringNewId());
+			pjOl.setUseId(obj.getId());
+			pjOl.setSession(session.getId());
+			OnlineService.Insert(pjOl);
 		}
-		pjOl.setId(IdWorker.CreateStringNewId());
-		pjOl.setUseId(temp.getId());
-		pjOl.setSession(session.getId());
-		OnlineService.Insert(pjOl);
 		
 		mapResult.put(CodeInfo.sTokenKey, pjOl.getSession());
 		mapResult.put(CodeInfo.sDataKey, temp);

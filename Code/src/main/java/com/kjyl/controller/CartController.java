@@ -95,6 +95,7 @@ public class CartController extends BaseController {
             obj = CartService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Cart();
             }
         }
         obj.setUseId(temp.getUseId());

@@ -98,6 +98,7 @@ public class PictureController extends BaseController {
             obj = PictureService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Picture();
             }
         }
         obj.setUseId(temp.getUseId());
@@ -132,11 +133,35 @@ public class PictureController extends BaseController {
     
   @RequestMapping(value="/upload", method=RequestMethod.POST)
   @ApiOperation(value = "上传")
-  public Map<String, Object> upload(MultipartFile file, int type, String Id) throws FileNotFoundException, IOException{
+  public Map<String, Object> upload(@RequestBody MultipartFile file, int type, String id) throws FileNotFoundException, IOException{
 	  String sFileType = "Picture";
 	  switch (type) {
 	  case 1:
-		  sFileType = "UserHeadIcon";
+		  sFileType = "UserHeadIcon";//用户头像
+		  break;
+	  case 2:
+		  sFileType = "CardIcon";//卡片
+		  break;
+	  case 3:
+		  sFileType = "ClubIcon";//俱乐部
+		  break;
+	  case 4:
+		  sFileType = "CourseIcon";//课程
+		  break;
+	  case 5:
+		  sFileType = "PostIcon";//帖子
+		  break;
+	  case 6:
+		  sFileType = "EventIcon";//活动
+		  break;
+	  case 7:
+		  sFileType = "GoodsIcon";//商品
+		  break;
+	  case 8:
+		  sFileType = "InfoIcon";//资讯
+		  break;
+	  case 10:
+		  sFileType = "IdentityIcon";//身份证
 		  break;
 		default:
 			break;
@@ -144,15 +169,15 @@ public class PictureController extends BaseController {
 	  String sAliyunUrl = UploadAliYunFile.UploadAliYunFileService(file.getInputStream(), file, sFileType);
 	  Picture pjPic = new Picture();
 	  pjPic.setId(IdWorker.CreateStringNewId());
-	  pjPic.setUseId(Id);
+	  pjPic.setUseId(id);
 	  pjPic.setUrl(sAliyunUrl);
 	  pjPic.setType(type);
 	  
 	  pjPic = PictureService.Insert(pjPic);
       if(pjPic != null){
-      	return sharedInstance().TrueData(pjPic.getUrl(), "请求成功!", CodeInfo.Code.OK.getCode());
+      		return sharedInstance().TrueData(pjPic, "请求成功!", CodeInfo.Code.OK.getCode());
   		}else{
-  		return sharedInstance().FalseData("请求失败!", CodeInfo.Code.NO.getCode());
+  			return sharedInstance().FalseData("请求失败!", CodeInfo.Code.NO.getCode());
 		}
   }
 }

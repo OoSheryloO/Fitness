@@ -26,18 +26,18 @@ public class UploadAliYunFile {
 		String path = fileType + "/" + ConstantUtils.sdfDate.format(date) + "/";
 		path += UUID.randomUUID().toString() +"." + prefix;
 		// endpoint以杭州为例，其它region请按实际情况填写
-		String endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+		String endpoint = "http://oss-cn-qingdao.aliyuncs.com";
 		// accessKey请登录https://ak-console.aliyun.com/#/查看
 //		String accessKeyId = "LTAIIQkISE7PpDu1";
 //		String accessKeySecret = "j5Fd1wNx5w5J3Ox3ntouL8HqWwh3Vs";
 		// 创建OSSClient实例
-		OSSClient ossClient = new OSSClient(endpoint, Constant.APP_ID, Constant.APP_SECRET);
+		OSSClient ossClient = new OSSClient(endpoint, Constant.accessKeyId, Constant.accessKeySecret);
 		//       Images/2017-03-15/----------------cb21aa0a-cceb-49d6-a507-77f3dd71ee5c_800.PNG
-		ossClient.putObject("wenews", path, inputStream);
+		ossClient.putObject("ylfitness", path, inputStream);
 		// 关闭client
 		ossClient.shutdown();
 //		System.out.println("http://wenews.oss-cn-hangzhou.aliyuncs.com/" + path);
-		return "http://wenews.oss-cn-hangzhou.aliyuncs.com/" + path;
+		return "http://ylfitness.oss-cn-qingdao.aliyuncs.com/" + path;
 	}
 	
 	public static String UploadAliYunFileService(InputStream inputStream, MultipartFile file, String fileType) throws FileNotFoundException{
@@ -47,18 +47,18 @@ public class UploadAliYunFile {
 		String path = fileType + "/" + ConstantUtils.sdfDate.format(date) + "/";
 		path += UUID.randomUUID().toString() + "." + prefix;
 		// endpoint以杭州为例，其它region请按实际情况填写
-		String endpoint = "http://oss-cn-hangzhou.aliyuncs.com/";
+		String endpoint = "http://oss-cn-qingdao.aliyuncs.com/";
 		// accessKey请登录https://ak-console.aliyun.com/#/查看
 //		String accessKeyId = "LTAItihMSmlTuWst";
 //		String accessKeySecret = "CozuTYt0d2NSX9LICTJ8iaQnmhg6g7";
 		// 创建OSSClient实例
-		OSSClient ossClient = new OSSClient(endpoint, Constant.APP_ID, Constant.APP_SECRET);
+		OSSClient ossClient = new OSSClient(endpoint, Constant.accessKeyId, Constant.accessKeySecret);
 		//       Images/2017-03-15/----------------cb21aa0a-cceb-49d6-a507-77f3dd71ee5c_800.PNG
-		ossClient.putObject("readbank", path, inputStream);
+		ossClient.putObject("ylfitness", path, inputStream);
 		// 关闭client
 		ossClient.shutdown();
 //		System.out.println("http://readbank.oss-cn-hangzhou.aliyuncs.com/" + path);
-		return "http://readbank.oss-cn-hangzhou.aliyuncs.com/" + path;
+		return "http://ylfitness.oss-cn-qingdao.aliyuncs.com/" + path;
 	}
 
 }

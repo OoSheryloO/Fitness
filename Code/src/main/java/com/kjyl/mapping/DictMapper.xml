@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjyl.dao.DictMapper">
+<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+<!-- 返回的map -->
+	<resultMap id="dict" type="com.kjyl.pojo.Dict">
+		<result property="Id" column="Dict_Id" />
+		<result property="Value" column="Dict_Value" />
+		<result property="Info" column="Dict_Info" />
+		<result property="Type" column="Dict_Type" />
+		<result property="Status" column="Dict_Status" />
+		<result property="Level" column="Dict_Level" />
+		<result property="LogicId" column="Dict_LogicId" />
+		<result property="CreateTime" column="Dict_CreateTime" />
+		<result property="ModifyTime" column="Dict_ModifyTime" />
+	</resultMap>
+	
+	<sql id="sql">
+		Dict_Id, Dict_Value, Dict_Info, Dict_Type, Dict_Status, Dict_Level, Dict_LogicId, Dict_CreateTime, Dict_ModifyTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="Rand != null ">
+			 AND #{Rand} = #{Rand}
+		</if>
+		<if test="Id != null ">
+			 AND Dict_Id = #{Id}
+		</if>
+		<if test="Value != null ">
+			 AND Dict_Value = #{Value}
+		</if>
+		<if test="Info != null ">
+			 AND Dict_Info = #{Info}
+		</if>
+		<if test="Type != null ">
+			 AND Dict_Type = #{Type}
+		</if>
+		<if test="Status != null ">
+			 AND Dict_Status &lt; #{Status}
+		</if>
+		<if test="Level != null ">
+			 AND Dict_Level = #{Level}
+		</if>
+		<if test="LogicId != null ">
+			 AND Dict_LogicId = #{LogicId}
+		</if>
+		<if test="CreateTime != null ">
+			 AND Dict_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime != null ">
+			 AND Dict_ModifyTime = #{ModifyTime}
+		</if>
+
+	</sql>
+	
+	<!-- 根据Id 查找 flushCache=flase(默认) 不清空一二级缓存(分布式可能脏读(boot除外)) usecache=true(默认) 开启二级缓存 -->
+	<select id="SearchBySpecial" resultMap="dict" parameterType="long" >
+		SELECT
+		<include refid="sql" />
+			FROM fit_dict
+		<where>
+			Dict_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据Model 查找-->
+	<select id="SearchByModel" resultMap="dict" parameterType="com.kjyl.pojo.Dict">
+		SELECT 
+		<include refid="sql" />
+			FROM fit_dict
+		<where>
+			<include refid="where" /> LIMIT 1
+		</where>
+	</select>
+	
+	<!-- 根据条件 查找-->
+	<select id="SearchByCondition"  resultMap="dict" parameterType="java.util.Map">
+		SELECT
+		<include refid="sql" />
+			FROM fit_dict
+		<where>
+			<include refid="where" />
+		</where>
+	</select>
+	
+	<!-- 根据条件总数-->
+	<select id="SearchData" parameterType="map" resultType="int">
+		SELECT
+			COUNT(1)
+			FROM fit_dict
+			<where>
+				<include refid="where" />
+			</where>
+	</select>
+
+	<!-- 插入数据  flushCache=true(默认) 清空一二级缓存 -->
+	<insert id="Insert" parameterType="com.kjyl.pojo.Dict"><!--useGeneratedKeys="true"-->
+		INSERT INTO fit_dict( <include refid="sql" /> )
+		VALUES(
+				#{Id},
+				#{Value},
+				#{Info},
+				#{Type},
+				Default,
+				#{Level},
+				#{LogicId},
+				now(),
+				now()
+				)
+	</insert>
+		
+	<update id="Modify" parameterType="com.kjyl.pojo.Dict">
+		UPDATE fit_dict 
+		  <set> 
+			<if test="Value != null ">
+				Dict_Value = #{Value},
+			</if>
+			<if test="Info != null ">
+				Dict_Info = #{Info},
+			</if>
+			<if test="Type != null ">
+				Dict_Type = #{Type},
+			</if>
+			<if test="Status != null ">
+				Dict_Status = #{Status},
+			</if>
+			<if test="Level != null ">
+				Dict_Level = #{Level},
+			</if>
+			<if test="LogicId != null ">
+				Dict_LogicId = #{LogicId},
+			</if>
+				Dict_ModifyTime = now()
+		  </set>
+		<where>
+			Dict_Id= #{Id} 
+		</where>
+	</update>
+
+	<!-- 根据编号删除 by sheryl-->
+	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Dict">
+		UPDATE fit_dict SET Dict_Delete = 88 WHERE Dict_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by sheryl-->
+	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Dict">
+		UPDATE fit_dict SET Dict_Delete =  1 WHERE Dict_Id = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by sheryl-->
+	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Dict">
+		UPDATE fit_dict SET Dict_Delete = 88 
+		<where>
+			<include refid="where" />
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by sheryl-->
+	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Dict">
+		UPDATE fit_dict SET Dict_Delete = 1 
+		<where>
+			<include refid="where" />
+		</where>
+	</update>
+
+</mapper>

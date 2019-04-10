@@ -101,6 +101,7 @@ public class ClockController extends BaseController {
         	List<Clock> lisC = this.ClockService.SearchByCondition(mapSearch);
         	if (lisC == null || lisC.size() == 0) {
         		isNew = true;
+                obj = new Clock();
 			}
             /*obj = ClockService.SearchBySpecial(temp.getId());
             if(obj == null){

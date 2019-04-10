@@ -44,7 +44,7 @@ public class SimpleUser implements Serializable {
     @ApiModelProperty(value = "用户性别")
     private Integer Sex;
 
-	@ApiModelProperty(value = "['Id','用户']['HeadIcon','用户头像']['Name','昵称']['Sex','用户性别']")
-	@JSONField(serialize = false)
-	public String UserField;
+//	@ApiModelProperty(value = "['Id','用户']['HeadIcon','用户头像']['Name','昵称']['Sex','用户性别']")
+//	@JSONField(serialize = false)
+//	public String UserField;
 }

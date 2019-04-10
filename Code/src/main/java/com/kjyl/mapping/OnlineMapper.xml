@@ -130,17 +130,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Online">
-		UPDATE fit_online SET Online_Status = 88 WHERE Online_Id = #{_parameter} 
+		UPDATE fit_online SET Online_Delete = 88 WHERE Online_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Online">
-		UPDATE fit_online SET Online_Status=  1 WHERE Online_Id = #{_parameter} 
+		UPDATE fit_online SET Online_Delete = 1 WHERE Online_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Online">
-		UPDATE fit_online SET Online_Status = 88 
+		UPDATE fit_online SET Online_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -148,7 +148,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Online">
-		UPDATE fit_online SET Online_Status = 1 
+		UPDATE fit_online SET Online_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

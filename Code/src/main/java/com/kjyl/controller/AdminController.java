@@ -94,6 +94,7 @@ public class AdminController extends BaseController {
             obj = AdminService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Admin();
             }
         }
         obj.setName(temp.getName());
@@ -104,6 +105,7 @@ public class AdminController extends BaseController {
         obj.setLevel(temp.getLevel());
         obj.setVersion(temp.getVersion());
         obj.setMemo(temp.getMemo());
+        obj.setLogicId(temp.getLogicId());
         obj.setParentId(temp.getParentId());
         obj.setAreaId(temp.getAreaId());
         obj.setDelete(temp.getDelete());

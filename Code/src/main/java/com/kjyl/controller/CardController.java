@@ -94,6 +94,7 @@ public class CardController extends BaseController {
             obj = CardService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Card();
             }
         }
         obj.setLogicId(temp.getLogicId());

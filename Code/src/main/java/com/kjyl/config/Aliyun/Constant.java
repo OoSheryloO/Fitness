@@ -9,6 +9,11 @@ public class Constant {
 //	public static String APP_SECRET = "21456e183b4657a9385cc08170db1aa4";//应用对应的凭证
 //	public static String PARTNER = "1367071302";//财付通商户号
 //	public static String PARTNER_KEY = "WuTuoBangAppKeyQueTingKangMobile";//商户号对应的密钥
+	
+//	public static String APP_ID = "wx374010a8213a12d0";// 微信开发平台应用id
+//	public static String APP_SECRET = "7b6071747ab062ae9beb39ece4844361";// 应用对应的凭证
+//	public static String PARTNER = "1486349882";// 财付通商户号
+//	public static String PARTNER_KEY = "BeiJingKuaiChengKeJiReadBank2017";// 商户号对应的密钥
 //
 //	/**
 //	 * 微信提现信息
@@ -16,10 +21,12 @@ public class Constant {
 //	public static String WXPay_TansfersUrl="https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 //	public static String WXPay_APPID="wxeb5043ba75e89f51";
 
+	public static final String accessKeyId = "LTAIKQT8LtxclmP8";
+    public static final String accessKeySecret = "GgAGv7OaFdcJmmZIzG1ihLWUEI2jDj";
 	
 //	// 初始化
-	public static String APP_ID = "wx374010a8213a12d0";// 微信开发平台应用id
-	public static String APP_SECRET = "7b6071747ab062ae9beb39ece4844361";// 应用对应的凭证
+    public static String APP_ID = "wx44fdba638a1b0dee";// 微信开发平台应用id
+	public static String APP_SECRET = "cbedc29bb406732eda73f401443e9b86";// 应用对应的凭证
 	public static String PARTNER = "1486349882";// 财付通商户号
 	public static String PARTNER_KEY = "BeiJingKuaiChengKeJiReadBank2017";// 商户号对应的密钥
 	

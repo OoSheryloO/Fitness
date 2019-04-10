@@ -94,6 +94,7 @@ public class ClubcardController extends BaseController {
             obj = ClubcardService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Clubcard();
             }
         }
         obj.setUseId(temp.getUseId());

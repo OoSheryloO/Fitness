@@ -138,17 +138,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Errorlog">
-		UPDATE fit_errorlog SET ErrorLog_Status = 88 WHERE ErrorLog_Id = #{_parameter} 
+		UPDATE fit_errorlog SET ErrorLog_Delete = 88 WHERE ErrorLog_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Errorlog">
-		UPDATE fit_errorlog SET ErrorLog_Status=  1 WHERE ErrorLog_Id = #{_parameter} 
+		UPDATE fit_errorlog SET ErrorLog_Delete=  1 WHERE ErrorLog_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Errorlog">
-		UPDATE fit_errorlog SET ErrorLog_Status = 88 
+		UPDATE fit_errorlog SET ErrorLog_Delete = 88 
 		<where>
 			<include refid="where"></include>
 		</where>
@@ -156,7 +156,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Errorlog">
-		UPDATE fit_errorlog SET ErrorLog_Status = 1 
+		UPDATE fit_errorlog SET ErrorLog_Delete = 1 
 		<where>
 			<include refid="where"></include>
 		</where>

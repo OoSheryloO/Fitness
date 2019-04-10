@@ -27,6 +27,7 @@ import com.kjyl.service.ClockService;
 import com.kjyl.service.ClubService;
 import com.kjyl.service.ClubcardService;
 import com.kjyl.service.CourseService;
+import com.kjyl.service.DictService;
 import com.kjyl.service.DiscussService;
 import com.kjyl.service.ErrorlogService;
 import com.kjyl.service.EventService;
@@ -110,6 +111,8 @@ public class BaseController {
     public VerifyrecordService VerifyrecordService;
     @Autowired
     public OnlineService OnlineService;
+    @Autowired
+    public DictService DictService;
     
         @ExceptionHandler
         public boolean exp(HttpServletRequest request, HttpServletResponse response, Exception ex) throws ServletException, IOException {

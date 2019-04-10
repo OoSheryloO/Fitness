@@ -94,6 +94,7 @@ public class OnlineController extends BaseController {
             obj = OnlineService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Online();
             }
         }
         obj.setUseId(temp.getUseId());

@@ -97,6 +97,7 @@ public class DiscussController extends BaseController {
             obj = DiscussService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Discuss();
             }
         }
         obj.setUseId(temp.getUseId());

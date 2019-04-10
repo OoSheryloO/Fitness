@@ -78,7 +78,7 @@ public class Card implements Serializable {
     private Integer Level;
 
     @ApiModelProperty(value = "有效时间")
-    private String ValidTime;
+    private Date ValidTime;
 
     @ApiModelProperty(value = "折扣")
     private String Discount;

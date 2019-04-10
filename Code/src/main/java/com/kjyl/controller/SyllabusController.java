@@ -95,6 +95,7 @@ public class SyllabusController extends BaseController {
             obj = SyllabusService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
+                obj = new Syllabus();
             }
         }
         obj.setUseId(temp.getUseId());
