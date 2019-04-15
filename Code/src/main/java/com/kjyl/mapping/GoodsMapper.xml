@@ -20,6 +20,7 @@
 		<result property="Delivery" column="Goods_Delivery" />
 		<result property="Type" column="Goods_Type" />
 		<result property="Size" column="Goods_Size" />
+		<result property="Sort" column="Goods_Sort" />
 		<result property="Memo" column="Goods_Memo" />
 		<result property="Status" column="Goods_Status" />
 		<result property="Delete" column="Goods_Delete" />
@@ -27,7 +28,7 @@
 		<result property="ModifyTime" column="Goods_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Goods_Id, Goods_LogicId, Goods_HeadIcon, Goods_Title, Goods_Intro, Goods_Price, Goods_Residue, Goods_FreeShip, Goods_FreeFirst, Goods_RefundDay, Goods_Delivery, Goods_Type, Goods_Size, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
+		Goods_Id, Goods_LogicId, Goods_HeadIcon, Goods_Title, Goods_Intro, Goods_Price, Goods_Residue, Goods_FreeShip, Goods_FreeFirst, Goods_RefundDay, Goods_Delivery, Goods_Type, Goods_Size, Goods_Sort, Goods_Memo, Goods_Status, Goods_Delete, Goods_CreateTime, Goods_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -70,6 +71,9 @@
 		<if test="Size != null ">
 			 AND Goods_Size = #{Size}
 		</if>
+		<if test="Sort != null ">
+			 AND Goods_Sort = #{Sort}
+		</if>
 		<if test="Memo != null ">
 			 AND Goods_Memo = #{Memo}
 		</if>
@@ -95,6 +99,16 @@
 			FROM fit_goods
 		<where>
 			Goods_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据Type 查找-->
+	<select id="SearchBySpecialType" resultMap="goods" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_goods
+		<where>
+			Goods_Type = #{_parameter} AND Goods_Delete &lt; 88
 		</where>
 	</select>
 	
@@ -137,6 +151,7 @@
 				#{Delivery},
 				#{Type},
 				#{Size},
+				#{Sort},
 				#{Memo},
 				Default,
 				Default,
@@ -183,6 +198,9 @@
 			</if>
 			<if test="Size != null ">
 				Goods_Size = #{Size},
+			</if>
+			<if test="Sort != null ">
+				Goods_Sort = #{Sort},
 			</if>
 			<if test="Memo != null ">
 				Goods_Memo = #{Memo},

@@ -14,12 +14,23 @@
 		<result property="Status" column="Dict_Status" />
 		<result property="Level" column="Dict_Level" />
 		<result property="LogicId" column="Dict_LogicId" />
+		<result property="BelongId" column="Dict_BelongId" />
+		<result property="Sort" column="Dict_Sort" />
 		<result property="CreateTime" column="Dict_CreateTime" />
 		<result property="ModifyTime" column="Dict_ModifyTime" />
 	</resultMap>
 	
+	<resultMap id="Classification" type="com.kjyl.bean.ClassificationRetrieval">
+		<result property="Id" column="Dict_Id" />
+		<result property="Info" column="Dict_Info" />
+		<result property="Type" column="Dict_Type" />
+		<result property="Level" column="Dict_Level" />
+		<collection property="Goods" column="Dict_Id" ofType="com.kjyl.pojo.Goods" javaType="list" select="com.kjyl.dao.GoodsMapper.SearchBySpecialType" />
+		<collection property="Card" column="Dict_Id" ofType="com.kjyl.pojo.Card" javaType="list" select="com.kjyl.dao.CardMapper.SearchBySpecialType" />
+	</resultMap>
+	
 	<sql id="sql">
-		Dict_Id, Dict_Value, Dict_Info, Dict_Type, Dict_Status, Dict_Level, Dict_LogicId, Dict_CreateTime, Dict_ModifyTime
+		Dict_Id, Dict_Value, Dict_Info, Dict_Type, Dict_Status, Dict_Level, Dict_LogicId, Dict_BelongId, Dict_Sort, Dict_CreateTime, Dict_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -33,7 +44,7 @@
 			 AND Dict_Value = #{Value}
 		</if>
 		<if test="Info != null ">
-			 AND Dict_Info = #{Info}
+			 AND Dict_Info LIKE CONCAT('%',#{Info},'%')
 		</if>
 		<if test="Type != null ">
 			 AND Dict_Type = #{Type}
@@ -46,6 +57,12 @@
 		</if>
 		<if test="LogicId != null ">
 			 AND Dict_LogicId = #{LogicId}
+		</if>
+		<if test="BelongId != null ">
+			 AND Dict_BelongId = #{BelongId}
+		</if>
+		<if test="Sort != null ">
+			 AND Dict_Sort = #{Sort}
 		</if>
 		<if test="CreateTime != null ">
 			 AND Dict_CreateTime = #{CreateTime}
@@ -73,6 +90,16 @@
 			FROM fit_dict
 		<where>
 			<include refid="where" /> LIMIT 1
+		</where>
+	</select>
+	
+	<!-- 根据分类 查找-->
+	<select id="SearchClassificationByCondition"  resultMap="Classification" parameterType="java.util.Map">
+		SELECT
+		Dict_Id, Dict_Info, Dict_Type, Dict_Level 
+			FROM fit_dict
+		<where>
+			<include refid="where" />
 		</where>
 	</select>
 	
@@ -107,6 +134,8 @@
 				Default,
 				#{Level},
 				#{LogicId},
+				#{BelongId},
+				#{Sort},
 				now(),
 				now()
 				)
@@ -133,6 +162,12 @@
 			<if test="LogicId != null ">
 				Dict_LogicId = #{LogicId},
 			</if>
+			<if test="BelongId != null ">
+				Dict_BelongId = #{BelongId},
+			</if>
+			<if test="Sort != null ">
+				Dict_Sort = #{Sort},
+			</if>
 				Dict_ModifyTime = now()
 		  </set>
 		<where>
@@ -142,17 +177,17 @@
 
 	<!-- 根据编号删除 by sheryl-->
 	<update id="RemoveBySpecial" parameterType="com.kjyl.pojo.Dict">
-		UPDATE fit_dict SET Dict_Delete = 88 WHERE Dict_Id = #{_parameter} 
+		UPDATE fit_dict SET Dict_Status = 88 WHERE Dict_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据编号恢复 by sheryl-->
 	<update id="RecoverBySpecial" parameterType="com.kjyl.pojo.Dict">
-		UPDATE fit_dict SET Dict_Delete =  1 WHERE Dict_Id = #{_parameter} 
+		UPDATE fit_dict SET Dict_Status =  1 WHERE Dict_Id = #{_parameter} 
 	</update>
 
 	<!-- 根据条件删除 by sheryl-->
 	<update id="RemoveByCondition" parameterType="com.kjyl.pojo.Dict">
-		UPDATE fit_dict SET Dict_Delete = 88 
+		UPDATE fit_dict SET Dict_Status = 88 
 		<where>
 			<include refid="where" />
 		</where>
@@ -160,7 +195,7 @@
 
 	<!-- 根据条件恢复 by sheryl-->
 	<update id="RecoverByCondition" parameterType="com.kjyl.pojo.Dict">
-		UPDATE fit_dict SET Dict_Delete = 1 
+		UPDATE fit_dict SET Dict_Status = 1 
 		<where>
 			<include refid="where" />
 		</where>

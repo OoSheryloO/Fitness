@@ -41,6 +41,8 @@ public class Post implements Serializable {
     public static final String COLUMN_Review = "Review";
 
     public static final String COLUMN_Collect = "Collect";
+    
+    public static final String COLUMN_Type = "Type";
 
     public static final String COLUMN_Status = "Status";
 
@@ -76,6 +78,9 @@ public class Post implements Serializable {
 
     @ApiModelProperty(value = "收藏数")
     private Integer Collect;
+    
+    @ApiModelProperty(value = "类型")
+    private Integer Type;
 
     @ApiModelProperty(value = "状态")
     private Integer Status;

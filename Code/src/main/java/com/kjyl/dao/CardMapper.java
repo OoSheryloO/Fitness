@@ -1,5 +1,7 @@
 package com.kjyl.dao;
 
+import java.util.List;
+
 import com.kjyl.config.Mybaties.MyMapper;
 import com.kjyl.pojo.Card;
 
@@ -9,5 +11,6 @@ import com.kjyl.pojo.Card;
  * 
  */
 public interface CardMapper extends MyMapper<Card>{
+	List<Card> SearchBySpecialType(Integer type);
 
 }

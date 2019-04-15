@@ -60,6 +60,8 @@ public class LoginController extends BaseController{
         	if (pjUser == null) {
         		pjUser = new User();
         		pjUser.setId(IdWorker.CreateStringNewId());
+        		pjUser.setName(phone);
+        		pjUser.setHeadIcon("https://ylfitness.oss-cn-qingdao.aliyuncs.com/UserHeadIcon/2019-04-11/97de3da1-8200-4da8-940c-56081475df31.jpg");
         		pjUser.setPhone(phone);
         		pjUser.setLevel(0);
         		pjUser.setSex(0);
@@ -115,9 +117,9 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value="/sendcode", method=RequestMethod.POST)
     @ApiOperation(value = "发送验证码")
-    public Map<String, Object> sendCode(String phone, HttpServletRequest request) {
+    public Map<String, Object> sendCode(@RequestBody String data, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
-        mapResult = SendCheckNumber(VerifyrecordService, phone, ErrorlogService);
+        mapResult = SendCheckNumber(VerifyrecordService, JSON.parseObject(data).get("phone").toString(), ErrorlogService);
         if (mapResult == null) {
 			mapResult = sharedInstance().TrueData(null, "发送成功!", CodeInfo.Code.OK.getCode());
 		}
@@ -168,6 +170,7 @@ public class LoginController extends BaseController{
 			return sharedInstance().otherError(CodeInfo.ErrorMessageType.LoginFail, request);
 		}
 		if (lstU != null && lstU.size() > 0) {//有用户
+			temp = lstU.get(0);
 			mapSearch.clear();
 			mapSearch.put(Online.COLUMN_UseId, lstU.get(0).getId());
 			mapSearch.put(Online.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
@@ -248,8 +251,8 @@ public class LoginController extends BaseController{
 				Date dLast = pjVr.getModifyTime();
 				long stamp = (new Date().getTime() - dLast.getTime()) / 1000; // 单位是毫秒, /1000 精确到秒
 				// ToDo 正式环境一分钟内不能重复发, 测试环境为 5 秒
-				if (Integer.parseInt(Long.toString(stamp), 10) < 5) {// 10 表示十进制 一分钟内不能重复发送
-					return sharedInstance().FalseData("发送验证码频繁，请稍候",CodeInfo.Error_Phone_Number.Often_SMS.getCode());
+				if (Integer.parseInt(Long.toString(stamp), 10) < 60) {// 10 表示十进制 一分钟内不能重复发送
+					return sharedInstance().FalseData("发送验证码频繁，请稍候", CodeInfo.Error_Phone_Number.Often_SMS.getCode());
 				} else {
 					pjVr.setCheckNumber(number);
 //					pjVr.setStatus(CodeInfo.UserStatus.Enable.getCode());
@@ -263,8 +266,8 @@ public class LoginController extends BaseController{
 			pjVr.setStatus(CodeInfo.UserStatus.Enable.getCode());
 		}
 		
-//		boolean bSend = code.sendCheckNumber(phone, number, errorlogService);//正式
-		boolean bSend = true;
+		boolean bSend = code.sendCheckNumber(phone, number, errorlogService);//正式
+//		boolean bSend = true;
 		// TODO: 阿里大于短信验证码平台需要配置后才使用
 		if (bSend) {
 			int i = 0;

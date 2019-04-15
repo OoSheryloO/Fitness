@@ -47,9 +47,7 @@ public class ClockController extends BaseController {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Clock.COLUMN_UseId, id);
-        if(status != null && status != -1){
-        	mapSearch.put(Clock.COLUMN_Status, status);
-        }
+        mapSearch.put(Clock.COLUMN_Status, status);
         PageInfo<Clock> page = this.ClockService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
@@ -94,20 +92,23 @@ public class ClockController extends BaseController {
         if("0".equals(temp.getId()) || temp.getId() == null){
             isNew = true;
         }else{
-        	Map<String, Object> mapSearch = new HashMap<String, Object>();
-        	mapSearch.put(Clock.COLUMN_UseId, temp.getUseId());
-        	mapSearch.put(Clock.COLUMN_CreateTime, new Date());
-        	mapSearch.put(Clock.COLUMN_Delete, DBParam.RecordStatus.Delete.getClass());
-        	List<Clock> lisC = this.ClockService.SearchByCondition(mapSearch);
-        	if (lisC == null || lisC.size() == 0) {
-        		isNew = true;
-                obj = new Clock();
-			}
-            /*obj = ClockService.SearchBySpecial(temp.getId());
+            obj = ClockService.SearchBySpecial(temp.getId());
             if(obj == null){
                 isNew = true;
-            }*/
+                obj = new Clock();
+            }
         }
+        
+        Map<String, Object> mapSearch = new HashMap<String, Object>();
+    	mapSearch.put(Clock.COLUMN_UseId, temp.getUseId());
+    	mapSearch.put(Clock.COLUMN_CreateTime, new Date());
+    	mapSearch.put(Clock.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
+    	List<Clock> lisC = this.ClockService.SearchByCondition(mapSearch);
+    	if (lisC != null && lisC.size() > 0) {
+			obj = lisC.get(0);
+			isNew = false;
+		}
+    	
         obj.setUseId(temp.getUseId());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());

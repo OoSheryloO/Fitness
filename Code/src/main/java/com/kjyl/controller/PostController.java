@@ -42,10 +42,11 @@ public class PostController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchPostPage(Integer status, String id, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchPostPage(Integer status, String id, Integer type, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(DBParam.sUIdKey, id);
+        mapSearch.put(Post.COLUMN_Type, type);
         if(status != null && status != -1){
         	mapSearch.put(Post.COLUMN_Status, status);
         }
@@ -106,6 +107,7 @@ public class PostController extends BaseController {
         obj.setLike(temp.getLike());
         obj.setReview(temp.getReview());
         obj.setCollect(temp.getCollect());
+        obj.setType(temp.getType());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());
 

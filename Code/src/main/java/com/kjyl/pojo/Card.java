@@ -42,6 +42,8 @@ public class Card implements Serializable {
     public static final String COLUMN_Discount = "Discount";
 
     public static final String COLUMN_Type = "Type";
+    
+    public static final String COLUMN_Sort = "Sort";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -85,6 +87,9 @@ public class Card implements Serializable {
 
     @ApiModelProperty(value = "类型")
     private Integer Type;
+    
+    @ApiModelProperty(value = "排序")
+    private Integer Sort;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

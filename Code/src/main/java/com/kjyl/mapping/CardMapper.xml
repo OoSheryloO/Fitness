@@ -18,6 +18,7 @@
 		<result property="ValidTime" column="Card_ValidTime" />
 		<result property="Discount" column="Card_Discount" />
 		<result property="Type" column="Card_Type" />
+		<result property="Sort" column="Card_Sort" />
 		<result property="Memo" column="Card_Memo" />
 		<result property="Status" column="Card_Status" />
 		<result property="Delete" column="Card_Delete" />
@@ -25,7 +26,7 @@
 		<result property="ModifyTime" column="Card_ModifyTime" />
 	</resultMap>
 	<sql id="sql">
-		Card_Id, Card_LogicId, Card_HeadIcon, Card_Title, Card_Intro, Card_Price, Card_Residue, Card_Level, Card_ValidTime, Card_Discount, Card_Type, Card_Memo, Card_Status, Card_Delete, Card_CreateTime, Card_ModifyTime
+		Card_Id, Card_LogicId, Card_HeadIcon, Card_Title, Card_Intro, Card_Price, Card_Residue, Card_Level, Card_ValidTime, Card_Discount, Card_Type, Card_Sort, Card_Memo, Card_Status, Card_Delete, Card_CreateTime, Card_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -62,6 +63,9 @@
 		<if test="Type != null ">
 			 AND Card_Type = #{Type}
 		</if>
+		<if test="Sort != null ">
+			 AND Card_Sort = #{Sort}
+		</if>
 		<if test="Memo != null ">
 			 AND Card_Memo = #{Memo}
 		</if>
@@ -87,6 +91,16 @@
 			FROM fit_card
 		<where>
 			Card_Id = #{_parameter} 
+		</where>
+	</select>
+	
+	<!-- 根据Type 查找-->
+	<select id="SearchBySpecialType" resultMap="card" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+			FROM fit_card
+		<where>
+			Card_Type = #{_parameter} AND Card_Delete &lt; 88
 		</where>
 	</select>
 	
@@ -127,6 +141,7 @@
 				#{ValidTime},
 				#{Discount},
 				#{Type},
+				#{Sort},
 				#{Memo},
 				Default,
 				Default,
@@ -167,6 +182,9 @@
 			</if>
 			<if test="Type != null ">
 				Card_Type = #{Type},
+			</if>
+			<if test="Sort != null ">
+				Card_Sort = #{Sort},
 			</if>
 			<if test="Memo != null ">
 				Card_Memo = #{Memo},

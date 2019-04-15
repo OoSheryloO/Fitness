@@ -9,6 +9,7 @@
 	<resultMap id="course" type="com.kjyl.pojo.Course">
 		<result property="Id" column="Course_Id" />
 		<result property="UseId" column="Course_UseId" />
+		<result property="LogicId" column="Course_LogicId" />
 		<result property="Title" column="Course_Title" />
 		<result property="Info" column="Course_Info" />
 		<result property="StartTime" column="Course_StartTime" />
@@ -18,19 +19,20 @@
 		<result property="ApplyLimit" column="Course_ApplyLimit" />
 		<result property="Price" column="Course_Price" />
 		<result property="Site" column="Course_Site" />
+		<result property="Sort" column="Course_Sort" />
 		<result property="Memo" column="Course_Memo" />
 		<result property="Status" column="Course_Status" />
 		<result property="Delete" column="Course_Delete" />
 		<result property="CreateTime" column="Course_CreateTime" />
 		<result property="ModifyTime" column="Course_ModifyTime" />
 		<result property="State" column="State" />
-		<association property="User" javaType="com.kjyl.pojo.User" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
+		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
 		<association property="Identity" javaType="com.kjyl.pojo.Identity" resultMap="com.kjyl.dao.IdentityMapper.identity" />
 		<collection property="Picture" column="Course_Id" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	
 	<sql id="sql">
-		Course_Id, Course_UseId, Course_Title, Course_Info, Course_StartTime, Course_EndTime, Course_ApplyTime, Course_Apply, Course_ApplyLimit, Course_Price, Course_Site, Course_Memo, Course_Status, Course_Delete, Course_CreateTime, Course_ModifyTime
+		Course_Id, Course_UseId, Course_LogicId, Course_Title, Course_Info, Course_StartTime, Course_EndTime, Course_ApplyTime, Course_Apply, Course_ApplyLimit, Course_Price, Course_Site, Course_Sort, Course_Memo, Course_Status, Course_Delete, Course_CreateTime, Course_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -39,6 +41,9 @@
 		</if>
 		<if test="UseId != null ">
 			 AND Course_UseId = #{UseId}
+		</if>
+		<if test="LogicId != null ">
+			 AND Course_LogicId = #{LogicId}
 		</if>
 		<if test="Title != null ">
 			 AND Course_Title = #{Title}
@@ -68,6 +73,9 @@
 		</if>
 		<if test="Site != null ">
 			 AND Course_Site = #{Site}
+		</if>
+		<if test="Sort != null ">
+			 AND Course_Sort = #{Sort}
 		</if>
 		<if test="Memo != null ">
 			 AND Course_Memo = #{Memo}
@@ -148,6 +156,7 @@
 		VALUES(
 				#{Id},
 				#{UseId},
+				#{LogicId},
 				#{Title},
 				#{Info},
 				#{StartTime},
@@ -157,6 +166,7 @@
 				#{ApplyLimit},
 				#{Price},
 				#{Site},
+				#{Sort},
 				#{Memo},
 				Default,
 				Default,
@@ -170,6 +180,9 @@
 		  <set> 
 			<if test="UseId != null ">
 				Course_UseId = #{UseId},
+			</if>
+			<if test="LogicId != null ">
+				 Course_LogicId = #{LogicId},
 			</if>
 			<if test="Title != null ">
 				Course_Title = #{Title},
@@ -191,6 +204,9 @@
 			</if>
 			<if test="Price != null ">
 				Course_Price = #{Price},
+			</if>
+			<if test="Sort != null ">
+				Course_Sort = #{Sort},
 			</if>
 			<if test="Site != null ">
 				Course_Site = #{Site},

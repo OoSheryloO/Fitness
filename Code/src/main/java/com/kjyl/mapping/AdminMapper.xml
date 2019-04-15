@@ -17,7 +17,6 @@
 		<result property="Version" column="Admin_Version" />
 		<result property="Memo" column="Admin_Memo" />
 		<result property="LogicId" column="Admin_LogicId" />
-		<result property="LogicId" column="Admin_LogicId" />
 		<result property="ParentId" column="Admin_ParentId" />
 		<result property="AreaId" column="Admin_AreaId" />
 		<result property="Status" column="Admin_Status" />
@@ -25,6 +24,15 @@
 		<result property="CreateTime" column="Admin_CreateTime" />
 		<result property="ModifyTime" column="Admin_ModifyTime" />
 	</resultMap>
+	<resultMap id="simpleAdmin" type="com.kjyl.bean.SimpleUser">
+		<result property="Id" column="Admin_Id" />
+		<result property="HeadIcon" column="Admin_Image" />
+		<result property="Name" column="Admin_NickName" />
+		<!-- <result property="Sex" column="User_Sex" /> -->
+	</resultMap>
+	<sql id="simpleAdminSql">
+		, Admin_Id, Admin_Image, Admin_NickName
+	</sql>
 	<sql id="sql">
 		Admin_Id, Admin_Name, Admin_PassWord, Admin_NickName, Admin_Image, Admin_Phone, Admin_Level, Admin_Version, Admin_Memo, Admin_LogicId, Admin_ParentId, Admin_AreaId, Admin_Status, Admin_Delete, Admin_CreateTime, Admin_ModifyTime
 	</sql>

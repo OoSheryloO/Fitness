@@ -126,7 +126,7 @@
 				PayRecord_Type = #{Type},
 			</if>
 			<if test="Direction != null ">
-				 PayRecord_Direction = #{Direction}
+				 PayRecord_Direction = #{Direction},
 			</if>
 			<if test="Memo != null ">
 				PayRecord_Memo = #{Memo},

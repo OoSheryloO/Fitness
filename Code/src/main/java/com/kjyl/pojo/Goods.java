@@ -46,6 +46,8 @@ public class Goods implements Serializable {
     public static final String COLUMN_Type = "Type";
 
     public static final String COLUMN_Size = "Size";
+    
+    public static final String COLUMN_Sort = "Sort";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -95,6 +97,9 @@ public class Goods implements Serializable {
 
     @ApiModelProperty(value = "规格")
     private String Size;
+    
+    @ApiModelProperty(value = "排序")
+    private Integer Sort;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

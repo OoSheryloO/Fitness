@@ -15,16 +15,17 @@
 		<result property="Like" column="Post_Like" />
 		<result property="Review" column="Post_Review" />
 		<result property="Collect" column="Post_Collect" />
+		<result property="Type" column="Post_Type" />
 		<result property="Status" column="Post_Status" />
 		<result property="Delete" column="Post_Delete" />
 		<result property="CreateTime" column="Post_CreateTime" />
 		<result property="ModifyTime" column="Post_ModifyTime" />
-		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.UserMapper.simpleUser" />
+		<association property="User" javaType="com.kjyl.bean.SimpleUser" resultMap="com.kjyl.dao.AdminMapper.simpleAdmin" />
 		<association property="State" javaType="com.kjyl.pojo.Status" resultMap="com.kjyl.dao.StatusMapper.status" />
 		<collection property="Picture" column="Picture" ofType="string" javaType="list" select="com.kjyl.dao.PictureMapper.SearchUrlBySpecial" />
 	</resultMap>
 	<sql id="sql">
-		Post_Id, Post_UseId, Post_LogicId, Post_Title, Post_Content, Post_Like, Post_Review, Post_Collect, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime
+		Post_Id, Post_UseId, Post_LogicId, Post_Title, Post_Content, Post_Like, Post_Review, Post_Collect, Post_Type, Post_Status, Post_Delete, Post_CreateTime, Post_ModifyTime
 	</sql>
 	<sql id="where">
 		1=1 
@@ -37,11 +38,11 @@
 		<if test="LogicId != null ">
 			 AND Post_LogicId = #{LogicId}
 		</if>
-		<if test="Title != null ">
-			 AND Post_Title = #{Title}
+			<if test="Title != null ">
+			 AND Post_Title LIKE CONCAT('%',#{Title},'%') 
 		</if>
 		<if test="Content != null ">
-			 AND Post_Content = #{Content}
+			 AND Post_Content LIKE CONCAT('%',#{Content},'%')
 		</if>
 		<if test="Like != null ">
 			 AND Post_Like = #{Like}
@@ -51,6 +52,9 @@
 		</if>
 		<if test="Collect != null ">
 			 AND Post_Collect = #{Collect}
+		</if>
+		<if test="Type != null ">
+			 AND Post_Type = #{Type}
 		</if>
 		<if test="Status != null ">
 			 AND Post_Status = #{Status}
@@ -82,10 +86,10 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="post" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"/><include refid="com.kjyl.dao.UserMapper.simpleUserSql"/>
+		<include refid="sql"/><include refid="com.kjyl.dao.AdminMapper.simpleAdminSql"/>
 		,<include refid="com.kjyl.dao.StatusMapper.sql"/>
 			FROM fit_post
-			LEFT JOIN fit_user ON fit_user.User_Delete &lt; 88 AND fit_post.Post_UseId = fit_user.User_Id 
+			LEFT JOIN fit_admin ON fit_admin.Admin_Delete &lt; 88 AND fit_admin.Admin_Id = fit_post.Post_UseId 
 			LEFT JOIN fit_status ON fit_status.Status_UseId = #{UId}
 			AND fit_status.Status_LogicId = fit_post.Post_Id 
 			AND fit_status.Status_Delete &lt; 88 
@@ -113,9 +117,10 @@
 				#{LogicId},
 				#{Title},
 				#{Content},
-				#{Like},
-				#{Review},
-				#{Collect},
+				Default,
+				Default
+				Default,
+				#{Type},
 				Default,
 				Default,
 				now(),
@@ -146,6 +151,9 @@
 			</if>
 			<if test="Collect != null ">
 				Post_Collect = #{Collect},
+			</if>
+			<if test="Type != null ">
+			 	Post_Type = #{Type},
 			</if>
 			<if test="Status != null ">
 				Post_Status = #{Status},

@@ -284,7 +284,7 @@
 			LEFT JOIN fit_card ON fit_order.Order_LogicId = fit_card.Card_Id
 		  		AND fit_card.Card_Delete &lt; 88 	
 		WHERE
-			fit_user.User_Id = #{UId} AND  fit_user.User_Delete &lt; 88
+			fit_user.User_Id = #{UId} AND fit_user.User_Delete &lt; 88
 	</select>
 
 </mapper>

@@ -57,8 +57,9 @@
     </bean> -->
     
     
-    
-	<!-- 包含的xml文件
-	<import resource="application-cache-conf.xml"/> -->
+	<!-- 包含的xml文件-->
+	<!-- <import resource="application-cache-conf.xml"/>  -->
+	<!-- ehcache xml文件 -->
+	<!-- <import resource="application-spring-ehcache.xml"/> -->
 	
 </beans>

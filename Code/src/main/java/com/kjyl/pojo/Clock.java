@@ -50,6 +50,9 @@ public class Clock implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private Date ModifyTime;
+    
+    @ApiModelProperty(value = "打卡日记")
+    private Post Post;
 
 	@ApiModelProperty(value = "['Id','打卡']['UseId','使用Id']['Status','状态信息']['Delete','是否删除']['CreateTime','创建时间']['ModifyTime','修改时间']")
 	@JSONField(serialize = false)

@@ -24,6 +24,7 @@ import com.kjyl.pojo.Order;
 import com.kjyl.pojo.Syllabus;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.AliPay.aliPaySign;
 import com.kjyl.util.GenerateKey.IdWorker;
 
 import static com.kjyl.util.ResultUtil.sharedInstance;
@@ -149,14 +150,21 @@ public class OrderController extends BaseController {
 			case 3:
 				String[] goodids = obj.getGoods().split(",");
 				for (String goodid : goodids) {
-					Cart pjCart = CartService.SearchBySpecial(goodid);
-					if (pjCart != null) {
-						pjCart.setDelete(DBParam.RecordStatus.Delete.getCode());
-						CartService.Modify(pjCart);
-					}
-					Goods pjGood = GoodsService.SearchBySpecial(pjCart.getLogicId());
-					if (pjGood != null && pjGood.getResidue() >= pjCart.getAmount()) {
-						pjGood.setResidue(pjGood.getResidue() - pjCart.getAmount());
+//					Cart pjCart = CartService.SearchBySpecial(goodid);
+//					if (pjCart != null) {
+//						pjCart.setDelete(DBParam.RecordStatus.Delete.getCode());
+//						CartService.Modify(pjCart);
+//					}
+//					Goods pjGood = GoodsService.SearchBySpecial(pjCart.getLogicId());
+//					if (pjGood != null && pjGood.getResidue() >= pjCart.getAmount()) {
+//						pjGood.setResidue(pjGood.getResidue() - pjCart.getAmount());
+//						this.GoodsService.Modify(pjGood);
+//					}else {
+//						Residue = true;
+//					}
+					Goods pjGood = GoodsService.SearchBySpecial(goodid);
+					if (pjGood != null && pjGood.getResidue() >= 0) {
+						pjGood.setResidue(pjGood.getResidue() - 1);
 						this.GoodsService.Modify(pjGood);
 					}else {
 						Residue = true;
@@ -167,18 +175,30 @@ public class OrderController extends BaseController {
         }else{
             tempObj = OrderService.Modify(obj);
         }
+        String sign = "";
         if (Residue) {
-        	return sharedInstance().FalseData("库存不足!请刷新", CodeInfo.Code.NO.getCode());
+        	return sharedInstance().FalseData("库存不足!请刷新", CodeInfo.IntegrationType.Residue.getCode());
 		}else {
 			tempObj = OrderService.Insert(obj);
+			sign = aliPaySign.aliPaySandBoxSignPrams(tempObj);//支付宝沙箱环境
+//			sign = aliPaySign.aliPaySignPrams(tempObj);//支付宝沙箱环境
 		}
         if (tempObj != null) {
-			return sharedInstance().TrueData(tempObj, "修改成功!", CodeInfo.Code.OK.getCode());
+        	Map<String, Object> result = new HashMap<String, Object>();
+        	result.put(CodeInfo.sDataKey, tempObj);
+        	result.put(CodeInfo.sSignKey, sign);
+			return sharedInstance().TrueData(result, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
 			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
 		}
     }
     
-    
+    public static void main(String[] args) {
+		Order pojo = new Order();
+		pojo.setId(IdWorker.CreateStringNewId());
+		pojo.setUseId("123456");
+		pojo.setPrize("100");
+		System.out.println(aliPaySign.aliPaySandBoxSignPrams(pojo));//支付宝沙箱环境
+	}
 
 }

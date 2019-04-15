@@ -13,6 +13,7 @@ import com.kjyl.pojo.Errorlog;
 import com.kjyl.service.ErrorlogService;
 
 import com.kjyl.util.CodeInfo;
+import com.kjyl.util.GenerateKey.IdWorker;
 //import com.taobao.api.DefaultTaobaoClient;
 //import com.taobao.api.TaobaoClient;
 //import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
@@ -82,14 +83,13 @@ public class VerifyCode {
     static final String domain = "dysmsapi.aliyuncs.com";
 
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
-    static final String accessKeyId = "LTAItihMSmlTuWst";
-    static final String accessKeySecret = "CozuTYt0d2NSX9LICTJ8iaQnmhg6g7";
+    static final String accessKeyId = "LTAIKQT8LtxclmP8";
+    static final String accessKeySecret = "GgAGv7OaFdcJmmZIzG1ihLWUEI2jDj";
 
     public boolean sendCheckNumber(String mobile, String checkNumber, ErrorlogService errorLogService) {
         String errormessage = null;
         try {
-            IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId,
-                    accessKeySecret);
+            IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
             IAcsClient acsClient = new DefaultAcsClient(profile);
 
@@ -98,9 +98,9 @@ public class VerifyCode {
             // 必填:待发送手机号
             request.setPhoneNumbers(mobile);
             // 必填:短信签名-可在短信控制台中找到
-            request.setSignName("阅读银行");
+            request.setSignName("释放体育");
             // 必填:短信模板-可在短信控制台中找到
-            request.setTemplateCode("SMS_78705068");
+            request.setTemplateCode("SMS_163052231");
             // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
             request.setTemplateParam("{\"code\":\"" + checkNumber + "\"}");
 
@@ -119,6 +119,7 @@ public class VerifyCode {
         } catch (ClientException e) {
             // TODO: handle exception
             Errorlog pjlog = new Errorlog();
+            pjlog.setId(IdWorker.CreateStringNewId());
             pjlog.setNote(e.getMessage() + ":" + errormessage);
             pjlog.setDevice("短信接口");
             pjlog.setTypeId(CodeInfo.DeviceType.Server.getCode());

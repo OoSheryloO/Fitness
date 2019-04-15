@@ -33,15 +33,32 @@ public class DictController  extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchDictPage(Integer status, Integer logicId, Integer level, int pageNumber, int pageSize, HttpServletRequest request) {
+	public Map<String, Object> searchDictPage(Integer level, String value, Integer status, Integer logicId, String belongId, Integer type, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Dict.COLUMN_LogicId, logicId);
-        if(status != null && status != -1){
-        	mapSearch.put(Dict.COLUMN_Status, status);
-        }
+        mapSearch.put(Dict.COLUMN_Info, value);
+        mapSearch.put(Dict.COLUMN_Type, type);
+        mapSearch.put(Dict.COLUMN_Status, status);
         mapSearch.put(Dict.COLUMN_Level, level);
+        mapSearch.put(Dict.COLUMN_BelongId, belongId);
         PageInfo<Dict> page = this.DictService.SearchPage(mapSearch, pageNumber, pageSize);
+        mapResult.put(CodeInfo.sRowKey, page.getList());
+        mapResult.put(CodeInfo.sTotalKey, page.getTotal());
+        return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
+    }
+	
+	@ApiOperation(value = "获取列表", notes= "", httpMethod = "GET")
+	@RequestMapping(value="/searchClassificationPage", method=RequestMethod.GET)
+	public Map<String, Object> searchClassificationPage(Integer level, String value, Integer status, Integer logicId, Integer type, int pageNumber, int pageSize, HttpServletRequest request) {
+        Map<String, Object> mapResult = new HashMap<String, Object>();
+        Map<String, Object> mapSearch = new HashMap<String, Object>();
+//        mapSearch.put(Dict.COLUMN_LogicId, logicId);
+//        mapSearch.put(Dict.COLUMN_Info, value);
+        mapSearch.put(Dict.COLUMN_Type, type);
+//        mapSearch.put(Dict.COLUMN_Status, status);
+//        mapSearch.put(Dict.COLUMN_Level, level);
+        PageInfo<Dict> page = this.DictService.SearchClassificationByConditionPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
         return ResultUtil.sharedInstance().TrueData(mapResult, "请求成功!", CodeInfo.Code.OK.getCode());
@@ -96,6 +113,8 @@ public class DictController  extends BaseController {
         obj.setInfo(temp.getInfo());
         obj.setType(temp.getType());
         obj.setLogicId(temp.getLogicId());
+        obj.setBelongId(temp.getBelongId());
+        obj.setSort(temp.getSort());
         obj.setLevel(temp.getLevel());
 
         Dict tempObj = null;

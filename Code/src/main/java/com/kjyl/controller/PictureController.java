@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import com.kjyl.pojo.Picture;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.File.Base64ToFile;
 import com.kjyl.util.File.UploadAliYunFile;
 import com.kjyl.util.GenerateKey.IdWorker;
 
@@ -133,7 +134,10 @@ public class PictureController extends BaseController {
     
   @RequestMapping(value="/upload", method=RequestMethod.POST)
   @ApiOperation(value = "上传")
-  public Map<String, Object> upload(@RequestBody MultipartFile file, int type, String id) throws FileNotFoundException, IOException{
+  public Map<String, Object> upload(@RequestBody String data) throws FileNotFoundException, IOException{
+	  String file = JSON.parseObject(data).get("file").toString();
+	  int type = Integer.parseInt(JSON.parseObject(data).get("type").toString());
+	  String id = JSON.parseObject(data).get("id").toString();
 	  String sFileType = "Picture";
 	  switch (type) {
 	  case 1:
@@ -166,7 +170,7 @@ public class PictureController extends BaseController {
 		default:
 			break;
 	  }
-	  String sAliyunUrl = UploadAliYunFile.UploadAliYunFileService(file.getInputStream(), file, sFileType);
+	  String sAliyunUrl = Base64ToFile.Base64ToFileToAliCloud(file, id, sFileType);
 	  Picture pjPic = new Picture();
 	  pjPic.setId(IdWorker.CreateStringNewId());
 	  pjPic.setUseId(id);

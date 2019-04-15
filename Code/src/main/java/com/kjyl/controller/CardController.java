@@ -40,13 +40,12 @@ public class CardController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchCardPage(Integer status, int type, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchCardPage(Integer status, int type, String logicId, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Card.COLUMN_Type, type);
-        if(status != null && status != -1){
-        	mapSearch.put(Card.COLUMN_Status, status);
-        }
+        mapSearch.put(Card.COLUMN_Status, status);
+        mapSearch.put(Card.COLUMN_LogicId, logicId);
         PageInfo<Card> page = this.CardService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
@@ -106,6 +105,7 @@ public class CardController extends BaseController {
         obj.setValidTime(temp.getValidTime());
         obj.setDiscount(temp.getDiscount());
         obj.setType(temp.getType());
+        obj.setSort(temp.getSort());
         obj.setMemo(temp.getMemo());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());

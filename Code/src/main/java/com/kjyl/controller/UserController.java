@@ -155,16 +155,18 @@ public class UserController extends BaseController {
     public Map<String, Object> nextHomePage(String id, int pageNum, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
-        mapSearch.put(Clock.COLUMN_CreateTime, new Date());
         mapSearch.put(Clock.COLUMN_UseId, id);
         mapSearch.put(DBParam.sDeleteKey, DBParam.RecordStatus.Delete.getCode());
+        int num = this.ClockService.SearchData(mapSearch);
+        mapSearch.put(Clock.COLUMN_CreateTime, new Date());
         List<Clock> lstCl = this.ClockService.SearchByCondition(mapSearch);
         
         List<Course> lstCo = this.CourseService.SearchBySpecialRand();
         mapSearch.clear();
         mapSearch.put(Info.COLUMN_Delete, DBParam.RecordStatus.Delete.getCode());
         PageInfo<Info> pageIn = this.InfoService.SearchPage(mapSearch, pageNum, pageSize);
-        mapResult.put("Clock", lstCl != null && lstCl.size() == 1 ? true : false);
+        mapResult.put("ClockNumber", num);
+        mapResult.put("Clock", lstCl != null && lstCl.size() > 0 ? true : false);
         mapResult.put("Course", lstCo);
         mapResult.put("Info", pageIn.getList());
         mapResult.put("InfoTotal", pageIn.getTotal());

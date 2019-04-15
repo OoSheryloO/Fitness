@@ -18,6 +18,7 @@ public class CodeInfo {//http请求的头部不区分大小写，method区分大
 /** info：数据*/		public static final String sDataKey		= "data";
 /** info：信息*/		public static final String sTokenKey  = "token";
 /** info：信息*/		public static final String sMessageKey  = "message";
+/** info：签名*/		public static final String sSignKey  = "sign";
 	
 	/**
 	 * 请求是否成功 -1/60000
@@ -342,6 +343,11 @@ public class CodeInfo {//http请求的头部不区分大小写，method区分大
         Certification {   //  实名认证
             public int getCode() {
                 return 16;
+            }
+        },
+        Residue {   //  库存不
+            public int getCode() {
+                return 17;
             }
         };
         public abstract int getCode();

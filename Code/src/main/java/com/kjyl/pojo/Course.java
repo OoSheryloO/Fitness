@@ -28,6 +28,8 @@ public class Course implements Serializable {
 
     public static final String COLUMN_UseId = "UseId";
     
+    public static final String COLUMN_LogicId = "LogicId";
+    
     public static final String COLUMN_Picture = "Picture";
 
     public static final String COLUMN_Title = "Title";
@@ -47,6 +49,8 @@ public class Course implements Serializable {
     public static final String COLUMN_Price = "Price";
 
     public static final String COLUMN_Site = "Site";
+    
+    public static final String COLUMN_Sort = "Sort";
 
     public static final String COLUMN_Memo = "Memo";
 
@@ -63,6 +67,9 @@ public class Course implements Serializable {
 
     @ApiModelProperty(value = "使用Id")
     private String UseId;
+    
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
     
     @ApiModelProperty(value = "图片")
     private List<String> Picture;
@@ -93,6 +100,9 @@ public class Course implements Serializable {
 
     @ApiModelProperty(value = "地点")
     private String Site;
+    
+    @ApiModelProperty(value = "排序")
+    private Integer Sort;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

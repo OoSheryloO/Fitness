@@ -40,13 +40,12 @@ public class GoodsController extends BaseController {
 //    @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="xingguo"),
 //	  @ApiImplicitParam(name="id",value="用户id",dataType="long", paramType = "query")
 //  })
-    public Map<String, Object> searchGoodsPage(Integer status, Integer type, int pageNumber, int pageSize, HttpServletRequest request) {
+    public Map<String, Object> searchGoodsPage(Integer status, Integer type, String logicId, int pageNumber, int pageSize, HttpServletRequest request) {
         Map<String, Object> mapResult = new HashMap<String, Object>();
         Map<String, Object> mapSearch = new HashMap<String, Object>();
         mapSearch.put(Goods.COLUMN_Type, type);
-        if(status != null && status != -1){
-        	mapSearch.put(Goods.COLUMN_Status, status);
-        }
+        mapSearch.put(Goods.COLUMN_Status, status);
+        mapSearch.put(Goods.COLUMN_LogicId, logicId);
         PageInfo<Goods> page = this.GoodsService.SearchPage(mapSearch, pageNumber, pageSize);
         mapResult.put(CodeInfo.sRowKey, page.getList());
         mapResult.put(CodeInfo.sTotalKey, page.getTotal());
@@ -108,6 +107,7 @@ public class GoodsController extends BaseController {
         obj.setDelivery(temp.getDelivery());
         obj.setType(temp.getType());
         obj.setSize(temp.getSize());
+        obj.setSort(temp.getSort());
         obj.setMemo(temp.getMemo());
         obj.setDelete(temp.getDelete());
         obj.setModifyTime(temp.getModifyTime());

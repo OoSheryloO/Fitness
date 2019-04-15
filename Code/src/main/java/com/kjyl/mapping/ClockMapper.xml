@@ -13,6 +13,7 @@
 		<result property="Delete" column="Clock_Delete" />
 		<result property="CreateTime" column="Clock_CreateTime" />
 		<result property="ModifyTime" column="Clock_ModifyTime" />
+		<association property="Post" javaType="com.kjyl.pojo.Post" resultMap="com.kjyl.dao.PostMapper.post" />
 	</resultMap>
 	<sql id="sql">
 		Clock_Id, Clock_UseId, Clock_Status, Clock_Delete, Clock_CreateTime, Clock_ModifyTime
@@ -56,8 +57,11 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="clock" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql" />,<include refid="com.kjyl.dao.PostMapper.sql" />
 			FROM fit_clock
+			LEFT JOIN fit_post ON fit_post.Post_Type = 1 
+				AND fit_post.Post_LogicId = fit_clock.Clock_Id 
+				AND fit_post.Post_Delete &lt; 88
 		<where>
 			<include refid="where"></include>
 		</where>

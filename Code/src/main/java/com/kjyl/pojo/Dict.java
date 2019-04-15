@@ -26,14 +26,18 @@ public class Dict implements Serializable {
     public static final String COLUMN_Value = "Value";
 
     public static final String COLUMN_Info = "Info";
+    
+    public static final String COLUMN_Level = "Level";
+    
+    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_Type = "Type";
+    
+    public static final String COLUMN_BelongId = "BelongId";
+    
+    public static final String COLUMN_Sort = "Sort";
 
     public static final String COLUMN_Status = "Status";
-
-    public static final String COLUMN_Level = "Level";
-
-    public static final String COLUMN_LogicId = "LogicId";
 
     public static final String COLUMN_CreateTime = "CreateTime";
 
@@ -47,18 +51,24 @@ public class Dict implements Serializable {
 
     @ApiModelProperty(value = "字典说明")
     private String Info;
+    
+    @ApiModelProperty(value = "级别")
+    private Integer Level;
+    
+    @ApiModelProperty(value = "逻辑Id")
+    private String LogicId;
 
     @ApiModelProperty(value = "字典类型")
     private Integer Type;
+    
+    @ApiModelProperty(value = "所属Id")
+    private String BelongId;
+    
+    @ApiModelProperty(value = "排序")
+    private Integer Sort;
 
     @ApiModelProperty(value = "删除标示")
     private Integer Status;
-
-    @ApiModelProperty(value = "级别")
-    private Integer Level;
-
-    @ApiModelProperty(value = "逻辑Id")
-    private String LogicId;
 
     @ApiModelProperty(value = "创建时间")
     private Date CreateTime;

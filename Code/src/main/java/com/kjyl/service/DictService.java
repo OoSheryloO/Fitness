@@ -91,5 +91,12 @@ public class DictService {
 		DictMapper.SearchByCondition(mapSearch);
 		return page.toPageInfo();
 	}
+	
+	public PageInfo<Dict> SearchClassificationByConditionPage(Map<String, Object> mapSearch, int pageNum, int pageSize){
+		Page<Dict> page = PageHelper.startPage(pageNum, pageSize);
+		page.setOrderBy("Dict_CreateTime DESC");
+		DictMapper.SearchClassificationByCondition(mapSearch);
+		return page.toPageInfo();
+	}
 
 }
