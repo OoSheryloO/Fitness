@@ -42,6 +42,7 @@
 	<bean id="baseTransactionProxy"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
 		abstract="true">
+		<!-- <property name="dataSource" ref="dataSource"/> -->
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributes">
 			<props>
@@ -59,15 +60,39 @@
 		</property>
 	</bean>
 	
+	<!-- 5.添加事务
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    6.基于XML的事务
+    <tx:advice transaction-manager="transactionManager" id="transactionInterceptor">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="query*" propagation="SUPPORTS"/>
+            <tx:method name="get*" propagation="SUPPORTS"/>
+            <tx:method name="find*" propagation="SUPPORTS"/>
+            <tx:method name="select*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+    	配置切入点
+    <aop:config>
+        <aop:pointcut id="serviceAdvice" expression="execution(* com.zy.service..* .*(..))"></aop:pointcut>
+         将事务织入切入对象中
+        <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="serviceAdvice"/>
+    </aop:config> -->
+	
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">  
   		<constructor-arg index="0" ref="sqlSessionFactory" />  
   		<constructor-arg index="1" value="BATCH" /><!--- 如果想要进行批量操作可加入这个属性 -->  
 	</bean> 
 	
-	
 	<!-- configuration mybatis sessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:application-mybatis-conf.xml"></property>
+		<property name="configLocation" value="classpath:application-mybatis-conf.xml" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations">
 		<!-- 自动扫描xml -->

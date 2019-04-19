@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -18,6 +20,8 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.kjyl.config.Ali.Constant;
 import com.kjyl.pojo.Order;
+import com.kjyl.pojo.User;
+import com.kjyl.service.UserService;
 import com.kjyl.util.WeChatPay.ConstantUtil;
 import com.kjyl.util.WeChatPay.Md5Util;
 import com.kjyl.util.WeChatPay.PrepayIdRequestHandler;
@@ -31,11 +35,15 @@ public class WeChatPaySign {
 	 * @param response
 	 * @return
 	 */
-		public String weChatSignPrams(Order pojo, HttpServletRequest request, HttpServletResponse response) {
+		public static String weChatSignPrams(Order pojo, UserService userService, HttpServletRequest request, HttpServletResponse response) {
+System.out.println("进入微信加签方法");
 			Map<String, Object> map = new HashMap<String, Object>();
 			// 获取生成预支付订单的请求类
 			PrepayIdRequestHandler prepayReqHandler = new PrepayIdRequestHandler(request, response);
-			String totalFee = Order.COLUMN_Prize + "";
+			String totalFee = pojo.getPrize() + "";
+//System.out.println(pojo.getPrize());
+//System.out.println(totalFee);
+
 			int total_fee = (int) (Float.valueOf(totalFee) * 100);
 			prepayReqHandler.setParameter("appid", ConstantUtil.APP_ID);
 			prepayReqHandler.setParameter("body", ConstantUtil.BODY);
@@ -61,7 +69,6 @@ System.out.println(String.valueOf(total_fee));
 				prepayid = prepayReqHandler.sendPrepay();
 				// 若获取prepayid成功，将相关信息返回客户端
 				if (prepayid != null && !prepayid.equals("")) {
-	 
 					String signs = "appid=" + ConstantUtil.APP_ID + "&noncestr=" + nonce_str
 							+ "&package=Sign=WXPay&partnerid=" + ConstantUtil.PARTNER_ID + "&prepayid=" + prepayid
 							+ "×tamp=" + timestamp + "&key=" + ConstantUtil.APP_KEY;
@@ -69,9 +76,12 @@ System.out.println(String.valueOf(total_fee));
 					map.put("info", "success");
 					map.put("prepayid", prepayid);
 					try {
+System.out.println("userid  "+pojo.getUseId());
+						User user = userService.SearchBySpecial(pojo.getUseId());
 //						String oldPhone = (String) request.getAttribute("oldPhone");
-//						String openid =userService.findWeChatIdByPhone(oldPhone,"type");
-//						map.put("openid", openid);
+//						String openid = userService.findWeChatIdByPhone(oldPhone,"type");
+System.out.println("openid" + user.getWeChatOpenId());
+						map.put("openid", user.getWeChatOpenId());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -95,5 +105,10 @@ System.out.println(String.valueOf(total_fee));
 				map.put("info", "系统异常");
 			}
 			return JSON.toJSONString(map);
+		}
+		
+		public static void main(String[] args) {
+			String aString = "100";
+			System.out.println( (int) (Float.valueOf(Integer.valueOf(aString)) * 100));
 		}
 }

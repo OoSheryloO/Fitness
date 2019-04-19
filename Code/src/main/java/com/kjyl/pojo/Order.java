@@ -65,6 +65,9 @@ public class Order implements Serializable {
 
     @ApiModelProperty(value = "类型/方式")
     private Integer Type;
+    
+    @ApiModelProperty(value = "支付方式 1微信 2支付宝")
+    private Integer PayType;
 
     @ApiModelProperty(value = "备注")
     private String Memo;

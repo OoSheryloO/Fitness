@@ -1,4 +1,4 @@
-package com.kjyl.config;
+package com.kjyl.config.Cors;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.HttpStatus;
 
-public class filter implements Filter {
+public class CorsFilter implements Filter {
 @Override
 public void init(FilterConfig filterConfig) throws ServletException { }
 @Override

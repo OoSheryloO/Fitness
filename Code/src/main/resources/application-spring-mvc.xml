@@ -2,11 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans   
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
     http://www.springframework.org/schema/context  
-    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/context/spring-context.xsd 
+    http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
     http://www.springframework.org/schema/mvc   
     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 	<!-- 加载包中的controller 注解扫描包 -->
@@ -14,6 +16,27 @@
 	<!-- 开启注解 -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	
+	<!-- shiro 配置Bean 注入 -->
+    <!-- <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" /> -->
+    
+    <!-- Shiro提供了相应的注解实现权限控制，但是需要AOP功能的支持
+         定义AOP切面，用于代理如@RequiresRole注解的控制器，进行权限控制
+    -->
+    <!-- <aop:config proxy-target-class="true"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean> -->
+
+    <!-- 配置springmvc的驱动，并开启了对JSON数据格式的支持 -->
+    <mvc:annotation-driven/>
+
+    <!-- 控制器异常处理，用来处理权限、角色验证失败出现的UnauthorizedException异常 -->
+    <!-- bean id="exceptionHandlerExceptionResolver"
+          class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+    </bean>
+    <bean class="com.kjyl.controller.exception.DefaultExceptionHandler"/> -->
+	
 	<!-- 静态资源的访问 --> 
     <mvc:resources location="/pages/" mapping="/pages/**"/>
 	 <!--拦截器配置-->

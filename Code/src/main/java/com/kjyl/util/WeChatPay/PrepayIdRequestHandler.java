@@ -43,15 +43,15 @@ public class PrepayIdRequestHandler extends RequestHandler {
         }
         sb.append("</xml>");
         String params=sb.substring(0);
-        System.out.println("请求参数："+params);
+System.out.println("请求参数："+params);
         String requestUrl = super.getGateUrl();
-        System.out.println("请求url："+requestUrl);
+System.out.println("请求url："+requestUrl);
         TenpayHttpClient httpClient = new TenpayHttpClient();
         httpClient.setReqContent(requestUrl);
         String resContent = "";
         if (httpClient.callHttpPost(requestUrl, params)) {
             resContent = httpClient.getResContent();
-            System.out.println("获取prepayid的返回值："+resContent);
+System.out.println("获取prepayid的返回值："+resContent);
             Map<String,String> map=XMLUtil.doXMLParse(resContent);
             if(map.containsKey("prepay_id"))
                 prepayid=map.get("prepay_id");

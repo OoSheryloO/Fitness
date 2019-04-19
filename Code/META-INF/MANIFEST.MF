@@ -9,3 +9,4 @@ Export-Package: com.kjyl.controller,
  com.kjyl.pojo,
  com.kjyl.service,
  com.kjyl.util
+Import-Package: junit.framework

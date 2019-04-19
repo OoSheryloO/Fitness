@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import com.kjyl.pojo.Order;
 import com.kjyl.pojo.Syllabus;
 import com.kjyl.util.CodeInfo;
 import com.kjyl.util.DBParam;
+import com.kjyl.util.AliPay.WeChatPaySign;
 import com.kjyl.util.AliPay.aliPaySign;
 import com.kjyl.util.GenerateKey.IdWorker;
 
@@ -90,7 +92,7 @@ public class OrderController extends BaseController {
 //    @PostMapping("/modifyOrder")
     @RequestMapping(value="/modifyOrder", method=RequestMethod.POST)
     @ApiOperation(value = "修改")
-    public Map<String, Object> modifyOrder(@RequestBody String data, HttpServletRequest request) {
+    public Map<String, Object> modifyOrder(@RequestBody String data, HttpServletRequest request, HttpServletResponse response) {
         Order temp = JSON.parseObject(data, Order.class);
         Order obj = new Order();
         boolean isNew = false;
@@ -180,7 +182,11 @@ public class OrderController extends BaseController {
         	return sharedInstance().FalseData("库存不足!请刷新", CodeInfo.IntegrationType.Residue.getCode());
 		}else {
 			tempObj = OrderService.Insert(obj);
-			sign = aliPaySign.aliPaySandBoxSignPrams(tempObj);//支付宝沙箱环境
+			if (temp.getPayType() != null && temp.getPayType() == 1) { 
+				sign = WeChatPaySign.weChatSignPrams(tempObj, UserService, request, response);
+			} else {
+				sign = aliPaySign.aliPaySandBoxSignPrams(tempObj);//支付宝沙箱环境
+			}
 //			sign = aliPaySign.aliPaySignPrams(tempObj);//支付宝沙箱环境
 		}
         if (tempObj != null) {

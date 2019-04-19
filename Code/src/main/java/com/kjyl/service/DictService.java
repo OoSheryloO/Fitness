@@ -98,5 +98,9 @@ public class DictService {
 		DictMapper.SearchClassificationByCondition(mapSearch);
 		return page.toPageInfo();
 	}
+	
+	public Dict SearchByModel(Dict model){
+		return DictMapper.SearchByModel(model);
+	}
 
 }

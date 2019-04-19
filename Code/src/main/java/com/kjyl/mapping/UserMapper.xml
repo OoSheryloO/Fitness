@@ -30,7 +30,7 @@
 		<result property="ModifyTime" column="User_ModifyTime" />
 	</resultMap>
 	
-	<resultMap id="simpleUser" type="com.kjyl.bean.SimpleUser">
+	<resultMap id="simpleUser" type="com.kjyl.bean.SimpleUser" >
 		<result property="Id" column="User_Id" />
 		<result property="HeadIcon" column="User_HeadIcon" />
 		<result property="Name" column="User_Name" />
@@ -113,7 +113,7 @@
 	<!-- 根据ID 查找-->
 	<select id="SearchBySpecial" resultMap="user" parameterType="long">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql"/>
 			FROM fit_user
 		<where>
 			User_Id = #{_parameter} 
@@ -125,7 +125,7 @@
 	<!-- 根据条件 查找-->
 	<select id="SearchByCondition"  resultMap="user" parameterType="java.util.Map">
 		SELECT
-		<include refid="sql"></include>
+		<include refid="sql"/>
 			FROM fit_user
 		<where>
 			<include refid="where"></include>

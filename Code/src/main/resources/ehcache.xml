@@ -14,8 +14,9 @@
             diskPersistent="false"
             memoryStoreEvictionPolicy="LRU"
             diskExpiryThreadIntervalSeconds="120"
-            updateCheck="false"
+            
             />
+            <!-- updateCheck="false" -->
             <!-- maxEntriesLocalHeap="1000"
         	maxEntriesLocalDisk="10000000" -->
     <!--

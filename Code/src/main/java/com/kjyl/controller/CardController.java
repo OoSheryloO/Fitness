@@ -102,6 +102,7 @@ public class CardController extends BaseController {
         obj.setIntro(temp.getIntro());
         obj.setPrice(temp.getPrice());
         obj.setLevel(temp.getLevel());
+        obj.setTime(temp.getTime());
         obj.setValidTime(temp.getValidTime());
         obj.setDiscount(temp.getDiscount());
         obj.setType(temp.getType());

@@ -7,10 +7,10 @@
 	<!-- jz只设置需要的,其他 使用默认值 -->
 	<!-- jz开启缓存,默认就是开启的,2层开关,需要在Mapper文件中也指定 cache标签才会真正使用缓存 -->
     <setting name="cacheEnabled" value="true"/>
-    <!-- 打开延迟加载的开关，默认为false -->
-    <!-- <setting name="lazyLoadingEnabled" value="true"/> -->
-    <!-- 将积极加载改为消极加载即按需要加载，默认为true -->
-    <!-- <setting name="aggressiveLazyLoading" value="false"/> -->
+    <!-- 开启懒加载，默认为false -->
+    <setting name="lazyLoadingEnabled" value="true"/> 
+    <!-- 关闭延迟加载 将积极加载改为消极加载即按需要加载，默认为true -->
+    <setting name="aggressiveLazyLoading" value="false"/>
     <!-- jz在null时在调用 setter,适应于返回Map,3.2版本以上可用 -->
     <!-- 此配置可在查询的列为null的时候也返回 -->
 	<setting name="callSettersOnNulls" value="true"/>
@@ -19,7 +19,7 @@
 	<!-- <setting name="localCacheScope" value="STATEMENT"/> -->
 	
 	<!-- 打印查询语句 -->
-   <!-- <setting name="logImpl" value="STDOUT_LOGGING" /> -->
+    <!-- <setting name="logImpl" value="STDOUT_LOGGING" /> -->
 </settings> 
 <!-- 自动分页插件配置 -->
 <plugins>

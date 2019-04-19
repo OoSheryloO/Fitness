@@ -36,6 +36,8 @@ public class Card implements Serializable {
     public static final String COLUMN_Residue = "Residue";
 
     public static final String COLUMN_Level = "Level";
+    
+    public static final String COLUMN_Time = "Time";
 
     public static final String COLUMN_ValidTime = "ValidTime";
 
@@ -78,6 +80,9 @@ public class Card implements Serializable {
 
     @ApiModelProperty(value = "等级")
     private Integer Level;
+    
+    @ApiModelProperty(value = "使用天数/次数")
+    private Integer Time;
 
     @ApiModelProperty(value = "有效时间")
     private Date ValidTime;
