@@ -59,6 +59,7 @@ System.out.println("进入微信加签方法");
 System.out.println(String.valueOf(total_fee));
 			prepayReqHandler.setParameter("total_fee", String.valueOf(total_fee));
 			prepayReqHandler.setParameter("trade_type", "APP");
+			prepayReqHandler.setParameter("attach", "暂无");
 			/**
 			 * 注意签名（sign）的生成方式，具体见官方文档（传参都要参与生成签名，且参数名按照字典序排序，最后接上APP_KEY,转化成大写）
 			 */

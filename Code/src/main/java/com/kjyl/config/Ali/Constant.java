@@ -110,21 +110,21 @@ public class Constant {
 	public static String AliPay_PayAccountName="阙廷康";
 	
 	/** * 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。*/
-	public static String Alipay_Public_Key ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6Lsc35RPXs0hD346E6TKzq9GiJsbHD6QN4T37q5MNIrsg8Ru4tOyUBt0FfgAHFDaDnBrN/fBlfkr7omfJxAyuC2gXmruVOqc2D+ed8lRnfP6TCqrrDaKW/i6d/DEwlINdmgMtDwAyL2eNfdo9wcnGJODBSZs7yKdkl/FeKLzkncfL1HNInr9DezCPFNFteM/sd0JjE6PF935sFS90kJr1v1YQWOqvwIqFZH+lFJTT/A3s9sTGGqN9WOq3MN1eN7SevJrxsxo5T9JyIcIcy2aXf52u/tCmjqLQvhH8+gaBg2kTK9AB19Jl8KxgkFVcN68aHl5qu0H73zeUTK0pt9FNwIDAQAB";
+	public static String Alipay_Public_Key ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg5R/mHiN9Ku4qzxHXSBFeP8Jdd+bpaQTyruSvkLCp9Lf7nTZ3NoFuTWLe9xtBv1pEtgc3+bHh+/JsP71U9s8z5+efSqNRVeVKMlsFrFKf43Bjf/nYsZztfhmrEKOsdUT1PgDamtpSHfOfw/f2boZAO2cycTaJ/UVr97C84MmdFDN1EkUYRh1aQN7FhZvWvhlyfrXnwBKzzxbXFhXWx5eu5pUWELCfMKXKi3mVuw7MwyUxlX6pVGjInCdr1kkiEPrL2uZT9FfaPfd/3508HUT/HsGfGriTUmXs4An16PwMk9vwGZz6y3bJ1GgmiVuD1mdI8KHWdsKwQXfzObzNzF3/wIDAQAB";
 	/** * 支付宝应用私钥 商户私钥，您的PKCS8格式RSA2私钥*/
-	public static String Alipay_Private_Key ="MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyhImQ77Tn5GKod7V5on6k96VPJ66MX4D6BIV/ITXKDWxNPn7mNdrv8B2m2ddBKNgTTuB6ZV74Bx4uH02ujHz6M/Vf98y+kKfXs0ZfYBJBT7Jqrz9mOI3uf6fcJdrq3DCZ/PcxnbSscoAz/0sn7rLKGa8YaujsZluVzKj/c9OA1l2kbptxIOrY3NBrSb9Vgw0w5oP7wxEfcTcuURYD8E0W4P/FC4HyPtcmZAaKHaU51QzBIzGTRPn1QmvcEVa2hxnD3hhV1le+HabC7tM4MnbB1nlfiFvIYVZ5OnI8MvtRGS+mlIYGSTyJQPY72KDpS2iPC2wP0mSO3gchv6tnwa9XAgMBAAECggEBAIyUNKTPL34BavPRuTY9EVAluKc5z4m5V58LWnk/lNU1dtjpYxM0y+FxDFitaYZlfKrPzZR1KbFWIZ0eh5TyCyUZL5zQTgqvbY0+HyfSRu3prc23jcyYsqRjILQLl3alyRwqihsnXvUCAhVwcCXVIjRmv20SG7S18l9n2Jm6A4+Lbxx+6YTi3sROnZkdVnpqBT3llVnLlit7APxVKR6aOPiOCzXkzoYMuHd0uWzQHEpu4HStZqAsIOPzECVnP/ZIeyJyqdQZte7ZI8W0luysTpW3qQ+o90uexTA55SWdWG5K+fijXVTU7mYKEaao60uBEhASKbmPMjVgwX7t6iWjf0kCgYEA3tc0pPgzWRQ8Od0BlxWTRjshMmZjay0OMbdQK6E1afZJ++JogRUzQsf6yfqps1Z8wpplhC1qB2hrPgw/+OtxTh+IAA4rDP4z7piy+ITGMR3+NQhVgRd0jUZdUIslDtAqghYz6Kuayz05UrwBuSetSGr3orOj/yBe2MLWEck5XLsCgYEAzRTp5G/8y2WW7kQ4BKfDxTv3Rf09PkUKaW9BNvSHVMkVd1psvBvAyhf/Y0Dq53GbjEU32tZHRts29pxEhQmCXv2AA3t2cak5TjeTTruPz9S7qBeYucf0pOTKwvDjE23zsQ2TWsATPHqj4dFinU8Ur4UWEwXlWdOTFTGF5Wp//BUCgYEAu0myZEh6l46rQ5KdKIconWlK8Fofis92U5CXH+RAyUsHSV0zqfHQgHslK6ayBBlXiBNN6PZmW82F/MM87Q+szhUwL6O4yRXJPeo22Sp2jIeBxL65ZmL5QVd3TB92SOnqICVbAV1hHxnY2NFMvXo8aFYGxUcoOV/Sd2nhk1dFD8sCgYAhQsQQVY1VW5uX9x5yutbIdUpMYp79K2td4DpedFhCiv5dRiAefg3NeQjlixDOCqHkpRFC/7+9oS4P3xZJ0VoAl/KcHfj+xChUJDVS7p6LYYAx6enOL7zgxW6RIUpiy1FbpM0CSeaUx3su06u/waSkNtx2p10kLWlMZaTGqXgqZQKBgCvhsOrcRlouJPRyLc5QSJAf8rTVA4/xZBBA4EZgVFNL9qReM9L+Uj0wa8dHOTdoQHIi/Ge6HGG/mcV9IhWrak4UZ5udTZX1acqEs6U46XHWiY/Koz295IBDMiiwLYurEh155qekA3fACwkrhIfHXdUUIhMeRG5pJAMgSCJ6yoDn";
+	public static String Alipay_Private_Key ="MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCeAzrXBjBcgjDO2/lGFP59IYStHz2QLZzH41Y00Yfgvbf8/6gMKaSIOigGiQJlkmJ3ypQhjVFJK9PLdquOr5qCnQFdOEfOpmsxaREh/+TKLlL4J6WfvvtFaGdFaF0mJZ/A6lqiE+thfPHQSc81LSuFhRHUHwwFHlIE9pXomlmidMeD2tZQQTSoXQ88GJdGFIw2egli+NS2x2EzewiC+aV/2jtoBwocR0YQOgjAmV3cufoCdOQDN/xcYM/NP/YeWwi3UcUXMhoMNFd833QIN3cKW9aZq+bJWnfokIha/lBINiuNeGS5mc13QQzSKSRoetv05Y2ZeFYBOaChYm4Uos6rAgMBAAECggEBAIUIwRxSKJtqPT+cMnYPrOebNcIwIDvoOyyLuYPEuXq9IE/QyyJaWR0coaBG8A6mPWMP2sGY4kwRq0KNSglazWKUX5alkMdqk6tJA1S1xmF2uQIXFzm0qIcaTIBCStKYMLVSWjZFQRKWCF1OFzd1LUQ/8e++p/cTPQjStwncEgVUqxNT4t9K3f+gBxlE5HIgq92I7Z5cMpTpd9vEl3DYnFuBZKD5ze/EBJ9Ph04n9sO1c4Es9np5Q7ogPX1mHLDvqn5rizByMR929qwXVye6RRChJdWUuwTtywkFp25fEP8WQ91vm89TlknOGqD+NveX1tLKIB/f3nwkasCER1pYVqECgYEA2Qo/1g1TCdB0JDkl/uut29gPXLCtKFHc8LtWVJ4PTpJSmtlpuXhHATEYaQqExTv8pgMWIE8yG6Zo0W8iv268whiechBNo28rP9ECNFzvINyR7EhI5BO7BvsZY7t0S95NE5Yq6gVbeAJGjwBKfmbTMgFSVLoXDqLJ66mreNzuI/sCgYEAumB2rTKWEHqUSJA1w59AoVXj2fDOVHH2TvvvJYx+TiFvL2BqdemjIbFJX4v+Rn+7ewXnvJyix4GxwGvSRi6d5LbhyYgxLA1A40kDN9nbkQTX2I3Y++GsFGCfQBuwMeZYAPpmU/ROMZ02Hie3nGYSLZ7s8YPrV78mSkZ+xKNQURECgYEAq8nqByIaxNzi4Lz/LwwaW7VjS2loVU6eg0i0p1tIIFe+3GQTw8LI6M+UU6gIuRim/DvbKo2kyq/nrUW7Ciy7aSIVX5E58o+Oev+TMCETAT60nYIFd8mKMpdTXFZGUbrN5R/qLbs5z/51HMENNYlrxtu27+svTt1Y15g/afXs5DsCgYA60EADDciPMK9kaqWcsr+Jafo6BySFP2UzrYrc9YXSD/jvIWTXCsBg3HpD/YBjLOGzw7xKJ7+yZ3n5N80mOoW27AM6PpENzqzgTGUIleYU0Etw2epUKfXMhGUcrOAgDwlMXbg23Axk2bB/OZdWcltgLBunZzK4AOkLXU2ZrdOlkQKBgQCEdkFNuY4vZJRhxq6W31+cMUdHqTtWbk5DU5K6rNMc5es9TpRe6q/OjL/RFJTpzNo+c4njP/oIOUhy6S97pQLc8GjpHDCQn0SRHvOUXfL718/eoi5XPRzUQZ5ZjTnD4q5cOrPPTU2pyH3yWwGwKRI7ylbNRy8zxmr8jPWFs/ND/Q==";
 	/** * 支付宝APPID 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号 */
-	public static String Alipay_Appid_Key ="2019041263851644";
+	public static String Alipay_Appid_Key ="2019042064010061";
 	/** * 支付宝网关 */
 	public static String Alipay_Webway_Key ="https://openapi.alipay.com/gateway.do";
 	/** * 签名方式 */
 	public static String Alipay_Sign_Type_Key = "RSA2";
 	/** * 支付宝编码 */
-	public static String Alipay_Charset_Key ="utf-8";
+	public static String Alipay_Charset_Key ="utf-8";//UTF-8
 	/** * 支付宝异步回调地址 */
-	public static String Alipay_Notify_URL_Key ="http://47.104.141.243:80/Fitness/Pay/Alipay";
+	public static String Alipay_Notify_URL_Key ="http://47.104.141.243:80/Fitness/Pay/AliPayBack";
 	/** * 支付宝回调地址 */
-	public static String Alipay_Return_URL_Key ="http://47.104.141.243:80/Fitness/Pay/Alipay";
+	public static String Alipay_Return_URL_Key ="http://47.104.141.243:80/Fitness/Pay/AliPayBack1";
 	
 	/** * 支付宝沙箱 */
 	/** * 支付宝沙箱公钥 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。*/
@@ -138,11 +138,11 @@ public class Constant {
 	/** * 支付宝沙箱 签名方式 */
 	public static String Alipay_SandBox_Sign_Type_Key = "RSA2";
 	/** * 支付宝沙箱编码 */
-	public static String Alipay_SandBox_Charset_Key ="utf-8";
+	public static String Alipay_SandBox_Charset_Key ="utf-8";//UTF-8
 	/** * 支付宝沙箱异步回调地址 */
-	public static String Alipay_SandBox_Notify_URL_Key ="http://47.104.141.243:80/Fitness/Pay/AlipaySandBox";
+	public static String Alipay_SandBox_Notify_URL_Key ="http://47.104.141.243:80/Fitness/Pay/AliPayBackSandBox";
 	/** * 支付宝回调地址 */
-	public static String Alipay_SandBox_Return_URL_Key ="http://47.104.141.243:80/Fitness/Pay/Alipay";
+	public static String Alipay_SandBox_Return_URL_Key ="http://47.104.141.243:80/Fitness/Pay/AliPayBack1";
 
 	/** * 阿里大于短信验证码 */
 	public static String VerifyCodeAppID="78155019";//开发 23270090  正式 234647150

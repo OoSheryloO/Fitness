@@ -177,22 +177,23 @@ public class OrderController extends BaseController {
         }else{
             tempObj = OrderService.Modify(obj);
         }
-        String sign = "";
+//        String sign = "";
         if (Residue) {
         	return sharedInstance().FalseData("库存不足!请刷新", CodeInfo.IntegrationType.Residue.getCode());
 		}else {
 			tempObj = OrderService.Insert(obj);
 			if (temp.getPayType() != null && temp.getPayType() == 1) { 
-				sign = WeChatPaySign.weChatSignPrams(tempObj, UserService, request, response);
+//				sign = WeChatPaySign.weChatSignPrams(tempObj, UserService, request, response);
 			} else {
-				sign = aliPaySign.aliPaySandBoxSignPrams(tempObj);//支付宝沙箱环境
+//				sign = aliPaySign.aliPaySandBoxSignPrams(tempObj);//支付宝沙箱环境
+//				sign = aliPaySign.aliPaySignPrams(tempObj);//支付宝环境
 			}
-//			sign = aliPaySign.aliPaySignPrams(tempObj);//支付宝沙箱环境
+
 		}
         if (tempObj != null) {
         	Map<String, Object> result = new HashMap<String, Object>();
         	result.put(CodeInfo.sDataKey, tempObj);
-        	result.put(CodeInfo.sSignKey, sign);
+//        	result.put(CodeInfo.sSignKey, sign);
 			return sharedInstance().TrueData(result, "修改成功!", CodeInfo.Code.OK.getCode());
 		} else {
 			return sharedInstance().FalseData("修改失败!", CodeInfo.Code.NO.getCode());
